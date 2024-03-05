@@ -1,5 +1,6 @@
 import { connectToDB } from "@/lib/connectToDB";
-import  User  from "@/lib/models";
+import  models  from "@/lib/models";
+const User = models.User;
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 

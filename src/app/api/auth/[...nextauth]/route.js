@@ -2,7 +2,8 @@ import  CredentialsProvider  from "next-auth/providers/credentials"
 import NextAuth from "next-auth/next"
 import { connectToDB } from "@/lib/connectToDB";
 import bcrypt from "bcrypt";
-import User from "@/lib/models";
+import models from "@/lib/models";
+const User = models.User;
 
 async function login(credentials) {
     try {
@@ -57,7 +58,7 @@ export const authOptions = {
                 token.email = user.email;
                 token.id = user.id;
             }
-            console.log("this is token", token);
+            // console.log("this is token", token);
             return token;
         },
         async session({ session, token }) {
@@ -66,13 +67,28 @@ export const authOptions = {
                 session.user.email = token.email;
                 session.user.id = token.id;
             }
-            console.log("this is session", session);
+            // console.log("this is session", session);
             return session;
         }
     }
 };
 
+async function getSession() {
+  try {
+    const token = await NextAuth(authOptions);
+    const session = await NextAuth.getSession({ token });
+    return session;
+  } catch (err) {
+    console.error("Error getting session:", err);
+    throw new Error("Error getting session");
+  }
+}
+
+
 // export default NextAuth(authOptions)
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST};
+
+export { getSession };
+// export { GET, POST } from "@/lib/auth"

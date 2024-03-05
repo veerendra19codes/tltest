@@ -1,9 +1,13 @@
 "use server"
 
+import { revalidatePath } from "next/cache";
 import { connectToDB } from "./connectToDB";
-import {  User } from "./models";
+import models from "./models";
+const User = models.User;
+const Company = models.Company;
 // import { signIn, signOut } from "../lib/auth"
 import bcrypt from "bcryptjs";
+import { useRouter } from "next/navigation";
 
 export const registerAction = async (formData) => {
     const {username, email, password, role} = Object.fromEntries(formData);
@@ -51,4 +55,27 @@ const hashedPassword = await bcrypt.hash(password, salt);
         // return { error: "failed registering using user creds"}
     }
 
+}
+
+export const addCompany = async (prevState, formData) => {
+    const {companyname, jobdetails} = Object.fromEntries(formData);
+    // console.log(formData);
+
+    try {
+        connectToDB();
+
+        const newCompany  = new Company({
+            companyname,
+            jobdetails,
+        })
+
+        await newCompany.save();
+        console.log("new Company added")
+        revalidatePath("/dashboardbd");
+        return {success: true};
+    }
+    catch(err) {
+        console.error(err);
+        return { error: "error in adding company in actions.js"}
+    }
 }

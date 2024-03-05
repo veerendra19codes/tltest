@@ -2,19 +2,20 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { SessionProvider } from "next-auth/react"
-// import type { AppProps } from "next/app"
+// import { SessionProvider } from "next-auth/react"
 
-export default function Home({session, ...pageProps}) {
+// {session, ...pageProps}
+export default function Home() {
   const router = useRouter();
-  // console.log({session});
 
 
   const handleStart = () => {
     router.push("/login");
   }
+
   return (
-     <SessionProvider session={session}>
+    //  <SessionProvider session={session}>
+     
     <div className="flex flex-col justify-center items-start h-screen">
 
       <div className="hero flex flex-row justify-center items-center gap-4 w-full">
@@ -32,7 +33,7 @@ export default function Home({session, ...pageProps}) {
 
       </div>
     </div>
-  </SessionProvider>
+    //  </SessionProvider>
 
   );
 }

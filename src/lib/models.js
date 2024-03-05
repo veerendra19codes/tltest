@@ -22,38 +22,40 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-// const companySchema = new mongoose.Schema({
-//     name: {
-//         type: String,
-//         required: true,
-//     },
-//     url: {
-//         type: String,
-//         required: true
-//     },
-//     createdBy: {
-//         // type:  mongoose.Schema.Types.ObjectId,
-//         // ref: 'User',
-//         type: String,
-//         required: true
-//     },
-//     teamLeader: {
-//         // type:  mongoose.Schema.Types.ObjectId,
-//         // ref: 'User',
-//         type: String,
-//         // ref: 'User',
-//     },
-//     Franchise: {
-//         // type:  mongoose.Schema.Types.ObjectId,
-//         // ref: 'User',
-//         type: String,
-//         // ref: 'User',
-//     },
-// }, {timestamps: true});
+const companySchema = new mongoose.Schema({
+    companyname: {
+        type: String,
+        required: [true, "Must provide a company name"],
+    },
+    jobdetails: {
+        type: String,
+        unique: true,
+        required:[true, "Must provide a url of jobdetails"]
+    },
+    // createdBy: {
+    //     // type:  mongoose.Schema.Types.ObjectId,
+    //     // ref: 'User',
+    //     type: String,
+    //     required: true
+    // },
+    teamleader: {
+        // type:  mongoose.Schema.Types.ObjectId,
+        // ref: 'User',
+        type: String,
+        default: "unassigned",
+    },
+    franchise: {
+        // type:  mongoose.Schema.Types.ObjectId,
+        // ref: 'User',
+        type: String,
+        default: "unassigned",
+    },
+}, {timestamps: true});
 
 //if db already has User/Post model , it will use that or create a new one
 
 let User;
+let Company;
 
 try {
   // Try to get the existing model
@@ -63,5 +65,13 @@ try {
   User = mongoose.model("User", userSchema);
 }
 
-export default User;
+try {
+  // Try to get the existing model
+  Company = mongoose.model("Company");
+} catch (error) {
+  // If the model does not exist, create a new one
+  Company = mongoose.model("Company", companySchema);
+}
+
+export default {User, Company};
 // export const Company = mongoose.models.Company || mongoose.model("Company", companySchema)

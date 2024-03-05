@@ -1,12 +1,25 @@
-"use client";
-
 import Image from 'next/image'
 import React from 'react'
 import Links from './Links/Links'
+import { getSession } from "@/app/api/auth/[...nextauth]/route";
 
-const Navbar = () => {
+
+async function fetchSession() {
+    try {
+        const session = await getSession();
+        // Access session properties like session.user.username, session.user.email, etc.
+        console.log("Session:", session);
+        return { session };
+    } catch (error) {
+        console.error("Error fetching session:", error);
+    }
+}
+
+const Navbar = async () => {
     // roles = bd, sh, tl, fr;
-    const role = "fr";
+    const role = "bd";
+    const session = await fetchSession();
+    console.log(session);
 
     return (
         <div className="navbar h-16 w-full px-24 flex justify-between items-center bg-purple-900 text-white">

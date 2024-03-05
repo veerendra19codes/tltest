@@ -91,9 +91,10 @@ const Links = ({ role }) => {
             <div className="w-full h-12 flex justify-between items-center gap-12 bg-purple-900 text-white" >
                 {role === "bd" &&
                     linksbd.map((link) => (
-                        <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                            {link.name}
-                        </Link>
+                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
+                        //     {link.name}
+                        // </Link>
+                        <NavLink link={link} key={link.id} />
                     ))
                 }
 
@@ -102,23 +103,25 @@ const Links = ({ role }) => {
                         // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
                         //     {link.name}
                         // </Link>
-                        <NavLink link={link} />
+                        <NavLink link={link} key={link.id} />
                     ))
                 }
 
                 {role === "tl" &&
                     linkstl.map((link) => (
-                        <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                            {link.name}
-                        </Link>
+                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
+                        //     {link.name}
+                        // </Link>
+                        <NavLink link={link} key={link.id} />
                     ))
                 }
 
                 {role === "fr" &&
                     linksfr.map((link) => (
-                        <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                            {link.name}
-                        </Link>
+                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
+                        //     {link.name}
+                        // </Link>
+                        <NavLink link={link} key={link.id} />
                     ))
                 }
 
