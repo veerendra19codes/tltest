@@ -16,10 +16,10 @@ export default function Home() {
   return (
     //  <SessionProvider session={session}>
      
-    <div className="flex flex-col justify-center items-start h-screen">
+    <div className="flex flex-col justify-center items-start h-screen w-full">
 
-      <div className="hero flex flex-row justify-center items-center gap-4 w-full">
-        <div className="left w-1/2 h-auto flex flex-col justify-center items-start pl-48">
+      <div className="hero flex flex-row justify-center items-center gap-4 w-full ">
+        <div className="left w-1/2 h-auto flex flex-col justify-center items-start pl-48 sm:px-4 sm:w-full">
 
           <p className="text-2xl font-medium">Welcome to</p>
           <h1 className="text-4xl text-blue-500 font-black">Task Manager</h1>
@@ -27,7 +27,7 @@ export default function Home() {
           <button onClick={handleStart} className="bg-blue-500 rounded py-2 px-4 text-white">Get Started</button>
         </div>
 
-        <div className="right flex justify-center items-center w-1/2">
+        <div className="right flex justify-center items-center w-1/2 sm:hidden">
           <Image src="/home.jpg" width={500} height={500} alt="hero" priority={true} />
         </div>
 

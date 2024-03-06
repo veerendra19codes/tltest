@@ -61,6 +61,16 @@ export const addCompany = async (prevState, formData) => {
     const {companyname, jobdetails} = Object.fromEntries(formData);
     // console.log(formData);
 
+    if(!jobdetails && !companyname) {
+        return {error : "Must provide all fiels"};
+    }
+    if(!companyname) {
+        return {error : "Must provide companyname"};
+    }
+    if(!jobdetails) {
+        return {error : "Must provide jobdetails"};
+    }
+
     try {
         connectToDB();
 

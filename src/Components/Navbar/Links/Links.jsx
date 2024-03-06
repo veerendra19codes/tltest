@@ -87,14 +87,15 @@ const Links = ({ role }) => {
     console.log(open);
 
     return (
-        <>
-            <div className="w-full h-12 flex justify-between items-center gap-12 bg-purple-900 text-white" >
+        <div className="links">
+            <div className="w-full h-12 flex justify-between items-center gap-12 bg-purple-900 text-white lg:hidden"
+            >
                 {role === "bd" &&
                     linksbd.map((link) => (
                         // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
                         //     {link.name}
                         // </Link>
-                        <NavLink link={link} key={link.id} />
+                        <NavLink item={link} key={link.name} />
                     ))
                 }
 
@@ -103,7 +104,7 @@ const Links = ({ role }) => {
                         // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
                         //     {link.name}
                         // </Link>
-                        <NavLink link={link} key={link.id} />
+                        <NavLink item={link} key={link.name} />
                     ))
                 }
 
@@ -112,7 +113,7 @@ const Links = ({ role }) => {
                         // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
                         //     {link.name}
                         // </Link>
-                        <NavLink link={link} key={link.id} />
+                        <NavLink item={link} key={link.name} />
                     ))
                 }
 
@@ -121,14 +122,24 @@ const Links = ({ role }) => {
                         // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
                         //     {link.name}
                         // </Link>
-                        <NavLink link={link} key={link.id} />
+                        <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                <div className="text-white hidden md:block" onClick={handleMobileNav}>Menu</div>
             </div>
+            <button onClick={() => setOpen(!open)} className=" hidden lg:block"> Menu</button>
 
-        </>
+            <div className="mobile-nav hidden lg:block">
+                {open && (
+                    <div className="mobileLinks flex flex-col justify-start gap-4 absolute right-0 items-start top-0 bg-purple-800 h-screen w-[250px] pt-4">
+                        {linksbd.map((link) => (
+                            <NavLink item={link} key={link.title} open={open} setOpen={setOpen} />
+                        ))}
+                        <button className="fixed top-4 right-4" onClick={() => setOpen(!open)}>Close</button>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }
 

@@ -67,7 +67,7 @@ export const authOptions = {
                 session.user.email = token.email;
                 session.user.id = token.id;
             }
-            // console.log("this is session", session);
+            console.log("this is session", session);
             return session;
         }
     }
@@ -83,6 +83,7 @@ async function getSession() {
     throw new Error("Error getting session");
   }
 }
+// console.log(authOptions);
 
 
 // export default NextAuth(authOptions)
