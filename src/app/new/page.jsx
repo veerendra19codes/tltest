@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
+import { useSession } from 'next-auth/react';
 
 const NewPage = () => {
+    const session = useSession();
+    console.log("session in new", session);
 
     const router = useRouter();
 
@@ -77,6 +80,7 @@ const NewPage = () => {
             <form action={formAction} className="w-[500px] m-auto mt-12 p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-start gap-4 sm:w-full sm:m-0 sm:p-4 sm:gap-2 sm:mt-24">
                 {/* onSubmit={handleSubmit} */}
                 <h1 className="text-3xl font-bold sm:text-xl sm:mb-4">Add new openings here</h1>
+                <input type="hidden" name="createdBy" value={session.data?.user?.id} className="bg-bgDark p-4 border-none outline-none focus:outline-white w-auto" />
                 <label className="text-[12px] font-medium">Company name</label>
                 <input type="text" name="companyname" placeholder="Ex. Infosys Ltd" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full  sm:py-1" onChange={e => handleInput(e)} />
                 <label className="text-[12px] font-medium">Job Details</label>

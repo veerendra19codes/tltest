@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react';
 import NavLink from './NavLink/NavLink';
 
-const Links = ({ role }) => {
-
+const Links = ({ session }) => {
+    // console.log(session);
+    // const role = "bd";
     //if role == "bd" this nav
     const linksbd = [
         {
@@ -62,6 +63,11 @@ const Links = ({ role }) => {
             name: "dashboard",
             path: "/dashboardtl",
         },
+        {
+            id: 4,
+            name: "franchise",
+            path: "/franchise",
+        }
     ]
 
     const linksfr = [
@@ -84,7 +90,9 @@ const Links = ({ role }) => {
     const handleMobileNav = () => {
         setOpen(!open);
     }
-    console.log(open);
+    // console.log(open);
+
+    const role = session.data?.user?.role;
 
     return (
         <div className="links">

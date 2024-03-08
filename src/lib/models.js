@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["bd", "sh", "tl", "fr"],
         default: "fr",
+    },
+    teamleader: {
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
 }, {timestamps: true});
 
@@ -32,12 +36,12 @@ const companySchema = new mongoose.Schema({
         unique: true,
         required:[true, "Must provide a url of jobdetails"]
     },
-    // createdBy: {
-    //     // type:  mongoose.Schema.Types.ObjectId,
-    //     // ref: 'User',
-    //     type: String,
-    //     required: true
-    // },
+    createdBy: {
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        // type: String,
+        // required: true
+    },
     teamleader: {
         // type:  mongoose.Schema.Types.ObjectId,
         // ref: 'User',
@@ -50,6 +54,16 @@ const companySchema = new mongoose.Schema({
         type: String,
         default: "unassigned",
     },
+    status: {
+        type: String,
+        default: "pending",
+    },
+    rejectedTeamLeaders: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ]
 }, {timestamps: true});
 
 //if db already has User/Post model , it will use that or create a new one

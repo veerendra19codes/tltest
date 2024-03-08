@@ -1,9 +1,14 @@
+"use client"
+
 import Image from 'next/image'
 import React from 'react'
 import Links from './Links/Links'
 // import { getSession } from "@/app/api/auth/[...nextauth]/route";
 // import session from '@/app/api/auth/[...nextauth]/route'
-
+// import { auth } from '@/lib/auth'
+import { signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+// import { redirect } from "next/navigation"
 
 // async function fetchSession() {
 //     try {
@@ -17,10 +22,20 @@ import Links from './Links/Links'
 // }
 
 const Navbar = () => {
-    // roles = bd, sh, tl, fr;
-    const role = "bd";
+    // const role = "bd";
     // const session = await fetchSession();
     // console.log(session);
+    // const session = await auth();
+
+    // console.log(session);
+    const router = useRouter();
+
+    const session = useSession();
+    // console.log("session in navbar", session);
+
+    if (session.data === null) {
+        router.replace("/login");
+    }
 
     return (
         <div className="navbar h-16 w-full px-24 flex justify-between items-center bg-purple-900 text-white sm:px-4 sm:overflow-x-hidden">
@@ -29,9 +44,18 @@ const Navbar = () => {
             " />
             </div>
             <div className="links">
-                <Links role={role} />
+                <Links session={session} />
+                {/* role={role} */}
             </div>
-            <div className="username text-xl bg-white rounded-xl py-2 px-4 text-black lg:hidden">Username({role})</div>
+            {session.data?.user &&
+
+                <div className="flex justify-center items-center gap-4">
+                    <div className="username text-xl  rounded-xl py-2 px-4 text-white lg:hidden">Hi, {session.data?.user?.username}({session.data?.user?.role})</div>
+
+                    <button onClick={() => signOut()} className="bg-red-600 mx-2 px-4 my-1 py-2 text-white rounded-lg">LogOut</button>
+
+                </div>
+            }
         </div>
     )
 }

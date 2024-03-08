@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/Components/Navbar/Navbar";
 import Footer from "@/Components/Footer/Footer";
 // import { SessionProvider } from "next-auth/react"
+import { Providers } from "./providers";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,9 +18,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     <body className="h-full w-full flex flex-col">
-      <Navbar />
-      {children}
-      {/* <Footer /> */}
+      <Providers>
+        <Navbar />
+        {children}
+        {/* <Footer /> */}
+      </Providers>
     </body>
     </html>
   );

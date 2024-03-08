@@ -1,9 +1,53 @@
 "use client";
 
+import { useSession } from 'next-auth/react';
 import Image from 'next/image'
-import React from 'react'
+import models from "@/lib/models";
+const User = models.User;
+import { connectToDB } from '@/lib/connectToDB';
+import { useState, useEffect } from "react";
+
+// const findMyTeamLeader = async (id) => {
+//     try {
+//         connectToDB();
+
+//         const user = await User.findOne({ _id: id });
+//         // if (!user) return null;
+//         return user;
+//     } catch (err) {
+//         console.log("error in getting teamleader", err);
+//         return null;
+//     }
+// }
 
 const DashboardFRPage = () => {
+    const session = useSession();
+    const teamleaderId = session.data?.user?.teamleader;
+
+    //teamleader object
+    const [teamleader, setTeamleader] = useState({});
+    console.log("teamleader object before fetching", teamleader);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`/api/getUser?id=${teamleaderId}`);
+                const data = await response.json();
+                console.log(data);
+
+                if (response.ok) {
+                    setTeamleader(data.user);
+                    console.log("teamleader object after fetching", teamleader);
+                } else {
+                    console.error('Error fetching user:', data.error);
+                }
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+
+        fetchUser();
+    }, [teamleaderId]);
 
     const data = [
         {
@@ -52,23 +96,16 @@ const DashboardFRPage = () => {
                 <div className="userdetailstext flex flex-col justify-between  items-start w-full py-4">
                     <div className="row flex justiy-start items-center w-full">
                         <label className="w-1/5 py-2">Username</label>
-                        <div className="w-4/5 py-2">yash</div>
+                        <div className="w-4/5 py-2">{session.data?.user?.username}</div>
                     </div>
                     <div className="row flex justiy-start items-center w-full">
                         <label className="w-1/5 py-2">Email</label>
-                        <div className="w-4/5 py-2">yash123@talentcorner.com</div>
+                        <div className="w-4/5 py-2">{session.data?.user?.email}</div>
                     </div>
                     <div className="row flex justiy-start items-center w-full">
                         <label className="w-1/5 py-2">My Team Leader</label>
-                        <div className="w-4/5 py-2">Surbhi</div>
+                        <div className="w-4/5 py-2">{teamleader.username}</div>
                     </div>
-                    <div className="row flex justiy-start items-center w-full">
-                        <label className="w-1/5 py-2">Level</label>
-                        <div className="w-4/5 py-2">Junior</div>
-                    </div>
-
-
-
                 </div>
             </div>
 

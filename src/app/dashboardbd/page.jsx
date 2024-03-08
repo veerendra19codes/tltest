@@ -1,5 +1,7 @@
 import { connectToDB } from '@/lib/connectToDB'
+import { getServerSession } from 'next-auth';
 import React from 'react'
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
 const getData = async () => {
     try {
@@ -19,8 +21,13 @@ const getData = async () => {
 }
 
 const DashboardBD = async () => {
-    const data = await getData();
-    // console.log(data);
+    const session = await getServerSession(authOptions);
+    console.log("session in dashboardbd", session);
+
+    const allData = await getData();
+    console.log(allData);
+    const data = allData.filter((data) => data.createdBy === session?.user?.id);
+    console.log("filtered data", data);
 
     // const data = [
     //     {
@@ -65,9 +72,9 @@ const DashboardBD = async () => {
     //     },
     // ]
 
-    const list = [
-        'aplpafa', 'avivrw', 'riuwuvri', 'vruwuricb', 'iwvbrivrirvir', 'iwriuvrwiuvvbvkw', 'wuvwivw'
-    ]
+    // const list = [
+    //     'aplpafa', 'avivrw', 'riuwuvri', 'vruwuricb', 'iwvbrivrirvir', 'iwriuvrwiuvvbvkw', 'wuvwivw'
+    // ]
 
     return (
         <div className="flex justify-center items-center flex-col w-full overflow-x-hidden">
