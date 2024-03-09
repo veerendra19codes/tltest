@@ -15,7 +15,7 @@ const FranchisePage = () => {
     const [pending, setPending] = useState(false);
 
     const handleInput = (e) => {
-        setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value, role: "fr", teamleader: session.data?.user?.id }));
+        setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value, role: "fr", teamleader: session.data?.user?.id, level: "junior" }));
     }
 
     async function handleSubmit(e) {
@@ -66,7 +66,7 @@ const FranchisePage = () => {
                     <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
                     <label className="text-[12px] font-medium">Password</label>
                     <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
-                    <input type="hidden" name="role" value="fr" />
+                    {/* <input type="hidden" name="role" value="fr" /> */}
                     {/* <input type="hidden" name="teamleader" value={session.data?.user?.id} /> */}
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
                     <button className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>

@@ -1,49 +1,84 @@
+import { connectToDB } from "@/lib/connectToDB"
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
-const DashboardBD = () => {
-    const data = [
-        {
-            id: 1,
-            teamleader: "surbhi",
-            franchise: "hitesh",
-            level: "junior",
-            status: "free",
-        },
-        {
-            id: 2,
-            teamleader: "surbhi",
-            franchise: "rahul",
-            level: "junior",
-            status: "free",
-        },
-        {
-            id: 3,
-            teamleader: "surbhi",
-            franchise: "yash",
-            level: "mid",
-            status: "working",
-        },
-        {
-            id: 4,
-            teamleader: "jyothi",
-            franchise: "atharva",
-            level: "mid",
-            status: "free",
-        },
-        {
-            id: 5,
-            teamleader: "jyothi",
-            franchise: "hussain",
-            level: "senior",
-            status: "free",
-        },
-        {
-            id: 6,
-            teamleader: "jyothi",
-            franchise: "vivek",
-            level: "normal",
-            status: "working",
-        },
-    ]
+//FETCHING DATA WITH API
+const getUsers = async () => {
+    // console.log("id insie getUser", id);
+    const res = await fetch(`http://localhost:3000/api/user`);
+
+    if (!res.ok) {
+        console.log(res.json);
+    }
+    return res.json();
+}
+
+//FETCHING DATA WITH API
+const getUser = async (id) => {
+    // console.log("id insie getUser", id);
+    const res = await fetch(`http://localhost:3000/api/user/${id}`);
+
+    if (!res.ok) {
+        console.log(res.json);
+    }
+    return res.json();
+}
+
+const DashboardSHPage = async () => {
+    const session = await getServerSession(authOptions);
+    if (session === null) {
+        redirect("/login");
+    }
+    const users = await getUsers();
+    // console.log("all users", users);
+
+    const data = users.filter((data) => data.role === "fr");
+
+    // const data = [
+    //     {
+    //         id: 1,
+    //         teamleader: "surbhi",
+    //         franchise: "hitesh",
+    //         level: "junior",
+    //         status: "free",
+    //     },
+    //     {
+    //         id: 2,
+    //         teamleader: "surbhi",
+    //         franchise: "rahul",
+    //         level: "junior",
+    //         status: "free",
+    //     },
+    //     {
+    //         id: 3,
+    //         teamleader: "surbhi",
+    //         franchise: "yash",
+    //         level: "mid",
+    //         status: "working",
+    //     },
+    //     {
+    //         id: 4,
+    //         teamleader: "jyothi",
+    //         franchise: "atharva",
+    //         level: "mid",
+    //         status: "free",
+    //     },
+    //     {
+    //         id: 5,
+    //         teamleader: "jyothi",
+    //         franchise: "hussain",
+    //         level: "senior",
+    //         status: "free",
+    //     },
+    //     {
+    //         id: 6,
+    //         teamleader: "jyothi",
+    //         franchise: "vivek",
+    //         level: "normal",
+    //         status: "working",
+    //     },
+    // ]
 
     return (
         <div className="flex flex-col justify-center items-center gap-8">
@@ -58,10 +93,12 @@ const DashboardBD = () => {
 
                 {data.map((d) => (
                     <div key={d.id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4">
-                        <div className="w-1/4 mx-2  pl-4 text-center">{d.teamleader}</div>
-                        <div className="w-1/4 mx-2  pl-4 text-center">{d.franchise}</div>
+                        <div className="w-1/4 mx-2  pl-4 text-center">{
+                            d.teamleader
+                        }</div>
+                        <div className="w-1/4 mx-2  pl-4 text-center">{d.username}</div>
                         <div className="w-1/4 mx-2  pl-4 text-center">{d.level}</div>
-                        <div className={d.status === "free" ? " flex w-1/4  text-center bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2" : "w-1/4  pl-4 text-center items-center flex bg-green-600 justify-center h-auto mx-2 rounded-xl"}>{d.status}</div>
+                        <div className={d.companiesWorking === "none" ? " flex w-1/4  text-center bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2" : "w-1/4  pl-4 text-center items-center flex bg-green-600 text-white justify-center h-auto mx-2 rounded-xl"}>{d.companiesWorking === "none" ? "free" : d.companiesWorking}</div>
                     </div>
                 ))}
             </div>
@@ -70,4 +107,4 @@ const DashboardBD = () => {
     )
 }
 
-export default DashboardBD
+export default DashboardSHPage

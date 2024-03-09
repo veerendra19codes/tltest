@@ -14,7 +14,7 @@ const LoginPage = () => {
 
     const session = useSession();
     if (session.data?.user) {
-        router.replace("/")
+        router.push("/")
     }
 
     // useEffect(() => {
@@ -55,7 +55,7 @@ const LoginPage = () => {
                     return;
                 }
                 setPending(false);
-                router.replace("/");
+                router.push("/");
             } catch (err) {
                 setPending(false);
                 console.log("Error while logging user in page.jsx", err);

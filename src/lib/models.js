@@ -23,6 +23,23 @@ const userSchema = new mongoose.Schema({
     teamleader: {
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
+    },
+    level: {
+        type: String,
+        enum: ["junior", "mid", "senior"],
+        default: "junior",
+    },
+    companiesCompleted: {
+        type: String,
+        default: "none",
+    },
+    companiesRejected: {
+        type: String,
+        default: "none",
+    },
+    companiesWorking: {
+        type: String,
+        default: "none",
     }
 }, {timestamps: true});
 

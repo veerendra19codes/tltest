@@ -80,6 +80,10 @@ export const authOptions = {
                     email:user.email,
                     username: user.username,
                     role: user.role,
+                    teamleader: user.teamleader, //change here
+                    level: user.level,
+                    companiesCompleted: user.companiesCompleted,
+                    companiesRejected: user.companiesRejected,
                 };
             }
         }
@@ -147,6 +151,10 @@ export const authOptions = {
                     email: token.email,
                     username: token.username,
                     role: token.role,
+                    teamleader: token.teamleader, //change here
+                    level: token.level,
+                    companiesCompleted: token.companiesCompleted,
+                    companiesRejected: token.companiesRejected,
                 }
             }
         },
@@ -163,6 +171,10 @@ export const authOptions = {
                     email: user.email,
                     username: user.username,
                     role: user.role,
+                    teamleader: user.teamleader, //change here
+                    level: user.level,
+                    companiesCompleted: user.companiesCompleted,
+                    companiesRejected: user.companiesRejected,
                 }
             }
             return token

@@ -5,7 +5,6 @@ import { connectToDB } from "./connectToDB";
 import models from "./models";
 const User = models.User;
 const Company = models.Company;
-// import { signIn, signOut } from "../lib/auth"
 import bcrypt from "bcryptjs";
 import { signIn, signOut } from "@/lib/auth"
 import { getServerSession } from "next-auth";
@@ -91,7 +90,7 @@ export const addCompany = async (prevState, formData) => {
             status: "pending",
         });
 
-        console.log(newCompany);
+        // console.log(newCompany);
 
         await newCompany.save();
         console.log("New Company added");
@@ -174,3 +173,25 @@ export const getAllCompanies = async () => {
         return null;
     }
 }
+
+
+
+const getTeamleader = async (teamleaderId) => {
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/teamleader/${teamleaderId}`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch team leader details');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error in getTeamleader:', error);
+    throw error;
+  }
+};
+
+export { getTeamleader };
