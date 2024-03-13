@@ -136,6 +136,38 @@ export const addCompany = async (prevState, formData) => {
     // }
 }
 
+// export const updateCompany = async (prevState, formData) => {
+//     try {
+//         const { id, companyname, jobdetails, createdBy, status } = Object.fromEntries(formData);
+
+//         if (!id || !companyname || !jobdetails || !createdBy || !status) {
+//             return { error: "Must provide all fields" };
+//         }
+
+//         connectToDB();
+
+//         const updatedCompany = await Company.findByIdAndUpdate(id, {
+//             companyname,
+//             jobdetails,
+//             createdBy,
+//             status
+//         }, { new: true });
+
+//         if (!updatedCompany) {
+//             return { error: "Company not found" };
+//         }
+
+//         console.log("Company updated successfully");
+
+//         revalidatePath("/dashboardbd");
+//         return { success: true };
+//     } catch (err) {
+//         console.error(err);
+//         return { error: "Error in updating company in actions.js" };
+//     }
+// }
+
+
 
 export const loginAction = async (previousState,formData) => {
     const {email, password} = Object.fromEntries(formData);
@@ -170,6 +202,23 @@ export const getAllCompanies = async () => {
     }
     catch (err) {
         console.log("error in getting companies: ", err);
+        return null;
+    }
+}
+
+export const getAllUsers = async () => {
+    try {
+        connectToDB();
+
+        const res = await fetch("http://localhost:3000/api/user", { cache: 'no-store' });
+
+        if (!res.ok) {
+            return { error: "Error in getting all users" };
+        }
+        return res.json();
+    }
+    catch (err) {
+        console.log("error in getting all users in actions.js: ", err);
         return null;
     }
 }

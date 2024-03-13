@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    teamleadername: {
+        type: String,
+        default: "jyothi",
+    },
     level: {
         type: String,
         enum: ["junior", "mid", "senior"],
@@ -60,8 +64,12 @@ const companySchema = new mongoose.Schema({
         // required: true
     },
     teamleader: {
-        // type:  mongoose.Schema.Types.ObjectId,
-        // ref: 'User',
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        // type: String,
+        default: "unassigned",
+    },
+    teamleadername: {
         type: String,
         default: "unassigned",
     },
@@ -76,6 +84,12 @@ const companySchema = new mongoose.Schema({
         default: "pending",
     },
     rejectedTeamLeaders: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
+    rejectedFranchise: [
         {
             type:  mongoose.Schema.Types.ObjectId,
             ref: 'User',

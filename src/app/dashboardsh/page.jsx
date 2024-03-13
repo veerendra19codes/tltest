@@ -93,9 +93,7 @@ const DashboardSHPage = async () => {
 
                 {data.map((d) => (
                     <div key={d.id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4">
-                        <div className="w-1/4 mx-2  pl-4 text-center">{
-                            d.teamleader
-                        }</div>
+                        <div className="w-1/4 mx-2  pl-4 text-center">{d.teamleadername}</div>
                         <div className="w-1/4 mx-2  pl-4 text-center">{d.username}</div>
                         <div className="w-1/4 mx-2  pl-4 text-center">{d.level}</div>
                         <div className={d.companiesWorking === "none" ? " flex w-1/4  text-center bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2" : "w-1/4  pl-4 text-center items-center flex bg-green-600 text-white justify-center h-auto mx-2 rounded-xl"}>{d.companiesWorking === "none" ? "free" : d.companiesWorking}</div>

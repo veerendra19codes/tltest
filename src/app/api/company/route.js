@@ -38,3 +38,35 @@ export async function GET(req){
         console.log("Error in getting companies in route.js:", err);
     }
 }
+
+// export async function PUT(req) {
+//     try {
+//         const { id, companyname, jobdetails, createdBy, status } = req.body;
+
+//         if (!id || !companyname || !jobdetails || !createdBy || !status) {
+//             return NextResponse.error("Must provide all fields", { status: 400 });
+//         }
+
+//         connectToDB();
+
+//         const updatedCompany = await Company.findByIdAndUpdate(id, {
+//             companyname,
+//             jobdetails,
+//             createdBy,
+//             status
+//         }, { new: true });
+
+//         if (!updatedCompany) {
+//             return NextResponse.error("Company not found", { status: 404 });
+//         }
+
+//         console.log("Company updated successfully");
+
+//         return NextResponse.json({ success: true });
+//     } catch (err) {
+//         console.error("Error in updating company in route.js:", err);
+//         return NextResponse.error("Internal server error", { status: 500 });
+//     }
+// }
+
+

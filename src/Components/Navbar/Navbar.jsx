@@ -1,7 +1,7 @@
 "use client"
 
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Links from './Links/Links'
 // import { getSession } from "@/app/api/auth/[...nextauth]/route";
 // import session from '@/app/api/auth/[...nextauth]/route'
@@ -33,9 +33,12 @@ const Navbar = () => {
     const session = useSession();
     // console.log("session in navbar", session);
 
-    if (session.data === null) {
-        router.replace("/login");
-    }
+    useEffect(() => {
+        // Use useEffect to perform side effects, like redirecting
+        if (session.data === null) {
+            router.replace("/login");
+        }
+    }, [session.data, router]);
 
     return (
         <div className="navbar h-16 w-full px-24 flex justify-between items-center bg-purple-900 text-white sm:px-4 sm:overflow-x-hidden">

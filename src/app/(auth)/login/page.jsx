@@ -13,9 +13,15 @@ const LoginPage = () => {
     const router = useRouter();
 
     const session = useSession();
-    if (session.data?.user) {
-        router.push("/")
-    }
+
+    useEffect(() => {
+        if (session.data?.user) {
+            router.push("/")
+        }
+    }, [session.data, router])
+    // if (session.data?.user) {
+    //     router.push("/")
+    // }
 
     // useEffect(() => {
 

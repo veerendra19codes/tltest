@@ -4,7 +4,7 @@ import models from "@/lib/models.js"
 const User = models.User; 
 
 export const GET = async (request, {params}) => {
-
+    
     // console.log("params inside route.js:",params);
     const {slug}= params;
     // console.log("slug inside route.js",slug);
