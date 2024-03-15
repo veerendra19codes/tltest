@@ -1,21 +1,41 @@
 "use client";
 
 import { useSession } from 'next-auth/react';
+import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 
 const FranchisePage = () => {
     const session = useSession();
-    console.log("session in franchise", session);
+    // console.log("session in franchise", session);
 
     const router = useRouter();
 
-    const [info, setInfo] = useState({ username: "", email: "", password: "", role: "" });
+    const [info, setInfo] = useState({
+        username: "",
+        email: "",
+        password: "",
+        role: "",
+        teamleader: "",
+        level: "",
+        teamleadername: "", companiesCompleted: [], companiesRejected: [], companiesWorking: [],
+        companiesCompletedName: [], companiesRejectedName: [], companiesWorkingName: [],
+    });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
 
     const handleInput = (e) => {
-        setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value, role: "fr", teamleader: session.data?.user?.id, level: "junior", teamleadername: session.data?.user?.username }));
+        setInfo((prev) => ({
+            ...prev, [e.target.name]: e.target.value,
+            role: "fr",
+            teamleader: session.data?.user?.id,
+            teamleadername: session.data?.user?.username,
+            level: "junior",
+            companiesCompleted: [],
+            companiesRejected: [],
+            companiesWorking: [],
+            companiesCompletedName: [], companiesRejectedName: [], companiesWorkingName: []
+        }));
     }
 
     async function handleSubmit(e) {
@@ -23,7 +43,8 @@ const FranchisePage = () => {
 
         if (!info.email || !info.password) {
             setError("Must provide all credentials");
-        } else {
+        }
+        else {
             try {
                 setPending(true);
 
@@ -34,11 +55,15 @@ const FranchisePage = () => {
                     },
                     body: JSON.stringify(info),
                 });
+
+                console.log(res);
+
                 if (res.ok) {
                     setPending(false);
                     const form = e.target;
                     form.reset();
                     router.push("/dashboardtl");
+                    revalidatePath("/dashboardtl");
                     console.log("Franchise registered successfully");
                 }
                 else {
@@ -49,7 +74,7 @@ const FranchisePage = () => {
             } catch (err) {
                 setPending(false);
                 console.log("Error while registering franchise in page.jsx", err);
-                setError("error in register franchise page in catch block");
+                // setError("error in register franchise page in catch block");
             }
         }
     }
@@ -58,20 +83,24 @@ const FranchisePage = () => {
         <div className="w-full h-full overflow-hidden flex justify-center items-center sm:px-4">
             <div className="w-[500px] m-auto my-12 p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center gap-4 sm:w-full sm:m-0 sm:p-4  sm:gap-0 sm:mt-8 ">
                 <h1 className="text-4xl font-bold sm:text-xl">Add new Franchise</h1>
-                <p className="text-gray-600 text-lg sm:text-[12px]">Enter information to add new Franchise under you</p>
                 <form className="w-full flex flex-col justify-center items-start gap-4 sm:gap-2 sm:my-4" action="" onSubmit={handleSubmit}>
+
                     <label className="text-[12px] font-medium">Username</label>
                     <input type="text" name="username" placeholder="username" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+
                     <label className="text-[12px] font-medium">Email</label>
                     <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+
                     <label className="text-[12px] font-medium">Password</label>
                     <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
-                    <input type="hidden" name="role" value="fr" />
-                    <input type="hidden" name="teamleader" value={session.data?.user?.id} />
-                    <input type="hidden" name="teamleadername" value={session.data?.user?.username} />
+
+                    {/* <input type="hidden" name="role" value="fr" /> */}
+                    {/* <input type="hidden" name="teamleader" value={session.data?.user?.id} /> */}
+                    {/* <input type="hidden" name="teamleadername" value={session.data?.user?.username} /> */}
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
+
                     <button className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>
-                    {/* {state?.error && <p>{state?.error}</p>} */}
+
                 </form>
             </div>
         </div>

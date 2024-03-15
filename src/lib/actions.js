@@ -87,7 +87,7 @@ export const addCompany = async (prevState, formData) => {
             companyname,
             jobdetails,
             createdBy, //coming from frontend inside formData
-            status: "pending",
+            status: "in progress",
         });
 
         // console.log(newCompany);
@@ -98,7 +98,7 @@ export const addCompany = async (prevState, formData) => {
         return { success: true };
     } catch (err) {
         console.error(err);
-        return { error: "Error in adding company in actions.js" };
+        return { error: "Above company details already exists" };
     }
     // const session = await getServerSession(authOptions);
     // console.log("serversession", session);
@@ -225,9 +225,9 @@ export const getAllUsers = async () => {
 
 
 
-const getTeamleader = async (teamleaderId) => {
+export const getTeamleader = async (teamleaderId) => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/teamleader/${teamleaderId}`, {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/user/${teamleaderId}`, {
         method: 'GET',
     });
 
@@ -242,5 +242,3 @@ const getTeamleader = async (teamleaderId) => {
     throw error;
   }
 };
-
-export { getTeamleader };

@@ -1,11 +1,13 @@
 "use client";
 
+import { getTeamleader } from "@/lib/actions";
+import { revalidatePath } from "next/cache";
 import React, { useState } from "react";
 
 async function updateCompany(companyId, updatedFields) {
 
-    console.log("companyId in page.jsx", companyId);
-    console.log("updatedFields: ", updatedFields);
+    // console.log("companyId in page.jsx", companyId);
+    // console.log("updatedFields: ", updatedFields);
 
     try {
         const response = await fetch(`http://localhost:3000/api/company/${companyId}`, {
@@ -21,6 +23,7 @@ async function updateCompany(companyId, updatedFields) {
             throw new Error(errorMessage);
         }
 
+        revalidatePath("/mails");
         const data = await response.json();
         console.log(data); // Success message
     } catch (error) {
@@ -28,10 +31,11 @@ async function updateCompany(companyId, updatedFields) {
     }
 }
 
-const MailsDashboard = ({ ogData, teamleaders }) => {
+const MailsDashboard = ({ data, teamleaders }) => {
 
-    const [data, setData] = useState(ogData);
-    // console.log(teamleaders);
+    // const [data, setData] = useState(ogData);
+    // console.log("data", data);
+    // console.log("teamleaders:, ", teamleaders);
 
     // const teamleaders = [
     //     {
@@ -71,24 +75,24 @@ const MailsDashboard = ({ ogData, teamleaders }) => {
 
     const handleTeamleaderChange = (e, id) => {
 
-        const teamleaderId = teamleaders.map((teamleader) => {
-            if (teamleader.username === e.target.value) {
-                return teamleader._id;
-            }
-        })
-        // console.log(teamleaderId);
+        console.log("teamleader id selected:", e.target.value);
+        const teamleader = teamleaders.filter((teamleader) => teamleader.username === e.target.value);
+        // console.log("teamleader :", teamleader);
+        const teamleaderId = teamleader[0]._id;
+        // console.log("teamleaderId:", teamleaderId);
 
-        const updatedData = data.map((d) => {
-            if (d._id === id) {
-                return { ...d, teamleader: teamleaderId[0], teamleadername: e.target.value };
-            }
-            else {
-                return d;
-            }
-        })
-        console.log("teamleader", teamleaderId[0]);
-        console.log("teamleadername", e.target.value);
-        setData(updatedData);
+
+        // const updatedData = data.map((d) => {
+        //     if (d._id === id) {
+        //         return { ...d, teamleader: teamleaderId[0], teamleadername: e.target.value };
+        //     }
+        //     else {
+        //         return d;
+        //     }
+        // })
+        // console.log("teamleader", teamleaderId[0]);
+        // console.log("teamleadername", e.target.value);
+        // setData(updatedData);
         // useEffect(() => {
         //     const UpdateData = () => {
         //         const 
@@ -98,9 +102,12 @@ const MailsDashboard = ({ ogData, teamleaders }) => {
         // Example usage
         const companyId = id;
         const updatedFields = {
-            teamleader: teamleaderId[0],
+            teamleader: teamleaderId,
             teamleadername: e.target.value,
+            message: "assign tl"
         };
+        // console.log("companyId :", companyId);
+        // console.log("updatedField:", updatedFields);
 
         updateCompany(companyId, updatedFields);
     }
@@ -108,14 +115,14 @@ const MailsDashboard = ({ ogData, teamleaders }) => {
 
 
     return (
-        <div className="w-full h-auto flex justify-center">
+        <div className="w-full h-auto flex justify-center mt-12">
             <div className="table w-4/5 h-full flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/5 py-2 text-center font-bold">Company</div>
                     <div className="w-1/5 py-2 text-center font-bold">Details</div>
                     <div className="w-1/5 py-2 text-center font-bold">Team Leader</div>
                     <div className="w-1/5 py-2 text-center font-bold">Status</div>
-                    <div className="w-1/5 py-2 text-center font-bold">RejectedBy</div>
+                    <div className="w-1/5 py-2 text-center font-bold">Rejected Teamleaders</div>
                 </div>
 
                 {data.map((d) => (
@@ -139,8 +146,8 @@ const MailsDashboard = ({ ogData, teamleaders }) => {
                             <div className="w-1/5 mx-2   flex justify-center items-center">{d.teamleadername}</div>
                             // selectedTeamleader
                         )}
-                        <div className={d.status === "pending" ? " flex w-1/5  bg-red-600 text-white rounded-xl items-center justify-center h-auto mx-2" : "w-1/5   items-center flex justify-center h-auto mx-2"}>{d.status}</div>
-                        <div className="w-1/5 mx-2  flex justify-center items-center">{d.rejectedTeamLeaders.length === 0 ? "none" : d.rejectedTeamLeaders}</div>
+                        <div className={d.status === "in progress" ? " flex w-1/5  bg-red-600 text-white rounded-xl items-center justify-center h-auto mx-2 py-3" : "w-1/5   items-center flex justify-center h-auto mx-2 py-3"}>{d.status}</div>
+                        <div className="w-1/5 mx-2  flex justify-center items-center">{d.rejectedTeamLeadersName.length === 0 ? "none" : d.rejectedTeamLeadersName}</div>
                     </div>
                 ))}
             </div>

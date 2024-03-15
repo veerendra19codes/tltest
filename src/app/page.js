@@ -10,13 +10,12 @@ import { redirect } from "next/navigation"
 
 // {session, ...pageProps}
 export default async function Home() {
-  // const router = useRouter();
 
   const session = await getServerSession(authOptions);
-
   if(!session) {
     redirect("/login");
   }
+  console.log("user in sesssion in home:", session.user);
 
   // const handleStart = () => {
   //   router.push("/login");

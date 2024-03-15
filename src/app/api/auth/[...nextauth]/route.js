@@ -5,37 +5,6 @@ import bcrypt from "bcrypt";
 import models from "@/lib/models";
 const User = models.User;
 
-// async function login(credentials) {
-//     try {
-//         connectToDB();
-
-//         const user = await User.findOne({email:credentials.email});
-
-//         if(!user) {
-//             throw new Error("Wrong Email or User with this Email does not exist");
-//         }
-//         else {
-//             const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
-
-//             if(!isPasswordCorrect) {
-//                 throw new Error("Incorrect Passsword");
-//             }
-//             else {
-//                 return {
-//                     id:user.id,
-//                     email:user.email,
-//                     username: user.username,
-//                     role: user.role,
-//                 };
-//             }
-//         }
-//     }
-//     catch(err) {
-//         console.log("Error while loggin in route.js", err);
-//         throw new Error("Error while logging in catch");
-//     }
-// }
-
 export const authOptions = {
 
     pages: {
@@ -80,10 +49,15 @@ export const authOptions = {
                     email:user.email,
                     username: user.username,
                     role: user.role,
-                    teamleader: user.teamleader, //change here
+                    teamleader: user.teamleader, 
+                    teamleader: user.teamleader,
                     level: user.level,
                     companiesCompleted: user.companiesCompleted,
                     companiesRejected: user.companiesRejected,
+                    companiesWorking: user.companiesWorking,
+                    companiesCompletedName: user.companiesCompletedName,
+                    companiesRejectedName: user.companiesRejectedName,
+                    companiesWorkingName: user.companiesWorkingName,
                 };
             }
         }
@@ -94,46 +68,10 @@ export const authOptions = {
     }
 
 
-                // if(user) {
-                //     return user;
-                // }
-                // else {
-                //     return null;
-                // }
-                // try{
-                //     // console.log({credentials});
-                //     const user = await login(credentials);
-                //     return user;
-                // } catch(err) {
-                //     console.log("Error:",err);
-                //     throw new Error("Error while logging in");
-                // }
             }
         })
     ],
 
-    // callbacks: {
-    //     async jwt({token, user}) {
-    //         if(user) {
-    //             token.username = user.username;
-    //             token.email = user.email;
-    //             token.role = user.role;
-    //             token.id = user.id;
-    //         }
-    //         // console.log("this is token", token);
-    //         return token;
-    //     },
-    //     async session({ session, token }) {
-    //         if(token) {
-    //             session.user.username = token.username;
-    //             session.user.email = token.email;
-    //             session.user.role = token.role;
-    //             session.user.id = token.id;
-    //         }
-    //         // console.log("this is session", session);
-    //         return session;
-    //     }
-    // }
     jwt: {
         secret: process.env.NEXTAUTH_JWT_SECRET,
     },
@@ -148,13 +86,18 @@ export const authOptions = {
                 user: {
                     ...session.user,
                     id: token.id,
-                    email: token.email,
                     username: token.username,
+                    email: token.email,
                     role: token.role,
-                    teamleader: token.teamleader, //change here
+                    teamleader: token.teamleader, 
+                    teamleadername: token.teamleadername,
                     level: token.level,
                     companiesCompleted: token.companiesCompleted,
                     companiesRejected: token.companiesRejected,
+                    companiesWorking: token.companiesWorking,
+                    companiesCompletedName: token.companiesCompletedName,
+                    companiesRejectedName: token.companiesRejectedName,
+                    companiesWorkingName: token.companiesWorkingName,
                 }
             }
         },
@@ -168,13 +111,18 @@ export const authOptions = {
                 return {
                     ...token,
                     id: user.id,
-                    email: user.email,
                     username: user.username,
+                    email: user.email,
                     role: user.role,
-                    teamleader: user.teamleader, //change here
+                    teamleader: user.teamleader, 
+                    teamleadername: user.teamleadername,
                     level: user.level,
                     companiesCompleted: user.companiesCompleted,
                     companiesRejected: user.companiesRejected,
+                    companiesWorking: user.companiesWorking,
+                    companiesCompletedName: user.companiesCompletedName,
+                    companiesRejectedName: user.companiesRejectedName,
+                    companiesWorkingName: user.companiesWorkingName,
                 }
             }
             return token
@@ -183,17 +131,6 @@ export const authOptions = {
 
 };
 
-// async function getSession() {
-//   try {
-//     const token = await NextAuth(authOptions);
-//     const session = await NextAuth.getSession({ token });
-//     return session;
-//   } catch (err) {
-//     console.error("Error getting session:", err);
-//     throw new Error("Error getting session");
-//   }
-// }
-// console.log(authOptions);
 
 
 // export default NextAuth(authOptions)
@@ -201,5 +138,3 @@ const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST};
 
-// export { getSession };
-// export { GET, POST } from "@/lib/auth"

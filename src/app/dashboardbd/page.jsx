@@ -2,6 +2,8 @@ import { connectToDB } from '@/lib/connectToDB'
 import { getServerSession } from 'next-auth';
 import React from 'react'
 import { authOptions } from '../api/auth/[...nextauth]/route';
+import { getAllCompanies } from '@/lib/actions';
+import { redirect } from 'next/navigation';
 
 const getData = async () => {
     try {
@@ -22,12 +24,37 @@ const getData = async () => {
 
 const DashboardBD = async () => {
     const session = await getServerSession(authOptions);
-    console.log("session in dashboardbd", session);
+    // console.log("session in dashboardbd", session);
+    // console.log("user details inside session:", session.user);
+    if (!session) {
+        redirect("/login")
+    }
 
-    const allData = await getData();
-    console.log(allData);
-    const data = allData.filter((data) => data.createdBy === session?.user?.id);
-    console.log("filtered data", data);
+    const allCompanies = await getAllCompanies();
+    // console.log("all Companies:", allCompanies);
+
+    //companies listed by me
+    const data = allCompanies.filter((data) => data.createdBy === session?.user?.id);
+    // console.log("companies listed by me", data);
+
+    const formatCreatedAtDate = (createdAt) => {
+        const createdAtDate = new Date(createdAt);
+        const formattedDate = createdAtDate.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).replace(/\//g, '-'); // Replace slashes with dashes
+
+        return formattedDate;
+    }
+
+    const formatTime12hr = (timeString) =>
+        new Date(timeString).toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+
 
     // const data = [
     //     {
@@ -89,22 +116,23 @@ const DashboardBD = async () => {
                 </div>
             </div> */}
             <div className="lg:overflow-x-auto sm:w-full w-full flex justify-center whitespace-nowrap">
-                <div className="table w-4/5 h-full mt-24 flex flex-col items-center justify-center gap-8 sm:mt-4 whitespace-nowrap">
+                <div className="table w-4/5 h-full mt-12 flex flex-col items-center justify-center gap-8 sm:mt-4 whitespace-nowrap">
                     <div className="flex w-full py-4 justify-center items-center whitespace-nowrap ">
-                        <div className="w-1/4 py-2 pl-4 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Company</div>
-                        <div className="w-1/4 py-2 pl-4 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Details</div>
-                        <div className="w-1/4 py-2 pl-4 text-center font-bold  whitespace-nowrap sm:w-[200px] inline-block">Team Leader</div>
-                        <div className="w-1/4 py-2 pl-4 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Franchise</div>
-                        {/* <div className="w-1/5 py-2 pl-4 text-center font-bold">Status</div> */}
+                        <div className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Company</div>
+                        <div className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Details</div>
+                        <div className="w-1/5 py-2  text-center font-bold  whitespace-nowrap sm:w-[200px] inline-block">Team Leader</div>
+                        <div className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Franchise</div>
+                        <div className="w-1/5 py-2 text-center font-bold">Created At</div>
                     </div>
 
-                    {data.map((d) => (
-                        <div key={d.id} className="border-[1px] border-gray-500 rounded-lg w-full flex flex-row mb-8 py-4 whitespace-nowrap">
-                            <div className="w-1/4 mx-2  pl-4 text-center  whitespace-nowrap sm:w-[200px] inline-block">{d.companyname}</div>
-                            <div className="w-1/4  mx-2 pl-4 text-center text-blue-500 whitespace-nowrap sm:w-[200px] inline-block" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></div>
-                            <div className={d.teamleader === "unassigned" ? " flex w-1/4 bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block" : "w-1/4  pl-4 flex items-center flex justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block"}>{d.teamleader}</div>
-                            <div className={d.franchise === "unassigned" ? " flex w-1/4 bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block" : "w-1/4  pl-4 text-center items-center flex justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block"}>{d.franchise}</div>
-                            {/* <div className={d.status === "unassigned" ? " flex w-1/5 bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2" : "w-1/5  pl-4  items-center flex justify-center h-auto mx-2"}>{d.status}</div> */}
+                    {/* companies listed by me */}
+                    {data.reverse().map((d) => (
+                        <div key={d._id} className="border-[1px] border-gray-500 rounded-lg w-full flex flex-row mb-8 py-4 whitespace-nowrap">
+                            <div className="w-1/5 mx-2  pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px] inline-block">{d.companyname}</div>
+                            <div className="w-1/5  mx-2 pl-4 flex justify-center items-center  text-blue-500 whitespace-nowrap sm:w-[200px] inline-block" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></div>
+                            <div className={d.teamleadername === "unassigned" ? " flex w-1/5 bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2 py-2 whitespace-nowrap sm:w-[200px] inline-block" : "w-1/5  pl-4 flex items-center flex justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block"}>{d.teamleadername}</div>
+                            <div className={d.franchisename === "unassigned" ? " flex w-1/5 bg-red-700 text-white rounded-xl items-center justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block" : "w-1/5  pl-4 text-center items-center flex justify-center h-auto mx-2 whitespace-nowrap sm:w-[200px] inline-block"}>{d.franchisename}</div>
+                            <div className="w-1/5 mx-2  pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px] inline-block">{formatCreatedAtDate(d.createdAt)}, {formatTime12hr(d.createdAt)} </div>
                         </div>
                     ))}
                 </div>

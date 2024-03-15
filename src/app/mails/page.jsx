@@ -21,99 +21,13 @@ const MailsPage = async () => {
     // console.log("all users", users);
 
     const teamleaders = users.filter((user) => user.role === "tl");
+    // console.log("teamleaders:", teamleaders);
 
-    // console.log(teamleaders);
-
-    // const teamleaders = [
-    //     {
-    //         id: 1,
-    //         teamleadername: "surbhi",
-    //     },
-    //     {
-    //         id: 2,
-    //         teamleadername: "jyothi",
-    //     },
-    // ]
-
-    // const data = [
-    //     {
-    //         id: 1,
-    //         company: "xyz ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "contact",
-    //         status: "not contacted",
-    //         rejectedBy: "none",
-    //     },
-    //     {
-    //         id: 2,
-    //         company: "abc ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "surbhi",
-    //         status: "workig",
-    //         rejectedBy: "none"
-    //     },
-    //     {
-    //         id: 3,
-    //         company: "pqr ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "surbhi",
-    //         status: "accepted",
-    //         rejectedBy: "none"
-    //     },
-    //     {
-    //         id: 4,
-    //         company: "infosys ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "jyothi",
-    //         status: "working",
-    //         rejectedBy: "surbhi",
-    //     },
-    //     {
-    //         id: 5,
-    //         company: "wipro ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "contact",
-    //         status: "not contacted",
-    //         rejectedBy: "surbhi,jyothi",
-    //     },
-    //     {
-    //         id: 6,
-    //         company: "hjk ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         teamleader: "jyothi",
-    //         status: "accepted",
-    //         rejectedBy: "surbhi",
-    //     },
-    // ]
-    // const handleSelectedTeamleader = (id) => (e) => {
-    //     //what to write here
-    //     selectedTeamleader = e.target.value;
-
-    //     // Update the data array with the selected teamleader
-    //     data.map((item) =>
-    //         item.id === id ? { ...item, teamleader: selectedTeamleader } : item
-    //     );
-    // }
-
-    // const handleSelectedTeamleader = (id) => (e) => {
-    //     selectedTeamleader = e.target.value;
-
-    //     // Update the data array with the selected teamleader
-    //     data.map((item) =>
-    //         item.id === id ? { ...item, teamleader: selectedTeamleader } : item
-    //     );
-    // };
 
     return (
         <div className="flex flex-col gap-12 justify-center items-center">
 
-            <MailsDashboard ogData={data} teamleaders={teamleaders} />
+            <MailsDashboard data={data.reverse()} teamleaders={teamleaders} />
             {/* <div className="table w-4/5 h-full flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/5 py-2 text-center font-bold">Company</div>

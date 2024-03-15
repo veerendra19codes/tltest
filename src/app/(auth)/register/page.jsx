@@ -74,26 +74,38 @@ const RegisterPage = () => {
                 <h1 className="text-4xl font-bold sm:text-xl">Register</h1>
                 <p className="text-gray-600 text-lg sm:text-[12px]">Enter your information to create an account</p>
                 <form className="w-full flex flex-col justify-center items-start gap-4 sm:gap-2 sm:my-4" action="" onSubmit={handleSubmit}>
+
                     <label className="text-[12px] font-medium">Username</label>
                     <input type="text" name="username" placeholder="username" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+
                     <label className="text-[12px] font-medium">Email</label>
                     <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+
                     <label className="text-[12px] font-medium">Password</label>
                     <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
-                    <label className="text-[12px] font-medium">Select your role</label>
-                    <select name="role" className="border-2 border-gray-400 w-full py-2 pl-4 sm:py-1" onChange={(e) => handleInput(e)}>
-                        <option value="" disabled={true} className="py-1">Select your role</option>
 
+                    <label className="text-[12px] font-medium">Select your role</label>
+
+                    <select
+                        name="role"
+                        value={role === "" ? "" : role}
+                        className="border-2 border-gray-400 w-full py-2 pl-4 sm:py-1" onChange={(e) => handleInput(e)}>
+
+                        <option value="" disabled={true} className="py-1">Select your role</option>
                         <option value="bd" className="py-1">Business Developer</option>
                         <option value="sh" className="py-1">Super Head</option>
                         <option value="tl" className="py-1">Team Leader</option>
-                        {/* <option value="fr" className="py-1">Franchise</option> */}
+
                     </select>
+
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
+
                     <button className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Registering" : "Register"}</button>
-                    {/* {state?.error && <p>{state?.error}</p>} */}
+
                 </form>
+
                 <Link href="/login">Already have an account? OR Are you a franchise? <span className="hover:underline hover:text-blue-300 text-blue-500">Login</span></Link>
+
             </div>
         </div>
     )

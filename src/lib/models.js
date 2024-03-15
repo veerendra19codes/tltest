@@ -23,28 +23,53 @@ const userSchema = new mongoose.Schema({
     teamleader: {
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        
     },
     teamleadername: {
         type: String,
-        default: "jyothi",
+        default: "",
     },
     level: {
         type: String,
         enum: ["junior", "mid", "senior"],
         default: "junior",
     },
-    companiesCompleted: {
-        type: String,
-        default: "none",
-    },
-    companiesRejected: {
-        type: String,
-        default: "none",
-    },
-    companiesWorking: {
-        type: String,
-        default: "none",
-    }
+    companiesCompleted: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'Company',
+        }
+    ],
+    companiesRejected: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'Company',
+        }
+    ],
+    companiesWorking: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'Company',
+        }
+    ],
+    companiesCompletedName: [
+        {
+            type: String,
+            default: "none",
+        }
+    ],
+    companiesRejectedName: [
+        {
+            type: String,
+            default: "none",
+        }
+    ],
+    companiesWorkingName: [
+        {
+            type: String,
+            default: "none",
+        }
+    ],
 }, {timestamps: true});
 
 const companySchema = new mongoose.Schema({
@@ -67,21 +92,25 @@ const companySchema = new mongoose.Schema({
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
         // type: String,
-        default: "unassigned",
+        // default: "unassigned",
     },
     teamleadername: {
         type: String,
         default: "unassigned",
     },
     franchise: {
-        // type:  mongoose.Schema.Types.ObjectId,
-        // ref: 'User',
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        // type: String,
+        // default: "unassigned",
+    },
+    franchisename: {
         type: String,
         default: "unassigned",
     },
     status: {
         type: String,
-        default: "pending",
+        default: "in progress",
     },
     rejectedTeamLeaders: [
         {
@@ -89,12 +118,22 @@ const companySchema = new mongoose.Schema({
             ref: 'User',
         }
     ],
+    rejectedTeamLeadersName: [
+        {
+            type: String,
+        }
+    ],
     rejectedFranchise: [
         {
             type:  mongoose.Schema.Types.ObjectId,
             ref: 'User',
         }
-    ]
+    ],
+    rejectedFranchiseName: [
+        {
+            type: String,
+        }
+    ],
 }, {timestamps: true});
 
 //if db already has User/Post model , it will use that or create a new one

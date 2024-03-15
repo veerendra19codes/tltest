@@ -1,87 +1,34 @@
 import { getAllCompanies, getAllUsers } from "@/lib/actions"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-
-// const getAllUsers = async () => {
-//     try {
-//         const res = await fetch("http://localhost:3000/users");
-
-//         return res.json();
-//     }
-//     catch(err) {
-//         return {error: "error getting all users"};
-//     }
-// }
+import { redirect } from "next/navigation";
+import AssignDashboardPage from "@/Components/AssignDashboard/AssignDashboard";
 
 const AssignPage = async () => {
     const session = await getServerSession(authOptions);
     // console.log("id of current user: ", session.user?.id);
+
+    if (!session) {
+        redirect("/login");
+    }
     const allCompanies = await getAllCompanies();
     // console.log("all Companies:", allCompanies);
 
-    const allUsers = await getAllUsers();
-    console.log("all users:", allUsers);
-
-    const franchiseUnderMe = allUsers.filter((user) => user.teamleader === session.user?.id);
-    console.log("franchiseUnderMe:", franchiseUnderMe);
-
-    const data = allCompanies.filter((company) => company.teamleader === session.user?.id)
+    //companies assigned to this teamleader
+    const data = allCompanies.reverse().filter((company) => company.teamleadername === session.user?.username)
     // console.log("filtered data:", data);
 
-    // const data = [
-    //     {
-    //         id: 1,
-    //         company: "xyz ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         franchise: "none",
-    //         status: "not assigned",
-    //         rejectedBy: "rahul,hussain",
-    //     },
-    //     {
-    //         id: 2,
-    //         company: "abc ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         franchise: "vivek",
-    //         status: "pending response",
-    //         rejectedBy: "vikas",
+    const allUsers = await getAllUsers();
+    // console.log("all users:", allUsers);
 
-    //     },
-    //     {
-    //         id: 3,
-    //         company: "pqr ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         franchise: "none",
-    //         status: "not assigned",
-    //         rejectedBy: "none",
+    const franchiseUnderMe = allUsers.reverse().filter((user) => user.teamleader === session.user?.id);
+    // console.log("franchiseUnderMe:", franchiseUnderMe);
 
-    //     },
-    //     {
-    //         id: 4,
-    //         company: "infosys ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         franchise: "vikas",
-    //         status: "pending response",
-    //         rejectedBy: "none",
-
-    //     },
-    //     {
-    //         id: 5,
-    //         company: "wipro ltd",
-    //         details: "Click here",
-    //         detailsurl: "https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa",
-    //         franchise: "hussain",
-    //         status: "pending response",
-    //         rejectedBy: "none",
-    //     },
-    // ]
 
     return (
         <div className="flex justify-center items-center">
-            <div className="table w-4/5 h-full mt-12 flex flex-col items-center justify-center gap-8">
+            <AssignDashboardPage data={data} franchiseUnderMe={franchiseUnderMe} session={session} />
+            {/* <div className="table w-4/5 h-full mt-12 flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/5 py-2 text-center font-bold">Company</div>
                     <div className="w-1/5 py-2 text-center font-bold">Details</div>
@@ -117,7 +64,7 @@ const AssignPage = async () => {
                         <button className="bg-red-600 py-2 px-4 w-1/6 rounded-xl mx-2 text-white hover:text-blac hover:border-2 hover:border-red-600 hover:bg-white hover:text-red-600">Reject ?</button>
                     </div>
                 ))}
-            </div>
+            </div> */}
         </div >
 
     )

@@ -8,8 +8,8 @@ export async function POST(req) {
     try {
         await connectToDB();
 
-        const {username, email, password, role, teamleader, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking} = await req.json();
-        console.log({username, password, email, role, teamleader,level, teamleadername, companiesCompleted, companiesRejected, companiesWorking });
+        const {username, email, password, role, teamleader, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking, companiesCompletedName, companiesRejectedName, companiesWorkingName } = await req.json();
+        console.log("new franchise:", {username, password, email, role, teamleader,level, teamleadername, companiesCompleted, companiesRejected, companiesWorking ,companiesCompletedName, companiesRejectedName, companiesWorkingName });
         const exists = await User.findOne({username});
         if(exists) {
             return NextResponse.json({message: "Username or Email already exists"},{status:500});
@@ -25,7 +25,8 @@ export async function POST(req) {
             teamleadername,
             companiesCompleted, 
             companiesRejected, 
-            companiesWorking
+            companiesWorking,
+            companiesCompletedName, companiesRejectedName, companiesWorkingName
         });
         return NextResponse.json({message:"User registered successfully"}, {status: 201});
     }
