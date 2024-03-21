@@ -45,25 +45,26 @@ const DashboardFRPage = async () => {
 
                 <div className="top userdetails flex justify-start  items-center w-3/5 mt-12  gap-12">
 
-                    <div className="profile picture size-48 rounded-full relative">
+                    <div className="profile picture size-48 rounded-full relative flex justify-center items-center">
                         <Image src="/profile.jpg" priority="true" className="rounded-full" alt="profilepicture" width={200} height={200} />
                     </div>
                     <div className="userdetailstext flex flex-col justify-between  items-start w-full py-4">
                         <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2">Username</label>
+                            <label className="w-1/5 py-2 font-bold">Username</label>
                             <div className="w-4/5 py-2">{session.user?.username}</div>
                         </div>
                         <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2">Email</label>
+                            <label className="w-1/5 py-2 font-bold">Email</label>
                             <div className="w-4/5 py-2">{session.user?.email}</div>
                         </div>
                         <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2">My Team Leader</label>
+                            <label className="w-1/5 py-2 font-bold">My Team Leader</label>
                             <div className="w-4/5 py-2">{teamleader.username}</div>
                         </div>
                     </div>
                 </div>
-                <PieChart className="w-2/5" />
+
+                <PieChart className="w-2/5" username={session.user?.username} />
             </div>
 
 

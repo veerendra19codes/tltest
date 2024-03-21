@@ -2,15 +2,44 @@
 
 import { getTeamleader } from "@/lib/actions";
 import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-async function updateCompany(companyId, updatedFields) {
+// async function updateCompany(companyId, updatedFields) {
+
+//     // console.log("companyId in page.jsx", companyId);
+//     // console.log("updatedFields: ", updatedFields);
+
+//     try {
+//         const response = await fetch(`http://localhost:3000/api/company/${companyId}`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(updatedFields)
+//         });
+
+//         if (!response.ok) {
+//             const errorMessage = await response.text();
+//             throw new Error(errorMessage);
+//         }
+
+//         revalidatePath("/mails");
+//         const data = await response.json();
+//         console.log(data); // Success message
+//     } catch (error) {
+//         console.error('Error updating company:', error.message);
+//     }
+// }
+
+
+async function AssignTl(updatedFields) {
 
     // console.log("companyId in page.jsx", companyId);
     // console.log("updatedFields: ", updatedFields);
 
     try {
-        const response = await fetch(`http://localhost:3000/api/company/${companyId}`, {
+        const response = await fetch(`http://localhost:3000/api/assigntl`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -23,7 +52,6 @@ async function updateCompany(companyId, updatedFields) {
             throw new Error(errorMessage);
         }
 
-        revalidatePath("/mails");
         const data = await response.json();
         console.log(data); // Success message
     } catch (error) {
@@ -31,22 +59,16 @@ async function updateCompany(companyId, updatedFields) {
     }
 }
 
+
 const MailsDashboard = ({ data, teamleaders }) => {
 
     // const [data, setData] = useState(ogData);
     // console.log("data", data);
     // console.log("teamleaders:, ", teamleaders);
 
-    // const teamleaders = [
-    //     {
-    //         id: 1,
-    //         teamleadername: "surbhi",
-    //     },
-    //     {
-    //         id: 2,
-    //         teamleadername: "jyothi",
-    //     },
-    // ]
+    const router = useRouter();
+
+
 
     // async function updateCompany(companyData) {
     //     try {
@@ -73,45 +95,67 @@ const MailsDashboard = ({ data, teamleaders }) => {
 
 
 
+    // const handleTeamleaderChange = (e, id) => {
+
+    //     console.log("teamleadername selected:", e.target.value);
+    //     const teamleader = teamleaders.filter((teamleader) => teamleader.username === e.target.value);
+    //     // console.log("teamleader :", teamleader);
+    //     const teamleaderId = teamleader[0]._id;
+    //     // console.log("teamleaderId:", teamleaderId);
+
+    //     //frontend
+    //     // const updatedData = data.map((d) => {
+    //     //     if (d._id === id) {
+    //     //         return { ...d, teamleader: teamleaderId[0], teamleadername: e.target.value };
+    //     //     }
+    //     //     else {
+    //     //         return d;
+    //     //     }
+    //     // })
+    //     // console.log("teamleader", teamleaderId[0]);
+    //     // console.log("teamleadername", e.target.value);
+    //     // setData(updatedData);
+    //     // useEffect(() => {
+    //     //     const UpdateData = () => {
+    //     //         const 
+    //     //     }
+    //     // })
+
+    //     //backend
+    //     // Example usage
+    //     const companyId = id;
+    //     const updatedFields = {
+    //         teamleader: teamleaderId,
+    //         teamleadername: e.target.value,
+    //         message: "assign tl"
+    //     };
+    //     // console.log("companyId :", companyId);
+    //     // console.log("updatedField:", updatedFields);
+
+    //     updateCompany(companyId, updatedFields);
+    // }
+
     const handleTeamleaderChange = (e, id) => {
 
-        console.log("teamleader id selected:", e.target.value);
+        console.log("teamleadername selected:", e.target.value);
         const teamleader = teamleaders.filter((teamleader) => teamleader.username === e.target.value);
         // console.log("teamleader :", teamleader);
         const teamleaderId = teamleader[0]._id;
         // console.log("teamleaderId:", teamleaderId);
 
-
-        // const updatedData = data.map((d) => {
-        //     if (d._id === id) {
-        //         return { ...d, teamleader: teamleaderId[0], teamleadername: e.target.value };
-        //     }
-        //     else {
-        //         return d;
-        //     }
-        // })
-        // console.log("teamleader", teamleaderId[0]);
-        // console.log("teamleadername", e.target.value);
-        // setData(updatedData);
-        // useEffect(() => {
-        //     const UpdateData = () => {
-        //         const 
-        //     }
-        // })
-
+        //backend
         // Example usage
-        const companyId = id;
         const updatedFields = {
+            companyId: id,
             teamleader: teamleaderId,
             teamleadername: e.target.value,
-            message: "assign tl"
         };
         // console.log("companyId :", companyId);
         // console.log("updatedField:", updatedFields);
 
-        updateCompany(companyId, updatedFields);
+        AssignTl(updatedFields);
+        router.refresh("/mails");
     }
-
 
 
     return (
@@ -138,7 +182,7 @@ const MailsDashboard = ({ data, teamleaders }) => {
                                 <option value="" disabled>
                                     Select Teamleader
                                 </option>
-                                {teamleaders.map((teamleader) => (
+                                {teamleaders.filter((teamleader) => !d.rejectedTeamLeadersName.find(item => item === teamleader.username)).map((teamleader) => (
                                     <option key={teamleader._id} value={teamleader.username}>{teamleader.username}</option>
                                 ))}
                             </select>

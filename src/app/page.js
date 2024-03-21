@@ -15,7 +15,7 @@ export default async function Home() {
   if(!session) {
     redirect("/login");
   }
-  console.log("user in sesssion in home:", session.user);
+  // console.log("user in sesssion in home:", session.user);
 
   // const handleStart = () => {
   //   router.push("/login");

@@ -1,12 +1,58 @@
 "use client";
 
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 
-const updateCompany = async (companyId, updatedFields) => {
+// const updateCompany = async (companyId, updatedFields) => {
+
+//     try {
+//         const res = await fetch(`/api/company/${companyId}`, {
+//             method: "PUT",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(updatedFields),
+//         })
+
+//         if (!res.ok) {
+//             console.log(res.json());
+//         }
+//         const data = await res.json();
+//         console.log(data);
+
+//     }
+//     catch (err) {
+//         console.log("error sending companydetails to franchise", err);
+//     }
+// }
+
+
+const AssignFr = async (updatedFields) => {
 
     try {
-        const res = await fetch(`/api/company/${companyId}`, {
+        const res = await fetch(`/api/assignfr`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedFields),
+        })
+
+        if (!res.ok) {
+            console.log(res.json());
+        }
+        const data = await res.json();
+        console.log(data);
+
+    }
+    catch (err) {
+        console.log("error sending companydetails to franchise", err);
+    }
+}
+
+const RejectTl = async (updatedFields) => {
+
+    try {
+        const res = await fetch(`/api/rejecttl`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -32,6 +78,31 @@ const AssignDashboardPage = ({ data, franchiseUnderMe, session }) => {
     // console.log("data", data);
     // console.log("franchiseUnderMe:", franchiseUnderMe);
 
+    // const handleFranchiseChange = (e, id) => {
+
+    //     // console.log("franchise name selected:", e.target.value);
+    //     // console.log("company id to be updated: ", id);
+
+    //     const franchise = franchiseUnderMe.filter((franchise) => franchise.username === e.target.value);
+    //     // console.log("franchise: ", franchise);
+
+    //     const franchiseId = franchise[0]._id;
+    //     // console.log("franchiseId", franchiseId);
+
+    //     const companyId = id;
+    //     const updatedFields = {
+    //         franchisename: e.target.value,
+    //         franchise: franchiseId,
+    //         message: "assign fr"
+    //     };
+
+    //     // console.log("companyId:", companyId);
+    //     // console.log("updatedFields", updatedFields);
+
+    //     updateCompany(companyId, updatedFields);
+    //     router.refresh("/assign");
+    // }
+
     const handleFranchiseChange = (e, id) => {
 
         // console.log("franchise name selected:", e.target.value);
@@ -45,41 +116,66 @@ const AssignDashboardPage = ({ data, franchiseUnderMe, session }) => {
 
         const companyId = id;
         const updatedFields = {
+            //only changes in Company model
+            companyId: id,
             franchisename: e.target.value,
             franchise: franchiseId,
-            message: "assign fr"
         };
 
         // console.log("companyId:", companyId);
         // console.log("updatedFields", updatedFields);
 
-        updateCompany(companyId, updatedFields);
+        AssignFr(updatedFields);
         router.refresh("/assign");
     }
 
-    const handleCompanyReject = (id) => {
+    // const handleCompanyReject = (id) => {
+    //     console.log("company id rejected:", id);
+
+    //     const companyId = id;
+    //     const updatedFields = {
+
+    //         //changes in Company Model
+    //         teamleader: null,
+    //         teamleadername: "unassigned",
+    //         franchise: null,
+    //         franchisename: "unassigned",
+    //         rejectedTeamLeaders: session.user?.id,
+    //         rejectedTeamLeadersName: session.user?.username,
+
+    //         message: "reject tl",
+
+    //         //changes in User Model
+    //         //none as of now
+
+    //     }
+    //     console.log("companyId", companyId);
+    //     console.log("updatedFields", updatedFields);
+    //     updateCompany(companyId, updatedFields)
+    //     router.refresh("/assign");
+    // }
+
+
+    const handleCompanyReject = (id, companyname) => {
         console.log("company id rejected:", id);
 
-        const companyId = id;
         const updatedFields = {
-
+            companyId: id,
             //changes in Company Model
-            teamleader: null,
-            teamleadername: "unassigned",
-            franchise: null,
-            franchisename: "unassigned",
-            rejectedTeamLeaders: session.user?.id,
-            rejectedTeamLeadersName: session.user?.username,
+            teamleader: null, //set
+            teamleadername: "unassigned", //set
+            franchise: null, //set
+            franchisename: "unassigned", //set
+            rejectedTeamLeaders: session.user?.id, //push
+            rejectedTeamLeadersName: session.user?.username, //push
 
-            message: "reject tl",
-
+            userId: session.user?.id,
             //changes in User Model
-            //none as of now
-
+            companiesRejected: id,
+            companiesRejectedName: companyname,
         }
-        console.log("companyId", companyId);
         console.log("updatedFields", updatedFields);
-        updateCompany(companyId, updatedFields)
+        RejectTl(updatedFields)
         router.refresh("/assign");
     }
 
@@ -107,7 +203,7 @@ const AssignDashboardPage = ({ data, franchiseUnderMe, session }) => {
                                 onChange={(event) => handleFranchiseChange(event, d._id)}
                                 className="border-2 border-gray-400 w-1/6 py-2 pl-4">
                                 <option value="" disabled>Select Franchise</option>
-                                {franchiseUnderMe.map((franchise) => (
+                                {franchiseUnderMe.filter((franchise) => !d.rejectedFranchiseName.find(item => item === franchise.username)).map((franchise) => (
                                     <option key={franchise._id} value={franchise.username}>
                                         {franchise.username}
                                     </option>
@@ -130,7 +226,7 @@ const AssignDashboardPage = ({ data, franchiseUnderMe, session }) => {
                             }
                         </div>
 
-                        <button className="bg-red-600 py-2 px-4 w-1/6 rounded-xl mx-2 text-white hover:text-blac hover:border-2 hover:border-red-600 hover:bg-white hover:text-red-600" onClick={() => handleCompanyReject(d._id)}>Reject</button>
+                        <button className="bg-red-600 py-2 px-4 w-1/6 rounded-xl mx-2 text-white hover:text-blac hover:border-2 hover:border-red-600 hover:bg-white hover:text-red-600" onClick={() => handleCompanyReject(d._id, d.companyname)}>Reject</button>
                     </div>
                 ))}
             </div>

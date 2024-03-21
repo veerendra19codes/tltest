@@ -62,8 +62,8 @@ const FranchisePage = () => {
                     setPending(false);
                     const form = e.target;
                     form.reset();
+                    router.refresh("/dashboardtl");
                     router.push("/dashboardtl");
-                    revalidatePath("/dashboardtl");
                     console.log("Franchise registered successfully");
                 }
                 else {
