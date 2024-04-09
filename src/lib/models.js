@@ -70,6 +70,18 @@ const userSchema = new mongoose.Schema({
             default: "none",
         }
     ],
+    spreadsheet: {
+        type: String, //view only
+        default:""
+    },
+    deployedlink: {
+        type: String, //only for teamleaders sheet to fetch client and franchise status
+        default:""
+    },
+    preference: {
+        type: String,
+        default: "any",
+    },
 }, {timestamps: true});
 
 const companySchema = new mongoose.Schema({

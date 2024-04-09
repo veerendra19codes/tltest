@@ -16,7 +16,7 @@ const NavLink = ({ item, open, setOpen }) => {
 
     return (
         <div>
-            <Link href={item.path} key={item.name} className={pathName === item.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} onClick={handleNavClick} >
+            <Link href={item.path} key={item.name} className={pathName === item.path ? "text-lightpurple py-2 px-4 hover:underline text-xl font-medium " : "py-2 px-4 hover:underline text-xl font-medium text-purple"} onClick={handleNavClick} >
                 {item.name}
             </Link>
         </div>

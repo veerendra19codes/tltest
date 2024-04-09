@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { signIn, useSession } from "next-auth/react"
 import { useFormState } from "react-dom";
-import { loginAction } from '@/lib/actions'
-
+import Image from "next/image"
+import { CgProfile } from "react-icons/cg";
+import { MdLockOutline } from "react-icons/md";
 
 const LoginPage = () => {
     // const [state, formAction] = useFormState(loginAction, undefined);
@@ -71,19 +72,33 @@ const LoginPage = () => {
     }
 
     return (
-        <div className="login h-full w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-20">
-            <div className="w-[500px] m-auto mt-12 p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
-                <h1 className="text-4xl font-bold sm:text-xl">Login</h1>
+        <div className="login h-screen w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-20 bg-purple ">
+
+            <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
+
+                <div className="logo size-32 flex justify-center items-center relative">
+                    <Image src="/tclogo.png" fill className="absolute" priority="false" alt="logo" />
+                </div>
+                <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Login</h1>
                 <p className="text-gray-600 text-lg sm:text-base">Enter you email below to login</p>
-                <form className="w-full flex flex-col justify-center items-start gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
-                    {/* onSubmit={handleSubmit} */}
-                    <label className="text-[12px] font-medium">Email</label>
-                    <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
-                    <label className="text-[12px] font-medium">Password</label>
-                    <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
-                    <button className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6" disabled={pending ? true : false}>{pending ? "Logging in" : "Login"}</button>
+
+                <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
+                    {/* <label className="text-[12px] font-medium">Email</label> */}
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
+                        <CgProfile size={40} color='purple' />
+                        <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none" onChange={(e) => handleInput(e)} />
+                    </div>
+
+                    {/* <label className="text-[12px] font-medium">Password</label> */}
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
+                        <MdLockOutline size={40} color='purple' />
+                        <input type="text" name="password" placeholder="password" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none" onChange={(e) => handleInput(e)} />
+                    </div>
+
+
+                    <button className="w-1/2 rounded-xl py-4 text-2xl text-white mt-6 bg-purple hover:bg-lightpurple" disabled={pending ? true : false}>{pending ? "Logging in" : "Login"}</button>
                 </form>
-                <Link href="/register" >Don't have an account? <span className="hover:underline">Register</span></Link>
+                {/* <Link href="/register" >Don't have an account? <span className="hover:underline">Register</span></Link>  */}
             </div>
         </div>
     )

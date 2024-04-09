@@ -8,8 +8,8 @@ ChartJs.register(
     Tooltip, Title, ArcElement, Legend
 );
 
-const PieChart = ({ username }) => {
-    console.log("username:", username);
+const TLCharts = ({ username }) => {
+    // console.log("username:", username);
     const [chartData, setChartData] = useState({
         datasets: [{
             data: [0, 0, 0, 0],
@@ -26,7 +26,7 @@ const PieChart = ({ username }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=qWWfPwzDyYRboI0XMl6hdgJHcxi1zbRvAzZ7JO13EX4UiMcgLe4QIGwIoUU8LkAgCSFXzlgbJt86U_saoO7rPdFfOcvNOAjem5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnACjCMGIFewAJBbxbYdscE-QTHINCExkmOjUHG9hH7R7Ek4mh7uzoWGFO-7zYJpb_GAO8W7C_SauCK145m3xOrOdJoCw8JvXDg&lib=MM96Da-oZfWYlnBietGpgWWhlU9biCwv8');
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxXJ0pz6BYDUvY8gSc6MkYS4PLGCQIUSen2df0barSBC6mBBCPbyMNV64maie_31xzJ/exec');
 
 
                 const data = await response.json();
@@ -42,7 +42,7 @@ const PieChart = ({ username }) => {
 
                 const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === username.replace(/\s/g, '').toLowerCase());
                 console.log("franchiseData:", franchiseData);
-                
+
                 const statusEntry = franchiseData[0];
                 console.log("statusEntry:", statusEntry);
 
@@ -90,4 +90,4 @@ const PieChart = ({ username }) => {
     );
 }
 
-export default PieChart;
+export default TLCharts;

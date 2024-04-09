@@ -9,6 +9,7 @@ import NavLink from './NavLink/NavLink';
 const Links = ({ session }) => {
     // console.log(session);
     // const role = "bd";
+
     //if role == "bd" this nav
     const linksbd = [
         {
@@ -61,7 +62,7 @@ const Links = ({ session }) => {
         {
             id: 3,
             name: "dashboard",
-            path: "/dashboardtl",
+            path: "/tldashboard",
         },
         {
             id: 4,
@@ -100,36 +101,24 @@ const Links = ({ session }) => {
             >
                 {role === "bd" &&
                     linksbd.map((link) => (
-                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                        //     {link.name}
-                        // </Link>
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
                 {role === "sh" &&
                     linkssh.map((link) => (
-                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                        //     {link.name}
-                        // </Link>
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
                 {role === "tl" &&
                     linkstl.map((link) => (
-                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                        //     {link.name}
-                        // </Link>
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
                 {role === "fr" &&
                     linksfr.map((link) => (
-                        // <Link href={link.path} key={link.id} className={pathName === link.path ? "text-purple-300 py-2 px-4 hover:underline text-xl font-medium" : "py-2 px-4 hover:underline text-xl font-medium"} >
-                        //     {link.name}
-                        // </Link>
                         <NavLink item={link} key={link.name} />
                     ))
                 }

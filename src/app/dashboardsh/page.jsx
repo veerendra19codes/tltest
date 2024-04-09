@@ -14,16 +14,16 @@ const getUsers = async () => {
     return res.json();
 }
 
-//FETCHING DATA WITH API
-const getUser = async (id) => {
-    // console.log("id insie getUser", id);
-    const res = await fetch(`http://localhost:3000/api/user/${id}`);
+// //FETCHING DATA WITH API
+// const getUser = async (id) => {
+//     // console.log("id insie getUser", id);
+//     const res = await fetch(`http://localhost:3000/api/user/${id}`);
 
-    if (!res.ok) {
-        console.log(res.json);
-    }
-    return res.json();
-}
+//     if (!res.ok) {
+//         console.log(res.json);
+//     }
+//     return res.json();
+// }
 
 const DashboardSHPage = async () => {
 
@@ -38,51 +38,6 @@ const DashboardSHPage = async () => {
 
     const sortedData = [...data].sort((a, b) => a.teamleadername.localeCompare(b.teamleadername));
 
-
-    // const data = [
-    //     {
-    //         id: 1,
-    //         teamleader: "surbhi",
-    //         franchise: "hitesh",
-    //         level: "junior",
-    //         status: "free",
-    //     },
-    //     {
-    //         id: 2,
-    //         teamleader: "surbhi",
-    //         franchise: "rahul",
-    //         level: "junior",
-    //         status: "free",
-    //     },
-    //     {
-    //         id: 3,
-    //         teamleader: "surbhi",
-    //         franchise: "yash",
-    //         level: "mid",
-    //         status: "working",
-    //     },
-    //     {
-    //         id: 4,
-    //         teamleader: "jyothi",
-    //         franchise: "atharva",
-    //         level: "mid",
-    //         status: "free",
-    //     },
-    //     {
-    //         id: 5,
-    //         teamleader: "jyothi",
-    //         franchise: "hussain",
-    //         level: "senior",
-    //         status: "free",
-    //     },
-    //     {
-    //         id: 6,
-    //         teamleader: "jyothi",
-    //         franchise: "vivek",
-    //         level: "normal",
-    //         status: "working",
-    //     },
-    // ]
 
     return (
         <div className="flex flex-col justify-center items-center gap-8">

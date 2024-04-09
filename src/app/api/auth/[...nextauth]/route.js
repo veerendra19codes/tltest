@@ -58,6 +58,7 @@ export const authOptions = {
                     companiesCompletedName: user.companiesCompletedName,
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
+                    spreadsheet: user.spreadsheet,
                 };
             }
         }
@@ -98,6 +99,7 @@ export const authOptions = {
                     companiesCompletedName: token.companiesCompletedName,
                     companiesRejectedName: token.companiesRejectedName,
                     companiesWorkingName: token.companiesWorkingName,
+                    spreadsheet: token.spreadsheet,
                 }
             }
         },
@@ -123,6 +125,7 @@ export const authOptions = {
                     companiesCompletedName: user.companiesCompletedName,
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
+                    spreadsheet: user.spreadsheet,
                 }
             }
             return token

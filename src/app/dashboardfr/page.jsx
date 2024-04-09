@@ -5,6 +5,7 @@ import { authOptions } from '../api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 import FranchiseDashboardPage from '@/Components/FranchiseDashboard/FranchiseDashboard';
 import PieChart from '@/Components/PieComponent/PieComponent';
+import FranchiseRevenue from '@/Components/FranchiseRevenue/FranchiseRevenue';
 
 //FETCHING DATA WITH API
 const getUser = async (id) => {
@@ -43,28 +44,38 @@ const DashboardFRPage = async () => {
 
             <div className="top flex flex-row justify-center items-center w-full px-12">
 
-                <div className="top userdetails flex justify-start  items-center w-3/5 mt-12  gap-12">
+                <div className="top userdetails flex justify-center items-center w-2/6 gap-12 h-full">
 
                     <div className="profile picture size-48 rounded-full relative flex justify-center items-center">
                         <Image src="/profile.jpg" priority="true" className="rounded-full" alt="profilepicture" width={200} height={200} />
                     </div>
-                    <div className="userdetailstext flex flex-col justify-between  items-start w-full py-4">
-                        <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2 font-bold">Username</label>
-                            <div className="w-4/5 py-2">{session.user?.username}</div>
+                    <div className="userdetailstext flex flex-col justify-between  items-start w-full">
+                        <div className="row flex justiy-start items-center w-full gap-4">
+                            <label className="w-2/5 py-2 font-bold">Username</label>
+                            <div className="w-3/5 py-2">{session.user?.username}</div>
                         </div>
-                        <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2 font-bold">Email</label>
-                            <div className="w-4/5 py-2">{session.user?.email}</div>
+                        <div className="row flex justiy-start items-center w-full gap-4">
+                            <label className="w-2/5 py-2 font-bold">Email</label>
+                            <div className="w-3/5 py-2">{session.user?.email}</div>
                         </div>
-                        <div className="row flex justiy-start items-center w-full">
-                            <label className="w-1/5 py-2 font-bold">My Team Leader</label>
-                            <div className="w-4/5 py-2">{teamleader.username}</div>
+                        <div className="row flex justiy-start items-center w-full gap-4">
+                            <label className="w-2/5 py-2 font-bold">Team Leader</label>
+                            <div className="w-3/5 py-2">{teamleader.username}</div>
+                        </div>
+                        <div className="row flex justiy-start items-center w-full gap-4">
+                            <label className="w-2/5 py-2 font-bold">Spreadsheet</label>
+                            <a href={session.user?.spreadsheet} className="text-blue-500 hover:underline cursor-pointer">Click here</a>
                         </div>
                     </div>
                 </div>
 
-                <PieChart className="w-2/5" username={session.user?.username} />
+                <div className="w-2/6 flex justify-center items-center h-auto">
+                    <FranchiseRevenue username={session.user?.username} />
+                </div>
+
+                <div className="w-2/6 flex justify-center items-center h-auto ">
+                    <PieChart username={session.user?.username} />
+                </div>
             </div>
 
 

@@ -1,32 +1,15 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Chart as ChartJs, Tooltip, Title, ArcElement, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import { useEffect, useState } from "react";
 
-ChartJs.register(
-    Tooltip, Title, ArcElement, Legend
-);
-
-const PieChart = ({ username }) => {
-    console.log("username:", username);
-    const [chartData, setChartData] = useState({
-        datasets: [{
-            data: [0, 0, 0, 0],
-            backgroundColor: [
-                'yellow',
-                'blue',
-                'red',
-                'green',
-            ]
-        }],
-        labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
-    });
-
+const FranchiseRevenue = ({ username }) => {
+    console.log(username);
+    const [revenuegained, setRevenuegained] = useState(0);
+    const [revenuelost, setRevenuelost] = useState(0);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=qWWfPwzDyYRboI0XMl6hdgJHcxi1zbRvAzZ7JO13EX4UiMcgLe4QIGwIoUU8LkAgCSFXzlgbJt86U_saoO7rPdFfOcvNOAjem5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnACjCMGIFewAJBbxbYdscE-QTHINCExkmOjUHG9hH7R7Ek4mh7uzoWGFO-7zYJpb_GAO8W7C_SauCK145m3xOrOdJoCw8JvXDg&lib=MM96Da-oZfWYlnBietGpgWWhlU9biCwv8');
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwDqkTWyHHrubAriPFaiOZsMARt-0I6nLo-Uwa7tpmstSFona8LF6NP2wY2czSDWWoA/exec');
 
 
                 const data = await response.json();
@@ -42,9 +25,12 @@ const PieChart = ({ username }) => {
 
                 const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === username.replace(/\s/g, '').toLowerCase());
                 console.log("franchiseData:", franchiseData);
-                
+
                 const statusEntry = franchiseData[0];
                 console.log("statusEntry:", statusEntry);
+
+                setRevenuegained(statusEntry.closed);
+                setRevenuelost(statusEntry.cancel);
 
                 statusCount['In Progress'] = statusEntry.inprogress;
                 statusCount['Hold'] = statusEntry.hold;
@@ -62,6 +48,7 @@ const PieChart = ({ username }) => {
 
                 const statusData = Object.values(statusCount);
                 console.log("statusData:", statusData);
+
 
                 setChartData({
                     datasets: [{
@@ -82,12 +69,18 @@ const PieChart = ({ username }) => {
 
         fetchData();
     }, []);
-
     return (
-        <div className="piechart w-full h-full" style={{ width: '80%', height: '80%' }}>
-            <Doughnut data={chartData} />
+        <div className="franchiserevenue flex justify-center items-center flex-col gap-4">
+            <div className="revenuegained flex flex-col justify-around items-center bg-green-500 rounded-xl w-full py-4 px-8">
+                <div className="title font-bold text-white text-center">Revenue Gained</div>
+                <div className="title font-bold text-white text-center">{revenuegained}</div>
+            </div>
+            <div className="revenuelost flex flex-col justify-around items-center bg-red-500 rounded-xl w-full py-4 px-8">
+                <div className="title font-bold text-white text-center">Revenue Lost</div>
+                <div className="title font-bold text-white text-center">{revenuelost}</div>
+            </div>
         </div>
-    );
+    )
 }
 
-export default PieChart;
+export default FranchiseRevenue

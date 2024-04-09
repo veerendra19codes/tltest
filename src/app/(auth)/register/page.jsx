@@ -1,13 +1,20 @@
 "use client";
 
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { registerAction } from '@/lib/actions';
 // import { useFormState } from "react-dom";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { User } from '@/lib/models';
-
+import { useSession } from 'next-auth/react';
 const RegisterPage = () => {
+    const session = useSession();
+    if (!session) {
+        redirect("/login");
+    }
+    else if (session.data?.user?.role !== "ad" || session.data?.user?.role !== "tl" || session.data?.user?.role !== "sh") {
+        redirect("/");
+    }
 
     // const [state, formAction] = useFormState(registerAction, undefined);
 
