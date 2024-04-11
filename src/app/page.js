@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     //  <SessionProvider session={session}>
      
-    <div className="flex flex-col justify-center items-start h-screen w-full bg-purple">
+    <div className="flex flex-col justify-center items-start h-screen w-full">
       {/* <h2> Home page logged in  User: {session?.user?.username} his role is {session?.user?.role}</h2> */}
 
       <div className="hero flex flex-row justify-center items-center gap-4 w-full">

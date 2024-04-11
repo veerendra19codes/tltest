@@ -103,8 +103,8 @@ const FranchiseDashboardPage = ({ data, session }) => {
     }
 
     return (
-        <div className="w-full h-full flex justify-center items-center">
-            <div className="table w-4/5 h-full mt-12 flex flex-col items-center justify-center gap-8">
+        <div className="w-full h-full flex justify-center items-center px-12">
+            <div className="table w-full h-full  flex flex-col items-center justify-center gap-8 bg-white rounded-xl px-4">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/3 py-2 pl-4 text-center font-bold">Company</div>
                     <div className="w-1/3 py-2 pl-4 text-center font-bold">Details</div>

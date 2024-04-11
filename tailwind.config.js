@@ -16,7 +16,7 @@ module.exports = {
         lightpurple: "#9B9B9B",
         purple: "#675080",
         darkpurple: "#5E376C"
-      }
+      },
     },
     screens: {
       '2xl': {'max': '1535px'},

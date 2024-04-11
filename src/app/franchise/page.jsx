@@ -82,30 +82,42 @@ const FranchisePage = () => {
 
     return (
         <div className="w-full h-full overflow-hidden flex justify-center items-center sm:px-4">
-            <div className="w-[500px] m-auto my-8 px-12 py-8 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center gap-4 sm:w-full sm:m-0 sm:p-4  sm:gap-0 sm:mt-8 ">
+            <div className="w-[500px] m-auto my-8 px-12 py-8 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:m-0 sm:p-4  sm:gap-0 sm:mt-8 ">
 
-                <h1 className="text-4xl font-bold sm:text-xl">Add new Franchise</h1>
+                <h1 className="text-4xl font-bold text-darkpurple sm:text-xl">Add new Franchise</h1>
 
-                <form className="w-full flex flex-col justify-center items-start gap-4 sm:gap-2 sm:my-4" action="" onSubmit={handleSubmit}>
+                <form className="w-full flex flex-col justify-center items-center gap-4 sm:gap-2 sm:my-4" action="" onSubmit={handleSubmit}>
 
-                    <label className="text-[12px] font-medium">Username</label>
-                    <input type="text" name="username" placeholder="username" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    <div className="flex flex-col w-full">
 
-                    <label className="text-[12px] font-medium">Email</label>
-                    <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                        <label className=" font-normal text-purple">Username</label>
+                        <input type="text" name="username" placeholder="username" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    </div>
 
-                    <label className="text-[12px] font-medium">Password</label>
-                    <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    <div className="flex flex-col w-full">
 
-                    <label className="text-[12px] font-medium">Spreadsheet</label>
-                    <input type="text" name="spreadsheet" placeholder="spreadsheet link" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                        <label className=" font-normal text-purple">Email</label>
+                        <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    </div>
+
+                    <div className="flex flex-col w-full">
+
+                        <label className=" font-normal text-purple">Password</label>
+                        <input type="text" name="password" placeholder="password" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    </div>
+
+                    <div className="flex flex-col w-full">
+
+                        <label className=" font-normal text-purple">Spreadsheet</label>
+                        <input type="text" name="spreadsheet" placeholder="spreadsheet link" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    </div>
 
                     {/* <input type="hidden" name="role" value="fr" /> */}
                     {/* <input type="hidden" name="teamleader" value={session.data?.user?.id} /> */}
                     {/* <input type="hidden" name="teamleadername" value={session.data?.user?.username} /> */}
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
 
-                    <button className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>
+                    <button className=" bg-purple rounded-xl py-2 px-8 text-white text-xl font-medium mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>
 
                 </form>
             </div>

@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["bd", "sh", "tl", "fr"],
+        enum: ["bd", "sh", "tl", "fr","ad"],
         default: "fr",
     },
     teamleader: {

@@ -8,14 +8,15 @@ export async function POST(req) {
     try {
         await connectToDB();
 
-        const {username, email, password, role, teamleader, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking, companiesCompletedName, companiesRejectedName, companiesWorkingName } = await req.json();
-        console.log("new franchise:", {username, password, email, role, teamleader,level, teamleadername, companiesCompleted, companiesRejected, companiesWorking ,companiesCompletedName, companiesRejectedName, companiesWorkingName });
+        const {username, email, password, role, teamleader, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking, companiesCompletedName, companiesRejectedName, companiesWorkingName, spreadsheet, deployedlink, preference } = await req.json();
+        console.log("new employee:", {username, password, email, role, teamleader,level, teamleadername, companiesCompleted, companiesRejected, companiesWorking ,companiesCompletedName, companiesRejectedName, companiesWorkingName, spreadsheet,deployedlink, preference });
+
         const exists = await User.findOne({username});
         if(exists) {
             return NextResponse.json({message: "Username or Email already exists"},{status:500});
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create({
+        const user = await User.create({
             username,
             email,
             password: hashedPassword,
@@ -26,8 +27,10 @@ export async function POST(req) {
             companiesCompleted, 
             companiesRejected, 
             companiesWorking,
-            companiesCompletedName, companiesRejectedName, companiesWorkingName
+            companiesCompletedName, companiesRejectedName, companiesWorkingName,
+            spreadsheet, deployedlink, preference,
         });
+        console.log("user in db:", user);
         return NextResponse.json({message:"User registered successfully"}, {status: 201});
     }
     catch(err) {

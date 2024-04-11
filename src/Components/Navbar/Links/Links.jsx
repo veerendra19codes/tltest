@@ -19,12 +19,12 @@ const Links = ({ session }) => {
         },
         {
             id: 2,
-            name: "new",
+            name: "New",
             path: "/new",
         },
         {
             id: 3,
-            name: "dashboard",
+            name: "Dashboard",
             path: "/dashboardbd",
         },
     ]
@@ -38,12 +38,12 @@ const Links = ({ session }) => {
         },
         {
             id: 2,
-            name: "mails",
+            name: "Mails",
             path: "/mails",
         },
         {
             id: 3,
-            name: "dashboard",
+            name: "Dashboard",
             path: "/dashboardsh",
         },
     ]
@@ -56,17 +56,17 @@ const Links = ({ session }) => {
         },
         {
             id: 2,
-            name: "assign",
+            name: "Assign",
             path: "/assign",
         },
         {
             id: 3,
-            name: "dashboard",
-            path: "/tldashboard",
+            name: "Dashboard",
+            path: "/dashboardtl",
         },
         {
             id: 4,
-            name: "franchise",
+            name: "Franchise",
             path: "/franchise",
         }
     ]
@@ -79,8 +79,26 @@ const Links = ({ session }) => {
         },
         {
             id: 2,
-            name: "dashboard",
+            name: "Dashboard",
             path: "/dashboardfr",
+        },
+    ]
+
+    const linksad = [
+        {
+            id: 1,
+            name: "Home",
+            path: "/",
+        },
+        {
+            id: 2,
+            name: "Employee",
+            path: "/addnewemployee",
+        },
+        {
+            id: 3,
+            name: "Dashboard",
+            path: "/dashboardad",
         },
     ]
 
@@ -119,6 +137,12 @@ const Links = ({ session }) => {
 
                 {role === "fr" &&
                     linksfr.map((link) => (
+                        <NavLink item={link} key={link.name} />
+                    ))
+                }
+
+                {role === "ad" &&
+                    linksad.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }

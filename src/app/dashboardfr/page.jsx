@@ -40,15 +40,15 @@ const DashboardFRPage = async () => {
     // console.log(data);
 
     return (
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex flex-col justify-center items-center w-full ">
 
-            <div className="top flex flex-row justify-center items-center w-full px-12">
+            <div className="top flex flex-row justify-center items-center w-full px-12 gap-4 py-4 overflow-hidden">
 
-                <div className="top userdetails flex justify-center items-center w-2/6 gap-12 h-full">
+                <div className="top userdetails flex justify-center items-center w-2/6 gap-12 h-full bg-white py-[122px] rounded-xl px-4">
 
-                    <div className="profile picture size-48 rounded-full relative flex justify-center items-center">
+                    {/* <div className="profile picture size-48 rounded-full relative flex justify-center items-center">
                         <Image src="/profile.jpg" priority="true" className="rounded-full" alt="profilepicture" width={200} height={200} />
-                    </div>
+                    </div> */}
                     <div className="userdetailstext flex flex-col justify-between  items-start w-full">
                         <div className="row flex justiy-start items-center w-full gap-4">
                             <label className="w-2/5 py-2 font-bold">Username</label>
@@ -69,11 +69,11 @@ const DashboardFRPage = async () => {
                     </div>
                 </div>
 
-                <div className="w-2/6 flex justify-center items-center h-auto">
+                <div className="w-2/6 flex justify-center items-center h-auto bg-white py-[115px] rounded-xl">
                     <FranchiseRevenue username={session.user?.username} />
                 </div>
 
-                <div className="w-2/6 flex justify-center items-center h-auto ">
+                <div className="w-2/6 flex justify-center items-center h-auto bg-white py-4 rounded-xl">
                     <PieChart username={session.user?.username} />
                 </div>
             </div>

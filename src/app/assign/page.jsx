@@ -15,7 +15,7 @@ const AssignPage = async () => {
     // console.log("all Companies:", allCompanies);
 
     //companies assigned to this teamleader
-    const data = allCompanies.filter((company) => company.teamleadername === session.user?.username)
+    const data = allCompanies.reverse().filter((company) => company.teamleadername === session.user?.username)
     // console.log("filtered data:", data);
 
     const allUsers = await getAllUsers();

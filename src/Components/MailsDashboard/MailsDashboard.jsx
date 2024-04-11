@@ -162,15 +162,15 @@ const MailsDashboard = ({ data, teamleaders }) => {
         <div className="w-full h-auto flex justify-center mt-12">
             <div className="table w-4/5 h-full flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
-                    <div className="w-1/5 py-2 text-center font-bold">Company</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Details</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Team Leader</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Status</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Rejected Teamleaders</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Company</div>
+                    <div className="w-1/5 py-2 text-center font-bold  text-white">Details</div>
+                    <div className="w-1/5 py-2 text-center font-bold  text-white">Team Leader</div>
+                    <div className="w-1/5 py-2 text-center font-bold  text-white">Status</div>
+                    <div className="w-1/5 py-2 text-center font-bold  text-white">Rejected Teamleaders</div>
                 </div>
 
                 {data.map((d) => (
-                    <div key={d._id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4 justify-between gap-0">
+                    <div key={d._id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4 justify-between gap-0 bg-white">
                         <div className="w-1/5 mx-2   flex justify-center items-center">{d.companyname}</div>
                         <div className="w-1/5  mx-2 flex justify-center items-center text-blue-500" ><a href={d.jobdetails} target="_blank" className="hover:underline">Clickhere</a></div>
                         {d.teamleadername === "unassigned" ? (

@@ -183,18 +183,18 @@ const AssignDashboardPage = ({ data, franchiseUnderMe, session }) => {
         <div className="w-full h-full flex justify-center items-center">
             <div className="table w-4/5 h-full mt-12 flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
-                    <div className="w-1/5 py-2 text-center font-bold">Company</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Details</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Franchise</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Status</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Rejected Franchise</div>
-                    <div className="w-1/5 py-2 text-center font-bold">Reject</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Company</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Details</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Franchise</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Status</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Rejected Franchise</div>
+                    <div className="w-1/5 py-2 text-center font-bold text-white">Reject</div>
                 </div>
 
                 {/* companies assigned to me by sh */}
                 {data.map((d) => (
-                    <div key={d._id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4">
-                        <div className="w-1/6 mx-2  flex justify-center items-center">{d.companyname}</div>
+                    <div key={d._id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4 bg-white">
+                        <div className="w-1/6 mx-2  flex justify-center items-center ">{d.companyname}</div>
                         <div className="w-1/6  mx-2  flex justify-center items-center text-blue-500" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></div>
                         {d.franchisename === "unassigned" ? (
                             <select

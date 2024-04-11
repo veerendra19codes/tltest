@@ -6,10 +6,13 @@ import React, { useState, useEffect } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
 import { useSession } from 'next-auth/react';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewPage = () => {
     const session = useSession();
-    console.log("session in new", session);
+    // console.log("session in new", session);
 
     const router = useRouter();
 
@@ -21,79 +24,69 @@ const NewPage = () => {
         setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log({ info });
-
-    //     if (!info.companyname) {
-    //         setError("Must provide company name");
-    //     }
-    //     if (!info.jobdetails) {
-    //         setError("Must provide url");
-    //     }
-    //     if (!info.companyname && !info.jobdetails) {
-    //         setError("Must provide all the details");
-    //     }
-    //     else {
-    //         try {
-    //             setPending(true);
-
-    //             const res = await fetch("api/company", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify(info),
-    //             });
-    //             if (res.ok) {
-    //                 setPending(false);
-    //                 const form = e.target;
-    //                 form.reset();
-    //                 router.push("/dashboardbd");
-    //                 revalidatePath("/dashboarbd");
-    //                 console.log("Details sent successfully");
-    //             }
-    //             else {
-    //                 setPending(false);
-    //                 const errorData = await res.json();
-    //                 setError(errorData.message);
-    //             }
-    //         } catch (err) {
-    //             setPending(false);
-    //             console.log("Error while sending company details in page.jsx", err);
-    //             setError("Something went wrong");
-    //         }
-    //     }
-    // }
-
-
     const [state, formAction] = useFormState(addCompany, undefined);
 
     useEffect(() => {
         if (state?.success) {
+            toast("Company listed successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+
+            });
             router.push("/dashboardbd");
         }
     }, [router, state?.success]);
 
     return (
-        <div className="flex justify-center items-center sm:overflow-hidden sm:px-4">
-            <form action={formAction} className="w-[500px] m-auto mt-12 p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-start gap-4 sm:w-full sm:m-0 sm:p-4 sm:gap-2 sm:mt-24">
-                {/* onSubmit={handleSubmit} */}
-                <h1 className="text-3xl font-bold sm:text-xl sm:mb-4">Add new openings here</h1>
+        <div className="flex  h-screen justify-center items-center sm:overflow-hidden sm:px-4">
+
+            <form action={formAction} className="w-[450px] m-auto mt-24 p-12 bg-white rounded-xl flex flex-col justify-center items-center gap-8 shadow-xl sm:w-full sm:m-0 sm:p-4 sm:gap-2 sm:mt-24">
+                <h1 className="text-3xl font-bold text-darkpurple sm:text-xl sm:mb-4">Add new openings</h1>
 
                 <input type="hidden" name="createdBy" value={session.data?.user?.id} />
 
-                <label className="text-[12px] font-medium">Company name</label>
-                <input type="text" name="companyname" placeholder="Ex. Infosys Ltd" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full  sm:py-1" onChange={e => handleInput(e)} />
+                <div className="w-full flex flex-col">
 
-                <label className="text-[12px] font-medium">Job Details</label>
-                <input type="text" name="jobdetails" placeholder="mail url" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={e => handleInput(e)} />
+                    <label className="text-lg font-normal text-darkpurple">Company name</label>
+                    <input type="text" name="companyname" placeholder="Ex. Infosys Ltd" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full  sm:py-1" onChange={e => handleInput(e)} />
+                </div>
 
-                <p>Use <a href="https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa" target="_blank" className="underline text-blue-500">cloudhq</a> and paste the mail url here</p>
+                <div className="w-full flex flex-col">
 
-                {state?.error && <span className="w-full text-center text-red-600">{state.error}</span>}
+                    <label className="text-lg font-normal text-darkpurple">Job details</label>
+                    <input type="text" name="jobdetails" placeholder="mail url" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={e => handleInput(e)} />
+                    <p className="text-purple">Use <a href="https://chromewebstore.google.com/detail/share-emails-via-secure-u/bceemhpgjlcpelcmnipjfinfnaangpfa" target="_blank" className="underline text-blue-500">cloudhq</a> and paste the mail url here</p>
+                </div>
 
-                <button type="submit" className="w-full bg-blue-700 rounded-xl py-2 text-white mt-6 sm:mt-2">Add</button>
+
+
+                {state?.error && (
+                    <span className="w-full text-center text-red-600">
+                        {state.error}
+                    </span>
+                )}
+
+                <button type="submit" className="px-8 bg-purple text-xl font-medium rounded-xl py-2 text-white sm:mt-2">Add</button>
+                <ToastContainer />
+                {/* <ToastContainer
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    transition:Bounce
+                ></ToastContainer> */}
 
             </form>
         </div>

@@ -27,7 +27,7 @@ export const authOptions = {
 
                 try {
         connectToDB();
-
+        // console.log("credentials email:", credentials.email);
         const user = await User.findOne({email:credentials.email});
 
         // console.log("user found", user);
@@ -37,7 +37,12 @@ export const authOptions = {
             return null;
         }
         else {
-            const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
+            let isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
+            if( user.role === "ad") {
+                isPasswordCorrect = credentials.password === user.password ;
+            }
+            // console.log("ans:", credentials.password === user.password);
+            // console.log("isPasswordCorrect:", isPasswordCorrect);
 
             if(!isPasswordCorrect) {
                 // throw new Error("Incorrect Passsword");
@@ -59,6 +64,8 @@ export const authOptions = {
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
                     spreadsheet: user.spreadsheet,
+                    deployedlink: user.deployedlink,
+                    preference: user.preference,
                 };
             }
         }
@@ -100,6 +107,8 @@ export const authOptions = {
                     companiesRejectedName: token.companiesRejectedName,
                     companiesWorkingName: token.companiesWorkingName,
                     spreadsheet: token.spreadsheet,
+                    deployedlink: token.deployedlink,
+                    preference: token.preference,
                 }
             }
         },
@@ -126,6 +135,8 @@ export const authOptions = {
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
                     spreadsheet: user.spreadsheet,
+                    deployedlink: user.deployedlink,
+                    preference: user.preference,
                 }
             }
             return token

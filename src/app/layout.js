@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    <body className="h-full w-full flex flex-col">
+    <body className="h-full w-full flex flex-col bg-gradient-to-r from-[#5E376C] to-[#675080]">
       <Providers>
         <Navbar />
         {children}
