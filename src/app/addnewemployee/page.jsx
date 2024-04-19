@@ -1,10 +1,34 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BDForm from '@/Components/BDForm/BDForm';
 import TLForm from '@/Components/TLForm/TLForm';
 import FRForm from '@/Components/FRForm/FRForm';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import ADForm from '@/Components/ADForm/ADForm';
 
 const AddNewEmployeePage = () => {
+    const router = useRouter();
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        if (status === 'loading') return; // Wait for session to load
+
+        if (!session) {
+            router.replace('/login');
+        } else if (session.user?.role !== 'ad') {
+            router.replace('/');
+        }
+
+        // Fetch data or perform other async tasks here
+    }, [session, status, router]);
+
+    // if (!session) {
+    //     router.replace("/login");
+    // }
+    // else if (session.data?.user?.role !== 'ad') {
+    //     router.replace("/")
+    // }
     const [selectedOption, setSelectedOption] = useState("");
 
     const handleChange = (e) => {
@@ -19,6 +43,7 @@ const AddNewEmployeePage = () => {
                 <h1 className="font-medium text-xl">Select employee role:</h1>
                 <select value={selectedOption} onChange={handleChange} className="text-black py-1 pl-4">
                     <option value="">Select User Type</option>
+                    <option value="AD">Admin</option>
                     <option value="BD">BD</option>
                     <option value="TL">Team Leader</option>
                     <option value="FR">Franchise</option>
@@ -28,6 +53,7 @@ const AddNewEmployeePage = () => {
             {selectedOption === 'BD' && <BDForm />}
             {selectedOption === 'TL' && <TLForm />}
             {selectedOption === 'FR' && <FRForm />}
+            {selectedOption === 'AD' && <ADForm />}
         </div>
     );
 };

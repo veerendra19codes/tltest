@@ -1,4 +1,3 @@
-import { connectToDB } from '@/lib/connectToDB'
 import { getServerSession } from 'next-auth';
 import React from 'react'
 import { authOptions } from '../api/auth/[...nextauth]/route';
@@ -10,7 +9,10 @@ const DashboardBD = async () => {
     // console.log("session in dashboardbd", session);
     // console.log("user details inside session:", session.user);
     if (!session) {
-        redirect("/login")
+        redirect("/login");
+    }
+    else if (session.user?.role !== 'bd') {
+        redirect("/")
     }
 
     const allCompanies = await getAllCompanies();
@@ -51,33 +53,33 @@ const DashboardBD = async () => {
                 </div>
             </div> */}
             <div className="lg:overflow-x-auto sm:w-full w-[90%] mt-12 flex justify-center whitespace-nowrap bg-white rounded-xl">
-                <table className="table w-[90%] h-full flex flex-col items-center justify-center gap-8 sm:mt-4 whitespace-nowrap">
+                <table className="Table w-[90%] h-full flex flex-col items-center justify-center gap-8 sm:mt-4 whitespace-nowrap">
                     {/* <div className="flex w-full py-4 justify-center items-center whitespace-nowrap "> */}
-                    <thead>
-                        <tr>
-                            <th className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Company</th>
-                            <th className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Details</th>
-                            <th className="w-1/5 py-2  text-center font-bold  whitespace-nowrap sm:w-[200px] inline-block">Team Leader</th>
-                            <th className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Franchise</th>
-                            <th className="w-1/5 py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Created At</th>
+                    <thead className="w-full">
+                        <tr className="w-full">
+                            <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Company</th>
+                            <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Details</th>
+                            <th className="w-[250px] py-2  text-center font-bold  whitespace-nowrap sm:w-[200px] inline-block">Team Leader</th>
+                            <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Franchise</th>
+                            <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block">Created At</th>
                         </tr>
                     </thead>
                     {/* </div> */}
 
-                    <tbody>
+                    <tbody className="w-full">
 
                         {/* companies listed by me */}
                         {data.reverse().map((d) => (            //border-[1px] border - gray - 500
                             <tr key={d._id} className=" rounded-lg w-full flex flex-row whitespace-nowrap">
-                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px] inline-block border-[1px] py-3 border-black">{d.companyname}</td>
+                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px] border-[1px] py-3 border-black">{d.companyname}</td>
 
-                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center  text-blue-500 whitespace-nowrap sm:w-[200px] inline-block border-[1px] border-black py-3" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></td>
+                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center  text-blue-500 whitespace-nowrap sm:w-[200px] border-[1px] border-black py-3" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></td>
 
-                                <td className={d.teamleadername === "unassigned" ? " flex w-1/5 px-2  text-red-700 font-bold items-center justify-center h-auto py-2 whitespace-nowrap sm:w-[200px] inline-block border-[1px] border-black py-3" : "w-1/5 px-2 pl-4 flex items-center flex justify-center h-auto whitespace-nowrap sm:w-[200px] inline-block py-2 border-[1px] border-black py-3"}>{d.teamleadername}</td>
+                                <td className={d.teamleadername === "unassigned" ? " flex w-1/5 px-2  text-red-700 font-bold items-center justify-center h-auto whitespace-nowrap sm:w-[200px] border-[1px] border-black py-3" : "w-1/5 px-2 pl-4 items-center flex justify-center h-auto whitespace-nowrap sm:w-[200px]  border-[1px] border-black py-3"}>{d.teamleadername}</td>
 
-                                <td className={d.franchisename === "unassigned" ? " flex w-1/5 px-2  text-red-700 items-center font-bold justify-center h-auto whitespace-nowrap sm:w-[200px] inline-block border-[1px] border-black py-2" : "w-1/5 px-3 pl-4 text-center items-center flex justify-center h-auto  whitespace-nowrap sm:w-[200px] inline-block border-[1px] border-black py-3"}>{d.franchisename}</td>
+                                <td className={d.franchisename === "unassigned" ? " flex w-1/5 px-2  text-red-700 items-center font-bold justify-center h-auto whitespace-nowrap sm:w-[200px]  border-[1px] border-black py-2" : "w-1/5 px-3 pl-4 text-center items-center flex justify-center h-auto  whitespace-nowrap sm:w-[200px]  border-[1px] border-black py-3"}>{d.franchisename}</td>
 
-                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px] inline-block border-[1px] border-black py-3">{formatCreatedAtDate(d.createdAt)}, {formatTime12hr(d.createdAt)} </td>
+                                <td className="w-1/5 px-2 pl-4 flex justify-center items-center whitespace-nowrap sm:w-[200px]  border-[1px] border-black py-3">{formatCreatedAtDate(d.createdAt)}, {formatTime12hr(d.createdAt)} </td>
                             </tr>
                         ))}
                     </tbody>

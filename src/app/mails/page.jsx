@@ -1,6 +1,9 @@
 import MailsDashboard from "@/Components/MailsDashboard/MailsDashboard";
 import SelectComponent from "@/Components/SelectComponent/SelectComponent";
 import { getAllCompanies } from "@/lib/actions"
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 //FETCHING DATA WITH API
 const getUsers = async () => {
@@ -14,6 +17,13 @@ const getUsers = async () => {
 }
 
 const MailsPage = async () => {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+        redirect("/login");
+    }
+    else if (session.user?.role !== 'sh') {
+        redirect("/");
+    }
     const data = await getAllCompanies();
     // console.log(data);
 

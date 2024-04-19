@@ -6,10 +6,16 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 
 const FranchisePage = () => {
+    const router = useRouter();
     const session = useSession();
+    if (!session) {
+        router.replace("/login");
+    }
+    else if (session.data?.user?.role !== 'tl') {
+        router.replace("/")
+    }
     // console.log("session in franchise", session);
 
-    const router = useRouter();
 
     const [info, setInfo] = useState({
         username: "",

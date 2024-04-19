@@ -11,6 +11,9 @@ const AssignPage = async () => {
     if (!session) {
         redirect("/login");
     }
+    else if (session.user?.role !== 'tl') {
+        redirect("/")
+    }
     const allCompanies = await getAllCompanies();
     // console.log("all Companies:", allCompanies);
 

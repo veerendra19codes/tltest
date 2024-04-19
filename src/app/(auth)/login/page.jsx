@@ -15,11 +15,11 @@ const LoginPage = () => {
 
     const session = useSession();
 
-    useEffect(() => {
-        if (session.data?.user) {
-            router.push("/")
-        }
-    }, [session.data, router])
+    // useEffect(() => {
+    //     if (session.data?.user) {
+    //         router.push("/")
+    //     }
+    // }, [session.data, router])
     // if (session.data?.user) {
     //     router.push("/")
     // }
@@ -76,8 +76,11 @@ const LoginPage = () => {
 
             <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
 
-                <div className="logo size-32 flex justify-center items-center relative">
-                    <Image src="/tclogo.png" fill className="absolute" priority="false" alt="logo" />
+                <div className="logo size-32 flex justify-center items-center">
+                    <Image
+                        src='/tclogo.png' alt="logo"
+                        height={150}
+                        width={150} priority />
                 </div>
                 <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Login</h1>
                 <p className="text-gray-600 text-lg sm:text-base">Enter you email below to login</p>

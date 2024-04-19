@@ -26,6 +26,9 @@ const DashboardFRPage = async () => {
     if (session === null) {
         redirect("/login")
     }
+    else if (session.user?.role !== 'fr') {
+        redirect("/")
+    }
 
     const teamleaderId = await session.user?.teamleader;
     // console.log("teamleader id of this user/franchise : ", teamleaderId);

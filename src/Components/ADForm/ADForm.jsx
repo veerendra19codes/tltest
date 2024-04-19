@@ -1,20 +1,21 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react';
-import { signUp, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import { CgProfile } from "react-icons/cg";
 import { MdLockOutline } from "react-icons/md";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
+import { LuFileSpreadsheet } from "react-icons/lu";
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const BDForm = () => {
+const ADForm = () => {
     const router = useRouter();
     const session = useSession();
 
-    const [info, setInfo] = useState({ username: "", email: "", password: "", role: "bd" });
+    const [info, setInfo] = useState({ username: "", email: "", password: "", role: "ad", deployedlink: "" });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
 
@@ -26,7 +27,7 @@ const BDForm = () => {
         e.preventDefault();
 
         // console.log({ info });
-        if (!info.username || !info.email || !info.password) {
+        if (!info.username || !info.email || !info.password || !info.deployedlink) {
             setError("Must provide all credentials");
         } else {
             try {
@@ -40,7 +41,7 @@ const BDForm = () => {
                     body: JSON.stringify(info),
                 });
                 if (res.ok) {
-                    toast.success('BD added successfully', {
+                    toast.success('AD added successfully', {
                         position: "top-right",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -62,19 +63,18 @@ const BDForm = () => {
                 }
             } catch (err) {
                 setPending(false);
-                console.log("Error while registering new BD in page.jsx:", err);
-                setError("Error in Registering BD");
+                console.log("Error while registering new AD in page.jsx:", err);
+                setError("Error in Registering AD");
             }
         }
     }
 
     return (
-        <div className="BDFORM h-auto w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-2">
+        <div className="ADFORM h-auto w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-2">
 
             <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
 
-
-                <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Add BD</h1>
+                <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Add Admin</h1>
                 <p className="text-gray-600 text-lg sm:text-base">Enter details below</p>
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
@@ -94,6 +94,11 @@ const BDForm = () => {
                         <input type="text" name="password" placeholder="Password" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
                     </div>
 
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
+                        <LuFileSpreadsheet size={40} color='purple' />
+                        <input type="text" name="deployedlink" placeholder="deployedlink" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
+                    </div>
+
                     {error && <span className="text-red-500 font-medium">{error}</span>}
 
                     <button className="w-1/2 rounded-xl py-4 text-2xl text-white bg-purple hover:bg-lightpurple" disabled={pending ? true : false}>{pending ? "Adding User" : "Add User"}</button>
@@ -103,4 +108,4 @@ const BDForm = () => {
         </div>
     )
 }
-export default BDForm;
+export default ADForm

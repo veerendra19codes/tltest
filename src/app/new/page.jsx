@@ -1,20 +1,23 @@
 "use client";
 
-import { revalidatePath } from 'next/cache';
-import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
-import { useSession } from 'next-auth/react';
 import { ToastContainer, toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewPage = () => {
-    const session = useSession();
-    // console.log("session in new", session);
-
     const router = useRouter();
+    const session = useSession();
+    if (!session) {
+        router.replace("/login");
+    }
+    else if (session.data?.user?.role !== 'bd') {
+        router.replace("/");
+    }
 
     const [info, setInfo] = useState({ companyname: "", jobdetails: "" });
     const [error, setError] = useState("");

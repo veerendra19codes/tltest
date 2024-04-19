@@ -160,7 +160,7 @@ const MailsDashboard = ({ data, teamleaders }) => {
 
     return (
         <div className="w-full h-auto flex justify-center mt-12">
-            <div className="table w-4/5 h-full flex flex-col items-center justify-center gap-8">
+            <div className="Table w-4/5 h-full flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/5 py-2 text-center font-bold text-white">Company</div>
                     <div className="w-1/5 py-2 text-center font-bold  text-white">Details</div>

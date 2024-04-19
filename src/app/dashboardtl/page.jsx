@@ -81,9 +81,6 @@
 
 "use client";
 
-import { connectToDB } from "@/lib/connectToDB"
-import { redirect } from "next/navigation";
-import PieComponent from "@/Components/PieComponent/PieComponent"
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { getAllUsers } from "@/lib/actions";
@@ -92,12 +89,23 @@ import { getAllUsers } from "@/lib/actions";
 import { Chart as ChartJs, Tooltip, Title, ArcElement, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import sendEmail from "@/lib/mailer";
+import { useRouter } from "next/navigation";
 
 ChartJs.register(
     Tooltip, Title, ArcElement, Legend
 );
 
 const TLDashboardPage = () => {
+    const router = useRouter();
+    const session = useSession();
+    // console.log("session:", session);
+    if (!session) {
+        router.replace("/login");
+    }
+    else if (session.data?.user?.role !== 'tl') {
+        router.replace("/")
+    }
+
 
     const [allUsers, setAllUsers] = useState([]);
     const [franchiseUnderMe, setFranchiseUnderMe] = useState([]);
@@ -106,11 +114,6 @@ const TLDashboardPage = () => {
     const [revenuegained, setRevenuegained] = useState(0);
     const [revenuelost, setRevenuelost] = useState(0);
 
-    const session = useSession();
-    // console.log("session:", session);
-    if (session === null) {
-        redirect("/login");
-    }
 
     useEffect(() => {
         const fetchUsers = async () => {

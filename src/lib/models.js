@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     teamleader: {
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        
     },
     teamleadername: {
         type: String,
@@ -75,7 +74,7 @@ const userSchema = new mongoose.Schema({
         default:""
     },
     deployedlink: {
-        type: String, //only for teamleaders sheet to fetch client and franchise status
+        type: String, //only for admin(supermastersheet)
         default:""
     },
     preference: {

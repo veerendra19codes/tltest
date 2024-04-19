@@ -32,8 +32,7 @@ const Navbar = () => {
     return (
         <div className="navbar h-16 w-full px-24 flex justify-between items-center bg-white text-bgColor sm:px-4 sm:overflow-x-hidden shadow-2xl ">
             <div className="logo size-16 flex justify-center items-center relative">
-                <Image src="/tclogo.png" fill className="absolute" priority="false" alt="logo
-            " />
+                <Image src="/tclogo.png" className="size-auto absolute" priority alt="logo" width={100} height={100} />
             </div>
 
             <div className="links">

@@ -8,6 +8,9 @@ import { MdLockOutline } from "react-icons/md";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import { FaLink } from "react-icons/fa6";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const TLForm = () => {
     const router = useRouter();
@@ -41,10 +44,19 @@ const TLForm = () => {
                     body: JSON.stringify(info),
                 });
                 if (res.ok) {
+                    toast.success('TL added successfully', {
+                        position: "top-right",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                     setPending(false);
                     const form = e.target;
                     form.reset();
-                    router.push("/login");
                     console.log("User registered successfully");
                 }
                 else {
@@ -64,9 +76,6 @@ const TLForm = () => {
         <div className="TLForm h-auto w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-2">
             <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
 
-                <div className="logo size-32 flex justify-center items-center relative">
-                    <Image src="/tclogo.png" fill className="absolute" priority="false" alt="logo" />
-                </div>
 
                 <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Add TL</h1>
                 <p className="text-gray-600 text-lg sm:text-base">Enter details below</p>
@@ -111,6 +120,8 @@ const TLForm = () => {
                     {error && <span className="text-red-500 font-semibold">{error}</span>}
 
                     <button className="w-1/2 rounded-xl py-4 text-2xl text-white bg-purple hover:bg-lightpurple" disabled={pending}>{pending ? "Adding User" : "Add User"}</button>
+                    <ToastContainer />
+
                 </form>
             </div>
         </div>

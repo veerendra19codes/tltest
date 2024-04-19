@@ -1,4 +1,3 @@
-import { connectToDB } from "@/lib/connectToDB"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -14,22 +13,14 @@ const getUsers = async () => {
     return res.json();
 }
 
-// //FETCHING DATA WITH API
-// const getUser = async (id) => {
-//     // console.log("id insie getUser", id);
-//     const res = await fetch(`http://localhost:3000/api/user/${id}`);
-
-//     if (!res.ok) {
-//         console.log(res.json);
-//     }
-//     return res.json();
-// }
-
 const DashboardSHPage = async () => {
 
     const session = await getServerSession(authOptions);
-    if (session === null) {
+    if (!session) {
         redirect("/login");
+    }
+    else if (session.user?.role !== "sh") {
+        redirect("/");
     }
     const users = await getUsers();
     // console.log("all users", users);
@@ -42,7 +33,7 @@ const DashboardSHPage = async () => {
     return (
         <div className="flex flex-col justify-center items-center gap-8">
             {/* <h1 className="text-xl font-bold text-blue-500 mt-4">Select a Team Leader whose franchise's level matches with the job description and is currently not working</h1> */}
-            <div className="table w-4/5 mt-12 h-full flex flex-col items-center justify-center gap-8">
+            <div className="Table w-4/5 mt-12 h-full flex flex-col items-center justify-center gap-8">
                 <div className="tablehead w-full flex flex-row mb-6" >
                     <div className="w-1/4 py-2 pl-4 text-center font-bold text-white">Team Leader</div>
                     <div className="w-1/4 py-2 pl-4 text-center font-bold text-white">Franchise</div>

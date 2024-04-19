@@ -27,10 +27,10 @@ export const authOptions = {
 
                 try {
         connectToDB();
-        // console.log("credentials email:", credentials.email);
+        console.log("credentials email:", credentials.email);
         const user = await User.findOne({email:credentials.email});
 
-        // console.log("user found", user);
+        console.log("user found", user);
 
         if(!user) {
             // throw new Error("Wrong Email or User with this Email does not exist");
@@ -39,10 +39,12 @@ export const authOptions = {
         else {
             let isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
             if( user.role === "ad") {
-                isPasswordCorrect = credentials.password === user.password ;
+                let normalpass = credentials.password === user.password;
+                let encrypted = await bcrypt.compare(credentials.password, user.password);
+                isPasswordCorrect = encrypted || normalpass;
             }
             // console.log("ans:", credentials.password === user.password);
-            // console.log("isPasswordCorrect:", isPasswordCorrect);
+            console.log("isPasswordCorrect:", isPasswordCorrect);
 
             if(!isPasswordCorrect) {
                 // throw new Error("Incorrect Passsword");
