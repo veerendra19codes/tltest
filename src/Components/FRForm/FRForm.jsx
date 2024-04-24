@@ -76,40 +76,40 @@ const FRForm = () => {
     }
 
     return (
-        <div className="FRFORM h-auto w-full overflow-hidden flex justify-center items-center sm:px-4 sm:mt-20  ">
+        <div className="FRFORM h-auto w-full overflow-hidden flex justify-center items-center  sm:mt-2">
             <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
 
-                <h1 className="text-4xl font-bold sm:text-xl text-lightpurple">Add Franchise</h1>
-                <p className="text-gray-600 text-lg sm:text-base">Enter details below</p>
+                <h1 className="text-4xl font-bold sm:text-3xl text-lightpurple">Add Franchise</h1>
+                <p className="text-gray-600 text-lg sm:text-xs">Enter details below</p>
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <CgProfile size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <CgProfile className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="username" placeholder="Username" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} />
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <MdOutlineMailOutline size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />
                         <input type="email" name="email" placeholder="example@gmail.com" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} />
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <MdLockOutline size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <MdLockOutline className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="password" placeholder="Password" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} />
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <RiTeamLine size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <RiTeamLine className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="teamleadername" placeholder="Teamleader name" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} />
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <LuFileSpreadsheet size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <LuFileSpreadsheet className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="spreadsheet" placeholder="Spreadsheet Link" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} />
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <BsGraphUpArrow size={40} color='purple' />
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <BsGraphUpArrow className="size-8 lg:size-6" color='purple' />
                         <select name="level" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput}>
                             <option value="">Select Franchise Level</option>
                             <option value="junior">Junior</option>
@@ -118,12 +118,15 @@ const FRForm = () => {
                         </select>
                     </div>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg">
-                        <GrUserExpert size={40} color='purple' />
+
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        <GrUserExpert className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="preference" placeholder="Preference ex-any" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} />
                     </div>
 
-                    <button className="w-1/2 rounded-xl py-4 text-2xl text-white mt-6 bg-purple hover:bg-lightpurple" disabled={pending}>{pending ? "Adding Franchise" : "Add Franchise"}</button>
+                    {error && <span className="text-red-500 font-semibold">{error}</span>}
+
+                    <button className="w-auto rounded-xl py-4  px-8 text-2xl lg:text-xl text-white mt-2 bg-purple hover:bg-lightpurple lg:py-2 lg:px-4" disabled={pending}>{pending ? "Adding Franchise" : "Add Franchise"}</button>
                     <ToastContainer />
 
                 </form>

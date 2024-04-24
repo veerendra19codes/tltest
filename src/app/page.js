@@ -1,38 +1,52 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-// import { SessionProvider } from "next-auth/react"
-import { redirect } from "next/navigation"
 import { GoArrowRight } from "react-icons/go";
+import { useContext, useEffect } from "react";
+import UserContext from "@/contexts/UserContext";
 
-// {session, ...pageProps}
-export default async function Home() {
+export default function Home() {
+  const {session, status} = useContext(UserContext);
 
-  // const session = await getServerSession(authOptions);
-  // if(!session) {
-  //   redirect("/login");
-  // }
-  // console.log("user in sesssion in home:", session.user);
+  let route = "";
 
-  // const handleStart = () => {
-  //   router.push("/login");
-  // }
+  if(status!=="loading") {
+    if(session.user?.role === "ad") {
+      route="/dashboardad";
+    }
+    else if(session.user?.role === "bd") {
+      route="/new";
+    }
+    else if(session.user?.role === "sh") {
+      route="/mails";
+    }
+    else if(session.user?.role === "tl") {
+      route="/assign";
+    }
+    else {
+      route="dashboardfr"
+    }
+  }
+  // console.log("route:", route);
 
   return (     
-    <div className="flex flex-col justify-center items-start h-screen w-full">
+    <div className="flex flex-col justify-center items-start h-screen w-full lg:justify-start ">
 
-      <div className="hero flex flex-row justify-center items-center gap-4 w-full">
-        <div className="left w-1/2 h-auto flex flex-col gap-4 justify-center items-start pl-48 sm:px-4 sm:w-full">
-          <p className="text-5xl font-black text-white bg-gradient-to-r from-[#6157ff] to-[#ee49fd] text-transparent bg-clip-text">Welcome to</p>
-          <h1 className="text-5xl text-white font-black bg-gradient-to-r from-[#6157ff] to-[#ee49fd] text-transparent bg-clip-text">Task Manager</h1>
-          <p className="text-xl pb-12 text-white ">Use Task manager and Manage your tasks efficiently</p>
-          <Link href="/login" className="rounded-2xl py-2 px-8 text-white flex font-semibold items-center text-2xl bg-gradient-to-r from-[#6157ff] to-[#ee49fd] hover:bg-[#ee49fd] hover:border-[#6157ff] hover:border-[1px]">Get Started <GoArrowRight size={50} /></Link>
+      <div className="hero flex lg:flex-col justify-center items-center gap-4 w-full lg:mt-12">
+        <div className="left w-1/2 h-auto flex flex-col gap-4 justify-center items-start pl-48 lg:px-4 lg:w-full lg:gap-0 lg:items-center">
+          <p className="text-5xl font-black text-white lg:text-3xl">Welcome to</p>
+          <h1 className="text-5xl font-black text-blue-300  lg:text-4xl">Task Manager</h1>
+          <p className="text-xl pb-12 text-[#ffcecf] lg:text-[15px] lg:mt-4 lg:pb-0 lg:text-center">Use Task manager and Manage your tasks efficiently</p>
+          <Link href={route} className="rounded-2xl py-2 px-8 text-white flex font-semibold items-center text-2xl bg-gradient-to-r from-[#6157ff] to-[#ee49fd] border-[1px] border-[#6157ff] hover:shadow-2xl lg:hidden">Get started <GoArrowRight size={50} /></Link>
         </div>
 
-        <div className="right flex justify-center items-center w-1/2 sm:hidden">
-          <Image src="/hero.png" width={500} height={500} alt="hero" priority={true} className="size-auto" />
+        <div className="right flex justify-center items-center w-1/2 lg:w-full flex-col">
+          <Image src="/hero.png" width={500} height={500} alt="hero" priority={true} className="size-auto lg:size-50" />
         </div>
+
+        <Link href={route} className="hidden  lg:flex justify-center items-center text-white gap-2 bg-gradient-to-r from-[#6157ff] to-[#ee49fd] border-[1px] border-[#6157ff] rounded-xl px-4 text-xl py-2">Get started <GoArrowRight size={30} /></Link>
+
 
       </div>
     </div>

@@ -1,20 +1,20 @@
 "use client";
 
-import { useSession } from 'next-auth/react';
-import { revalidatePath } from 'next/cache';
+import UserContext from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation'
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
 const FranchisePage = () => {
     const router = useRouter();
-    const session = useSession();
-    if (!session) {
-        router.replace("/login");
-    }
-    else if (session.data?.user?.role !== 'tl') {
-        router.replace("/")
-    }
-    // console.log("session in franchise", session);
+    const { session, status } = useContext(UserContext);
+
+    useEffect(() => {
+        if (status === "loading") {
+            return;
+        } else if (session.user?.role !== "tl") {
+            router.back();
+        }
+    }, [session, status, router])
 
 
     const [info, setInfo] = useState({

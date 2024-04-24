@@ -1,11 +1,12 @@
+import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
-// This function can be marked `async` if using `await` inside
-export  function middleware(request) {
+export function middleware(request) {
 
     
     const cookies = request.cookies.get("next-auth.session-token");
     // console.log("cookies:", cookies.value);
+    
     let isAuthenticated = cookies?.value || '';
     // Check if session token cookie exists
     // console.log("isAuthenticated:", isAuthenticated);

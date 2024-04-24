@@ -82,7 +82,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getAllUsers } from "@/lib/actions";
 
 
@@ -90,6 +90,7 @@ import { Chart as ChartJs, Tooltip, Title, ArcElement, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import sendEmail from "@/lib/mailer";
 import { useRouter } from "next/navigation";
+import UserContext from "@/contexts/UserContext";
 
 ChartJs.register(
     Tooltip, Title, ArcElement, Legend
@@ -97,14 +98,15 @@ ChartJs.register(
 
 const TLDashboardPage = () => {
     const router = useRouter();
-    const session = useSession();
-    // console.log("session:", session);
-    if (!session) {
-        router.replace("/login");
-    }
-    else if (session.data?.user?.role !== 'tl') {
-        router.replace("/")
-    }
+    const { session, status } = useContext(UserContext);
+
+    useEffect(() => {
+        if (status === "loading") {
+            return;
+        } else if (session.user?.role !== "tl") {
+            router.back();
+        }
+    }, [session, router, status])
 
 
     const [allUsers, setAllUsers] = useState([]);

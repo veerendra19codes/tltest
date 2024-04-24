@@ -1,14 +1,18 @@
 "use client";
 
-import React from 'react'
-import Link from 'next/link'
+import React, { useContext } from 'react'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react';
 import NavLink from './NavLink/NavLink';
+import UserContext from '@/contexts/UserContext';
+import { TfiMenu } from "react-icons/tfi";
+import { MdLogout } from "react-icons/md";
+import { signOut } from 'next-auth/react'
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const Links = ({ session }) => {
-    // console.log(session);
-    // const role = "bd";
+const Links = () => {
+    const { session, status } = useContext(UserContext);
+    // console.log("session in links:", session);
 
     //if role == "bd" this nav
     const linksbd = [
@@ -111,52 +115,92 @@ const Links = ({ session }) => {
     }
     // console.log(open);
 
-    const role = session.data?.user?.role;
-
     return (
         <div className="links">
-            <div className="w-full h-12 flex justify-between items-center gap-12 bg-purple-900 text-white lg:hidden"
+            <div className="w-full h-12 flex justify-between items-center gap-4 lg:hidden"
             >
-                {role === "bd" &&
+                {status !== "loading" && session.user?.role === "bd" &&
                     linksbd.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {role === "sh" &&
+                {status !== "loading" && session.user?.role === "sh" &&
                     linkssh.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {role === "tl" &&
+                {status !== "loading" && session.user?.role === "tl" &&
                     linkstl.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {role === "fr" &&
+                {status !== "loading" && session.user?.role === "fr" &&
                     linksfr.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {role === "ad" &&
+                {status !== "loading" && session.user?.role === "ad" &&
                     linksad.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
             </div>
-            <button onClick={() => setOpen(!open)} className=" hidden lg:block"> Menu</button>
+            <button onClick={() => setOpen(!open)} className=" hidden lg:block right-4 absolute top-4"
+            >
+                <TfiMenu size={32} color="purple" />
+            </button>
 
-            <div className="mobile-nav hidden lg:block">
-                {open && (
-                    <div className="mobileLinks flex flex-col justify-start gap-4 absolute right-0 items-start top-0 bg-purple-800 h-screen w-[250px] pt-4">
-                        {linksbd.map((link) => (
-                            <NavLink item={link} key={link.title} open={open} setOpen={setOpen} />
-                        ))}
-                        <button className="fixed top-4 right-4" onClick={() => setOpen(!open)}>Close</button>
+            {/* MOBILE NAVBAR HERE- */}
+            <div className="mobile-nav hidden lg:block overflow-y-hidden">
+                {open && status !== "loading" && (
+
+                    <div className="mobileLinks flex flex-col justify-start gap-4 absolute right-0 items-start top-0 bg-purple h-screen w-[250px] overflow-y-hidden lg:gap-0">
+
+                        <div className="username text-xl px-4 font-bold flex items-center text-white w-full h-16"> {session.user?.username}({session.user?.role.toUpperCase()})</div>
+
+                        {status !== "loading" && session.user?.role === "bd" &&
+                            linksbd.map((link) => (
+                                <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
+                            ))
+                        }
+
+                        {status !== "loading" && session.user?.role === "sh" &&
+                            linkssh.map((link) => (
+                                <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
+                            ))
+                        }
+
+                        {status !== "loading" && session.user?.role === "tl" &&
+                            linkstl.map((link) => (
+                                <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
+                            ))
+                        }
+
+                        {status !== "loading" && session.user?.role === "fr" &&
+                            linksfr.map((link) => (
+                                <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
+                            ))
+                        }
+
+                        {status !== "loading" && session.user?.role === "ad" &&
+                            linksad.map((link) => (
+                                <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
+                            ))
+                        }
+
+
+
+
+                        <button onClick={() => signOut()} className="
+                    text-white flex gap-4 text-xl font-semibold fixed bottom-0 w-full  py-4 bg-red-500 px-4  items-center">Logout <MdLogout size={25} /></button>
+
+
+                        <button className="fixed top-4 right-4" onClick={() => setOpen(!open)}><IoMdCloseCircleOutline color="white" size={32} /></button>
                     </div>
                 )}
             </div>

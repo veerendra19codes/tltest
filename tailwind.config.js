@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        russonOne: ["Russon One"],
+        inter: ["Inter"],
+        petitFormal: ["Petit Formal Script"],
+        syne: ["Syne, sans-serif;"]
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
