@@ -6,13 +6,13 @@ const User = models.User;
 export const GET = async (request, {params}) => {
     
     // console.log("params inside route.js:",params);
-    const {userId}= params;
+    const {username}= params;
     // console.log("slug inside route.js",slug);
 
     try {
         connectToDB();
 
-        const user = await User.findOne({_id: userId});
+        const user = await User.findOne({username});
         return NextResponse.json(user);
     }
     catch(err) {

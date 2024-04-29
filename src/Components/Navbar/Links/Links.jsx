@@ -104,6 +104,11 @@ const Links = () => {
             name: "Dashboard",
             path: "/dashboardad",
         },
+        {
+            id: 4,
+            name: "Edit",
+            path: "/edit",
+        }
     ]
 
     const pathName = usePathname();
@@ -119,31 +124,31 @@ const Links = () => {
         <div className="links">
             <div className="w-full h-12 flex justify-between items-center gap-4 lg:hidden"
             >
-                {status !== "loading" && session.user?.role === "bd" &&
+                {status !== "loading" && session?.user?.role === "bd" &&
                     linksbd.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {status !== "loading" && session.user?.role === "sh" &&
+                {status !== "loading" && session?.user?.role === "sh" &&
                     linkssh.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {status !== "loading" && session.user?.role === "tl" &&
+                {status !== "loading" && session?.user?.role === "tl" &&
                     linkstl.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {status !== "loading" && session.user?.role === "fr" &&
+                {status !== "loading" && session?.user?.role === "fr" &&
                     linksfr.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
                 }
 
-                {status !== "loading" && session.user?.role === "ad" &&
+                {status !== "loading" && session?.user?.role === "ad" &&
                     linksad.map((link) => (
                         <NavLink item={link} key={link.name} />
                     ))
@@ -156,38 +161,38 @@ const Links = () => {
             </button>
 
             {/* MOBILE NAVBAR HERE- */}
-            <div className="mobile-nav hidden lg:block overflow-y-hidden">
+            <div className="mobile-nav hidden lg:block fixed right-0 top-0 bottom-0">
                 {open && status !== "loading" && (
 
                     <div className="mobileLinks flex flex-col justify-start gap-4 absolute right-0 items-start top-0 bg-purple h-screen w-[250px] overflow-y-hidden lg:gap-0">
 
                         <div className="username text-xl px-4 font-bold flex items-center text-white w-full h-16"> {session.user?.username}({session.user?.role.toUpperCase()})</div>
 
-                        {status !== "loading" && session.user?.role === "bd" &&
+                        {status !== "loading" && session?.user?.role === "bd" &&
                             linksbd.map((link) => (
                                 <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
                             ))
                         }
 
-                        {status !== "loading" && session.user?.role === "sh" &&
+                        {status !== "loading" && session?.user?.role === "sh" &&
                             linkssh.map((link) => (
                                 <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
                             ))
                         }
 
-                        {status !== "loading" && session.user?.role === "tl" &&
+                        {status !== "loading" && session?.user?.role === "tl" &&
                             linkstl.map((link) => (
                                 <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
                             ))
                         }
 
-                        {status !== "loading" && session.user?.role === "fr" &&
+                        {status !== "loading" && session?.user?.role === "fr" &&
                             linksfr.map((link) => (
                                 <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
                             ))
                         }
 
-                        {status !== "loading" && session.user?.role === "ad" &&
+                        {status !== "loading" && session?.user?.role === "ad" &&
                             linksad.map((link) => (
                                 <NavLink item={link} key={link.name} open={open} setOpen={setOpen} />
                             ))

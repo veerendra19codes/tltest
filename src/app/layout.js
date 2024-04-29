@@ -21,7 +21,10 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-    <body className={inter.className + "h-full w-full flex flex-col bg-gradient-to-r from-[#5E376C] to-[#675080]"}>
+      <head>
+          <link rel="icon" href="/tclogo.png" />
+        </head>
+    <body className={inter.className + "h-full w-full flex flex-col bg-gradient-to-r from-[#5E376C] to-[#675080] overflow-x-hidden"}>
       <Providers>
         <UserContextProvider>
         <Navbar />

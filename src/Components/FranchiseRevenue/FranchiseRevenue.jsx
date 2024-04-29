@@ -1,27 +1,58 @@
 "use client";
 
+import { getAllUsers } from "@/lib/actions";
 import { useEffect, useState } from "react";
 
-const FranchiseRevenue = ({ username }) => {
-    console.log(username);
+const FranchiseRevenue = ({ username, teamleadername }) => {
+    console.log("username in Franchise Revenue:", username);
+    console.log("teamleadername in FranchiseRevenue:", teamleadername);
+
     const [revenuegained, setRevenuegained] = useState(0);
     const [revenuelost, setRevenuelost] = useState(0);
+    const [url, setUrl] = useState("");
+    const [tlname, setTlname] = useState(teamleadername);
+    console.log('tlname:', tlname);
+    // const [chartData, setChartData] = useState({});
+
+    useEffect(() => {
+        const getteamleaderurl = async () => {
+            try {
+                console.log("hello inside useEffect");
+                const allUsers = await getAllUsers();
+                // console.log("allUsers:", allUsers);
+
+                const teamleaderarr = allUsers.filter((user) => user.username === teamleadername)
+                console.log("teamleaderarr:", teamleaderarr);
+                const teamleaderobj = teamleaderarr[0];
+                console.log("teamleaderobj:", teamleaderobj);
+
+                setUrl(teamleaderobj.revenueapi);
+                console.log("url:", url);
+            }
+            catch (err) {
+                console.log("error getting teamleader deployed url:", err);
+            }
+        }
+        getteamleaderurl();
+    }, [tlname]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbwDqkTWyHHrubAriPFaiOZsMARt-0I6nLo-Uwa7tpmstSFona8LF6NP2wY2czSDWWoA/exec');
+                console.log("url:", url);
 
+                const response = await fetch(url);
 
                 const data = await response.json();
                 console.log('data: ', data);
 
-                const statusCount = {
-                    'In Progress': 0,
-                    'Hold': 0,
-                    'Cancel': 0,
-                    'Closed': 0
-                };
-                console.log("statusCount:", statusCount);
+                // const statusCount = {
+                //     'In Progress': 0,
+                //     'Hold': 0,
+                //     'Cancel': 0,
+                //     'Closed': 0
+                // };
+                // console.log("statusCount:", statusCount);
 
                 const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === username.replace(/\s/g, '').toLowerCase());
                 console.log("franchiseData:", franchiseData);
@@ -32,11 +63,11 @@ const FranchiseRevenue = ({ username }) => {
                 setRevenuegained(statusEntry.closed);
                 setRevenuelost(statusEntry.cancel);
 
-                statusCount['In Progress'] = statusEntry.inprogress;
-                statusCount['Hold'] = statusEntry.hold;
-                statusCount['Cancel'] = statusEntry.cancel;
-                statusCount['Closed'] = statusEntry.closed;
-                console.log("statusCount:", statusCount);
+                // statusCount['In Progress'] = statusEntry.inprogress;
+                // statusCount['Hold'] = statusEntry.hold;
+                // statusCount['Cancel'] = statusEntry.cancel;
+                // statusCount['Closed'] = statusEntry.closed;
+                // console.log("statusCount:", statusCount);
 
 
                 // data.forEach(entry => {
@@ -46,29 +77,29 @@ const FranchiseRevenue = ({ username }) => {
                 //     }
                 // });
 
-                const statusData = Object.values(statusCount);
-                console.log("statusData:", statusData);
+                // const statusData = Object.values(statusCount);
+                // console.log("statusData:", statusData);
 
 
-                setChartData({
-                    datasets: [{
-                        data: statusData,
-                        backgroundColor: [
-                            'yellow',
-                            'blue',
-                            'red',
-                            'green',
-                        ]
-                    }],
-                    labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
-                });
+                // setChartData({
+                //     datasets: [{
+                //         data: statusData,
+                //         backgroundColor: [
+                //             'yellow',
+                //             'blue',
+                //             'red',
+                //             'green',
+                //         ]
+                //     }],
+                //     labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                // });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [url]);
     return (
         <div className="franchiserevenue flex justify-center items-center flex-col gap-4">
             <div className="revenuegained flex flex-col justify-around items-center bg-green-500 rounded-xl w-full py-4 px-8">

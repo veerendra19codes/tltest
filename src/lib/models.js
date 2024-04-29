@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema({
         enum: ["bd", "sh", "tl", "fr","ad"],
         default: "fr",
     },
-    teamleader: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
+    // teamleader: {
+    //     type:  mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    // },
     teamleadername: {
         type: String,
         default: "",
@@ -76,6 +76,10 @@ const userSchema = new mongoose.Schema({
     deployedlink: {
         type: String, //only for admin(supermastersheet)
         default:""
+    },
+    revenueapi: {
+        type: String,
+        default:"",
     },
     preference: {
         type: String,

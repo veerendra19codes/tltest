@@ -56,8 +56,7 @@ export const authOptions = {
                     email:user.email,
                     username: user.username,
                     role: user.role,
-                    teamleader: user.teamleader, 
-                    teamleader: user.teamleader,
+                    teamleadername: user.teamleadername,
                     level: user.level,
                     companiesCompleted: user.companiesCompleted,
                     companiesRejected: user.companiesRejected,
@@ -67,6 +66,7 @@ export const authOptions = {
                     companiesWorkingName: user.companiesWorkingName,
                     spreadsheet: user.spreadsheet,
                     deployedlink: user.deployedlink,
+                    revenueapi: user.revenueapi,
                     preference: user.preference,
                 };
             }
@@ -99,7 +99,6 @@ export const authOptions = {
                     username: token.username,
                     email: token.email,
                     role: token.role,
-                    teamleader: token.teamleader, 
                     teamleadername: token.teamleadername,
                     level: token.level,
                     companiesCompleted: token.companiesCompleted,
@@ -110,6 +109,7 @@ export const authOptions = {
                     companiesWorkingName: token.companiesWorkingName,
                     spreadsheet: token.spreadsheet,
                     deployedlink: token.deployedlink,
+                    revenueapi: token.revenueapi,
                     preference: token.preference,
                 }
             }
@@ -127,7 +127,6 @@ export const authOptions = {
                     username: user.username,
                     email: user.email,
                     role: user.role,
-                    teamleader: user.teamleader, 
                     teamleadername: user.teamleadername,
                     level: user.level,
                     companiesCompleted: user.companiesCompleted,
@@ -138,6 +137,7 @@ export const authOptions = {
                     companiesWorkingName: user.companiesWorkingName,
                     spreadsheet: user.spreadsheet,
                     deployedlink: user.deployedlink,
+                    revenueapi: user.revenueapi,
                     preference: user.preference,
                 }
             }

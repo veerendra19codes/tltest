@@ -34,6 +34,7 @@ export const config = {
 
     '/addnewemployee',
     '/dashboardad',
+    '/edit',
 
     '/new',
     '/dashboardbd',

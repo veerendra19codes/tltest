@@ -10,6 +10,7 @@ export const connectToDB = async () => {
             console.log("using existing connection");
             return;
         }
+        
         const db = await mongoose.connect(process.env.MONGO_URL, {
 
         });

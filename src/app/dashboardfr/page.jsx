@@ -7,17 +7,6 @@ import FranchiseDashboardPage from '@/Components/FranchiseDashboard/FranchiseDas
 import PieChart from '@/Components/PieComponent/PieComponent';
 import FranchiseRevenue from '@/Components/FranchiseRevenue/FranchiseRevenue';
 
-//FETCHING DATA WITH API
-const getUser = async (id) => {
-    // console.log("id insie getUser", id);
-    const res = await fetch(`http://localhost:3000/api/user/${id}`);
-
-    if (!res.ok) {
-        console.log(res.json);
-    }
-    return res.json();
-}
-
 const DashboardFRPage = async () => {
 
     const session = await getServerSession(authOptions);
@@ -30,11 +19,11 @@ const DashboardFRPage = async () => {
         redirect("/")
     }
 
-    const teamleaderId = await session.user?.teamleader;
-    // console.log("teamleader id of this user/franchise : ", teamleaderId);
+    // const teamleaderId = await session.user?.teamleader;
+    // // console.log("teamleader id of this user/franchise : ", teamleaderId);
 
-    const teamleader = await getUser(teamleaderId);
-    // console.log("user found:", user);
+    // const teamleader = await getUser(teamleaderId);
+    // // console.log("user found:", user);
 
     const allCompanies = await getAllCompanies();
     // console.log(allCompanies);
@@ -63,7 +52,7 @@ const DashboardFRPage = async () => {
                         </div>
                         <div className="row flex justiy-start items-center w-full gap-4">
                             <label className="w-2/5 py-2 font-bold">Team Leader</label>
-                            <div className="w-3/5 py-2">{teamleader.username}</div>
+                            <div className="w-3/5 py-2">{session.user?.teamleadername}</div>
                         </div>
                         <div className="row flex justiy-start items-center w-full gap-4">
                             <label className="w-2/5 py-2 font-bold">Spreadsheet</label>
@@ -73,11 +62,11 @@ const DashboardFRPage = async () => {
                 </div>
 
                 <div className="w-2/6 flex justify-center items-center h-auto bg-white py-[115px] rounded-xl">
-                    <FranchiseRevenue username={session.user?.username} />
+                    <FranchiseRevenue username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
                 </div>
 
                 <div className="w-2/6 flex justify-center items-center h-auto bg-white py-4 rounded-xl">
-                    <PieChart username={session.user?.username} />
+                    <PieChart username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
                 </div>
             </div>
 

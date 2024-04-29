@@ -5,13 +5,12 @@ import { getAllUsers } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import UserContext from '@/contexts/UserContext';
 
-import { Doughnut } from 'react-chartjs-2';
+import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJs, ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, registerables } from 'chart.js';
 // import { Chart } from 'chart.js/auto';
 
 ChartJs.register(ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, ...registerables);
 
-import { Line, Bar, Dooughnut } from 'react-chartjs-2';
 
 
 const DashboardADPage = () => {
@@ -114,7 +113,6 @@ const DashboardADPage = () => {
         if (selectedFR !== "") {
             const fetchSheetData = async (e) => {
                 try {
-                    console.log("i was called");
                     console.log("franchise selected:", selectedFR);
 
                     // const response = await fetch("/api/fetchAppscript", {
@@ -141,7 +139,7 @@ const DashboardADPage = () => {
                         acc[key.replace(/\s+/g, '').toLowerCase()] = data[key];
                         return acc;
                     }, {});
-                    console.log("normalized selectedfr:", selectedFRNormalized);
+                    // console.log("normalized selectedfr:", selectedFRNormalized);
                     // console.log("dataKeyNormalized:", dataKeysNormalized);
 
 
@@ -198,9 +196,17 @@ const DashboardADPage = () => {
                                 setPositionStatusData(positionStatusCounts);
 
                                 // Set unique colors for positionStatusCounts data
+                                // Define a color mapping for each status label
+                                const statusColorMap = {
+                                    "Closed": "green",
+                                    "Cancel": "red",
+                                    "Hold": "blue",
+                                    "In Progress": "yellow",
+                                    "Internally Closed": "purple",
+                                };
 
                                 // Set unique colors for positionStatusCounts data
-                                const positionStatusColors = Object.keys(positionStatusCounts).map(() => getRandomColor());
+                                const positionStatusColors = Object.keys(positionStatusCounts).map(() => statusColorMap[status] || getRandomColor());
                                 setChartData(prevState => ({
                                     ...prevState,
                                     positionStatus: {
@@ -284,7 +290,7 @@ const DashboardADPage = () => {
                 {
                     label: 'City Counts',
                     data: Object.values(cityData),
-                    fill: false,
+                    fill: true,
                     borderColor: 'blue',
                     borderWidth: 2,
                 },
@@ -302,19 +308,7 @@ const DashboardADPage = () => {
                     beginAtZero: true,
                 },
             },
-            elements: {
-                point: {
-                    radius: 5,
-                    borderWidth: 2,
-                    borderColor: 'red',
-                    backgroundColor: 'white',
-                },
-                line: {
-                    tension: 0.4,
-                    borderColor: 'blue',
-                    borderWidth: 2,
-                },
-            },
+
         };
 
         return <Line data={data} options={options} />;
@@ -328,7 +322,7 @@ const DashboardADPage = () => {
                 {
                     label: 'States Worked In',
                     data: Object.values(stateData),
-                    fill: false,
+                    fill: true,
                     borderColor: 'green',
                     backgroundColor: 'rgba(0, 128, 0, 0.2)',
                     borderWidth: 2,
@@ -345,20 +339,94 @@ const DashboardADPage = () => {
                 y: {
                     type: 'linear',
                     beginAtZero: true,
+                    ticks: {
+                        // Set the font size for y-axis ticks
+                        fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 14 : 10, // Adjust font size based on screen width
+                    },
                 },
             },
+
         };
 
         return <Line data={data} options={options} />;
     };
 
+    const barColors = ["#ADD8E6"];
+
+    const options = {
+        plugins: {
+            legend: {
+                labels: {
+                    // Set the font size for legend labels
+                    fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 14 : 10, // Adjust font size based on screen width
+                },
+            },
+            title: {
+                display: true,
+                text: 'Chart Title',
+                // Set the font size for the chart title
+                fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 18 : 14, // Adjust font size based on screen width
+            },
+        },
+        // Other chart options...
+    };
+
+
+    const renderVerticalBarChart = () => {
+        const data = {
+            labels: Object.keys(industryData),
+            datasets: [
+                {
+                    label: 'Industries Worked In',
+                    data: Object.values(industryData),
+                    backgroundColor: barColors, // Set the color for all bars to blue
+                    borderWidth: 1,
+                },
+            ],
+        };
+
+        const options = {
+            indexAxis: 'y', // Set the bar chart to be vertical
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        // Set the font size for y-axis ticks
+                        fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 14 : 3,
+                    },
+                },
+                x: {
+                    ticks: {
+                        // Set the font size for x-axis ticks
+                        fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 14 : 3,
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // Set the font size for legend labels
+                        fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 14 : 10,
+                    },
+                },
+                title: {
+                    display: true,
+                    text: 'Industries Worked In',
+                    // Set the font size for the chart title
+                    fontSize: typeof window !== 'undefined' && window.innerWidth > 768 ? 18 : 14,
+                },
+            },
+        };
+
+        return <Bar data={data} options={options} />;
+    };
 
     return (
-        <div className="flex flex-col justify-center items-center w-full h-auto">
+        <div className="flex flex-col justify-center items-center w-full h-auto gap-4 py-8">
 
-            <div className="flex w-full p-8">
+            <div className="flex w-full px-8 gap-4 lg:justify-between lg:gap-2 lg:px-4">
 
-                <div className="tldropdown w-1/4 tex-center p-4">
+                <div className="tldropdown w-1/4 tex-center lg:w-1/2">
 
                     <label className="block text-white font-medium text-sm  mb-2">Select Teamleader:</label >
                     <select
@@ -374,7 +442,7 @@ const DashboardADPage = () => {
                 </div>
 
                 {selectedTL &&
-                    <div className="frdropdown w-1/4 tex-center p-4">
+                    <div className="frdropdown w-1/4 tex-center lg:w-1/2">
 
                         <label className="block text-white font-medium text-sm  mb-2">Select Franchise:</label >
                         <select
@@ -415,35 +483,57 @@ const DashboardADPage = () => {
                 </div>
             </div> */}
 
-            <div className="flex flex-col justify-center items-center w-full h-auto gap-8">
+            {selectedFR ?
+                <div className="flex flex-col justify-center items-center w-full h-auto gap-4 px-8 lg:px-4">
 
-                <div className="flex justify-between items-center w-full h-auto p-4 gap-4">
-                    <div className="w-1/2 h-full bg-white text-black p-4 text-center">
-                        <h2>Position Status Counts</h2>
-                        {/* <Doughnut data={chartData.positionStatus} /> */}
-                        {Object.keys(positionStatusData).length > 0 ? <Doughnut data={chartData.positionStatus} /> : <p>Loading...</p>}
+                    <div className="flex justify-between items-center w-full h-auto gap-4 lg:flex-col">
+                        <div className="w-1/2 flex flex-col justify-center items-center h-auto p-8 bg-white rounded-xl lg:w-full"  >
+
+                            <h2>Position Status Counts</h2>
+                            {/* <Doughnut data={chartData.positionStatus} /> */}
+
+                            {Object.keys(positionStatusData).length > 0 ?
+                                <div className="piechart w-auto h-[90%]">
+                                    <Doughnut data={chartData.positionStatus} options={options} />
+                                </div> : <p>Loading...</p>}
+                        </div>
+                        <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full">
+                            <h2>Industries Worked In</h2>
+                            {/* {Object.keys(industryData).length > 0 ? <Bar data={chartData.industry} /> : <p>Loading...</p>} */}
+                            {Object.keys(industryData).length > 0 ?
+                                // <Bar
+                                //     data={{
+                                //         datasets: [{
+                                //             data: Object.values(industryData),
+                                //             backgroundColor: barColors, // Set the color for all bars to blue
+                                //         }],
+                                //         labels: Object.keys(industryData),
+                                //     }}
+                                //     options={options}
+                                // /> 
+                                renderVerticalBarChart()
+                                :
+                                <p>Loading...</p>}
+                        </div>
+
                     </div>
-                    <div className="w-1/2 h-full bg-white text-black p-4 text-center">
-                        <h2>Industries Worked In</h2>
-                        {/* <Bar data={chartData.industry} /> */}
-                        {Object.keys(industryData).length > 0 ? <Bar data={chartData.industry} /> : <p>Loading...</p>}
+
+                    <div className="flex justify-between items-center w-full h-auto gap-4 lg:flex-col">
+                        <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full lg:p-0">
+                            <h2>Cities Worked In</h2>
+
+                            {Object.keys(cityData).length > 0 ? renderLineChart() : <p>Loading...</p>}
+                        </div>
+                        <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full lg:p-0">
+                            <h2>States Worked In</h2>
+                            {Object.keys(stateData).length > 0 ? renderLineChartStates() : <p>Loading...</p>}
+                        </div>
                     </div>
 
                 </div>
-
-                <div className="flex justify-between items-center w-full h-auto p-4 gap-4">
-                    <div className="w-1/2 h-full bg-white text-black p-4 text-center">
-                        <h2>Cities Worked In</h2>
-
-                        {Object.keys(cityData).length > 0 ? renderLineChart() : <p>Loading...</p>}
-                    </div>
-                    <div className="w-1/2 h-full bg-white text-black p-4 text-center">
-                        <h2>States Worked In</h2>
-                        {Object.keys(stateData).length > 0 ? renderLineChartStates() : <p>Loading...</p>}
-                    </div>
-                </div>
-
-            </div>
+                :
+                <p className="text-white text-2xl text-center">Please select a teamleader and franchise to view their dashboard</p>
+            }
 
 
 

@@ -31,7 +31,7 @@ const Navbar = () => {
             {status !== "loading" &&
 
                 <div className="flex justify-center items-center gap-4">
-                    <div className="username text-xl  rounded-xl py-2 px-4 font-bold text-darkpurple  lg:hidden">Hi, {session.user?.username}({session.user?.role.toUpperCase()})</div>
+                    <div className="username text-xl  rounded-xl py-2 px-4 font-bold text-darkpurple  lg:hidden">Hi {session?.user?.username}({session?.user?.role.toUpperCase()})</div>
 
                     <button onClick={() => signOut()} className="bg-purple mx-2 px-4 my-1 py-2 
                     text-white rounded-lg flex items-center gap-4 font-medium lg:hidden">Log Out <MdLogout size={25} /></button>

@@ -3,6 +3,9 @@
 import UserContext from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation'
 import { useContext, useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const FranchisePage = () => {
     const router = useRouter();
@@ -26,7 +29,7 @@ const FranchisePage = () => {
         level: "",
         teamleadername: "", companiesCompleted: [], companiesRejected: [], companiesWorking: [],
         companiesCompletedName: [], companiesRejectedName: [], companiesWorkingName: [],
-        spreadsheet: "",
+        spreadsheet: "", deployedlink: "", preference: "",
     });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
@@ -35,9 +38,9 @@ const FranchisePage = () => {
         setInfo((prev) => ({
             ...prev, [e.target.name]: e.target.value,
             role: "fr",
-            teamleader: session.data?.user?.id,
-            teamleadername: session.data?.user?.username,
-            level: "junior",
+            teamleader: session.user?.id,
+            teamleadername: session.user?.username,
+            deployedlink: "",
             companiesCompleted: [],
             companiesRejected: [],
             companiesWorking: [],
@@ -48,41 +51,58 @@ const FranchisePage = () => {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        if (!info.email || !info.password) {
-            setError("Must provide all credentials");
+
+        if (!info.username || !info.email || !info.password || !info.spreadsheet) {
+            setError("Must provide all details");
+        }
+        if (!info.level) {
+            setError("Must provide level");
+        }
+        if (!info.preference) {
+            info.preference = "any";
         }
         else {
-            try {
-                setPending(true);
+            console.log("executed");
+            // try {
+            //     setPending(true);
 
-                const res = await fetch("api/register", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(info),
-                });
+            //     const res = await fetch("api/register", {
+            //         method: "POST",
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify(info),
+            //     });
 
-                console.log(res);
+            //     console.log(res);
 
-                if (res.ok) {
-                    setPending(false);
-                    const form = e.target;
-                    form.reset();
-                    router.refresh("/dashboardtl");
-                    router.push("/dashboardtl");
-                    console.log("Franchise registered successfully");
-                }
-                else {
-                    setPending(false);
-                    const errorData = await res.json();
-                    setError(errorData.message);
-                }
-            } catch (err) {
-                setPending(false);
-                console.log("Error while registering franchise in page.jsx", err);
-                // setError("error in register franchise page in catch block");
-            }
+            //     if (res.ok) {
+            //         setPending(false);
+            //         const form = e.target;
+            //         form.reset();
+            //         router.refresh("/dashboardtl");
+            //         toast.success('Franchise added successfully', {
+            //             position: "top-right",
+            //             autoClose: 2000,
+            //             hideProgressBar: false,
+            //             closeOnClick: true,
+            //             pauseOnHover: true,
+            //             draggable: true,
+            //             progress: undefined,
+            //             theme: "light",
+            //         });
+            //         console.log("Franchise registered successfully");
+            //     }
+            //     else {
+            //         setPending(false);
+            //         const errorData = await res.json();
+            //         setError(errorData.message);
+            //     }
+            // } catch (err) {
+            //     setPending(false);
+            //     console.log("Error while registering franchise in page.jsx", err);
+            //     // setError("error in register franchise page in catch block");
+            // }
         }
     }
 
@@ -118,9 +138,23 @@ const FranchisePage = () => {
                         <input type="text" name="spreadsheet" placeholder="spreadsheet link" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
                     </div>
 
-                    {/* <input type="hidden" name="role" value="fr" /> */}
-                    {/* <input type="hidden" name="teamleader" value={session.data?.user?.id} /> */}
-                    {/* <input type="hidden" name="teamleadername" value={session.data?.user?.username} /> */}
+                    <div className="flex flex-col w-full">
+                        <label className=" font-normal text-purple">Level</label>
+
+                        <select name="level" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={handleInput}>
+                            <option value="">Select Franchise Level</option>
+                            <option value="junior">Junior</option>
+                            <option value="mid">Mid</option>
+                            <option value="senior">Senior</option>
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col w-full">
+                        <label className=" font-normal text-purple">Preference</label>
+                        <input type="text" name="preference" placeholder="preferred field" className="p-2  pl-4 border-2 border-gray-400 rounded-xl w-full sm:py-1" onChange={(e) => handleInput(e)} />
+                    </div>
+
+
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
 
                     <button className=" bg-purple rounded-xl py-2 px-8 text-white text-xl font-medium mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>
