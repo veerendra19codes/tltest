@@ -4,6 +4,7 @@ import Navbar from "@/Components/Navbar/Navbar";
 import Footer from "@/Components/Footer/Footer";
 import { Providers } from "./providers";
 import UserContextProvider from "@/contexts/UserContextProvider";
+// import TeamleaderContextProvider from "@/contexts/TeamleaderContext/TeamleaderContextProvider";
 // import { initializeCronJob } from '@/lib/cron';
 // import { useEffect } from 'react';
 
@@ -27,8 +28,11 @@ export default function RootLayout({ children }) {
     <body className={inter.className + "h-full w-full flex flex-col bg-gradient-to-r from-[#5E376C] to-[#675080] overflow-x-hidden"}>
       <Providers>
         <UserContextProvider>
+          {/* <TeamleaderContextProvider> */}
+
         <Navbar />
         {children}
+          {/* </TeamleaderContextProvider> */}
         </UserContextProvider>
       </Providers>
     </body>

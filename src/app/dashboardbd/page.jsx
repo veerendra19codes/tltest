@@ -43,9 +43,9 @@ const DashboardBD = async () => {
     return (
         <div className="flex justify-center items-center flex-col w-full lg:px-2 ">
             <div className="lg:overflow-x-auto sm:w-full w-[90%] my-12 flex justify-center whitespace-nowrap bg-white rounded-xl lg:mt-2">
-                <table className="Table w-[90%] h-full flex flex-col items-center justify-center sm:mt-4 whitespace-nowrap lg:overflow-x-auto border-gray-400 border-[1px]">
+                <table className="Table w-full h-full flex flex-col items-center justify-center sm:mt-4 whitespace-nowrap lg:overflow-x-auto border-gray-400 border-[1px]">
                     <thead className="w-full">
-                        <tr className="w-full">
+                        <tr className="w-full flex justify-center">
                             <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block lg:py-1 border-gray-400 border-[1px]">Company</th>
                             <th className="w-[250px] py-2 text-center font-bold whitespace-nowrap sm:w-[200px] inline-block lg:py-1 border-gray-400 border-[1px]">Details</th>
                             <th className="w-[250px] py-2  text-center font-bold  whitespace-nowrap sm:w-[200px] inline-block lg:py-1 border-gray-400 border-[1px]">Team Leader</th>
@@ -58,7 +58,7 @@ const DashboardBD = async () => {
 
                         {/* companies listed by me */}
                         {data.reverse().map((d) => (            //border-[1px] border - gray - 500
-                            <tr key={d._id} className="w-full">
+                            <tr key={d._id} className="w-full flex justify-center">
                                 <td className="w-[250px] py-2 text-center whitespace-nowrap sm:w-[200px] inline-block lg:py-1 border-gray-400 border-[1px]">{d.companyname}</td>
 
                                 <td className="w-[250px] py-2 text-center whitespace-nowrap sm:w-[200px] inline-block lg:py-1 border-gray-400 border-[1px] hover:underline text-blue-500"><a href={d.jobdetails} target="_blank">Click here</a></td>

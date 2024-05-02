@@ -12,7 +12,7 @@ export async function DELETE(req, {params}) {
         // console.log("user:", user);
 
         const result = await User.findOneAndDelete({username});
-        // console.log("result:", result);
+        console.log("result:", result);
         return NextResponse.json(result,{status: 201});
         // return NextResponse.json({message: "testng"}, {status: 201})
 

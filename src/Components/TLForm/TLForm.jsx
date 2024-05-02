@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { CgProfile } from "react-icons/cg";
 import { MdLockOutline } from "react-icons/md";
 import { MdOutlineMailOutline } from "react-icons/md";
@@ -10,7 +10,11 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const TLForm = ({ method, userdetails }) => {
+// import TeamleaderContext from '@/contexts/TeamleaderContext/TeamleaderContext';
+
+
+const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) => {
+    // const { alltls, setAlltls } = useContext(TeamleaderContext);
 
 
     const [info, setInfo] = useState({
@@ -56,6 +60,7 @@ const TLForm = ({ method, userdetails }) => {
             try {
                 setPending(true);
 
+                //updating existing tl
                 if (method === "put") {
                     const res = await fetch("api/register", {
                         method: "PUT",
@@ -86,6 +91,8 @@ const TLForm = ({ method, userdetails }) => {
                         setError(errorData.message);
                     }
                 }
+
+                //registering new tl
                 else {
 
                     const res = await fetch("api/register", {
@@ -97,8 +104,28 @@ const TLForm = ({ method, userdetails }) => {
                     });
                     if (res.ok) {
                         setPending(false);
-                        const form = e.target;
-                        form.reset();
+
+                        //set userdetails to default values
+                        setInfo({
+                            username: "",
+                            password: "",
+                            email: "",
+                            role: "",
+                            level: "",
+                            teamleadername: "",
+                            companiesCompleted: [],
+                            companiesRejected: [],
+                            companiesWorking: [],
+                            companiesCompletedName: [],
+                            companiesRejectedName: [],
+                            companiesWorkingName: [],
+                            spreadsheet: "",
+                            deployedlink: "",
+                            revenueapi: "",
+                            preference: ""
+                        });
+
+                        console.log("userdetails after submission:", userdetails);
                         toast.success('TL added successfully', {
                             position: "top-right",
                             autoClose: 2000,
@@ -122,6 +149,73 @@ const TLForm = ({ method, userdetails }) => {
                 console.error("Error registering new TL in page.jsx:", err);
                 setError("Error in registering TL");
             }
+        }
+    }
+
+
+    const handleDeleteUser = async (e) => {
+        e.preventDefault();
+
+        try {
+            setPending(true);
+            const username = info.username;
+            console.log("username to delete:", username);
+
+            const res = await fetch(`/api/register/${username}`, {
+                method: "DELETE"
+            })
+            // const data = await res.json();
+            console.log("res:", res);
+            if (res.status === 201) {
+                setPending(false);
+
+                //set userdetails to default values
+                setInfo({
+                    username: "",
+                    password: "",
+                    email: "",
+                    role: "",
+                    level: "",
+                    teamleadername: "",
+                    companiesCompleted: [],
+                    companiesRejected: [],
+                    companiesWorking: [],
+                    companiesCompletedName: [],
+                    companiesRejectedName: [],
+                    companiesWorkingName: [],
+                    spreadsheet: "",
+                    deployedlink: "",
+                    revenueapi: "",
+                    preference: ""
+                });
+
+
+                toast.success('TL deleted successfully', {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                console.log("user deleted successfully");
+                setSelectedRole("");
+                console.log("selectedRole after deleting:", selectedRole);
+                setTls([]);
+                // setAlltls([])
+            }
+            else {
+                setPending(false);
+                const errorData = await res.json();
+                setError(errorData.message);
+            }
+        }
+        catch (err) {
+            setPending(false);
+            console.log("Error while deleting TL in page.jsx:", err);
+            setError("Error deleting TL");
         }
     }
 
@@ -171,7 +265,29 @@ const TLForm = ({ method, userdetails }) => {
 
                     {error && <span className="text-red-500 font-semibold">{error}</span>}
 
-                    {method === "put" ? <button className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending}>{pending ? "Updating" : "Update TL"}</button> : <button className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending}>{pending ? "Adding" : "Add"}</button>}
+                    {method === "put" ?
+                        <div className="flex justify-center items-center gap-4">
+                            <button
+                                type="submit" className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                                {/* {pending ? "Updating" : "Update"} */}
+                                Update
+                            </button>
+
+                            <button
+                                onClick={handleDeleteUser}
+                                className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                                {/* {pending ? "Deleting" : "Delete"} */}
+                                Delete
+                            </button>
+                        </div>
+                        :
+                        <button
+                            type="submit"
+                            className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                            {/* {pending ? "Adding User" : "Add User"} */}
+                            Add
+                        </button>
+                    }
                     <ToastContainer />
 
                 </form>

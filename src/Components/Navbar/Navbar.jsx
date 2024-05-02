@@ -1,17 +1,16 @@
 "use client"
 
 import Image from 'next/image'
-import React, { useContext } from 'react'
-import Links from './Links/Links'
+import React, { useContext, Suspense } from 'react'
+const Links = React.lazy(() => import('./Links/Links'))
 import { MdLogout } from "react-icons/md";
 import { signOut } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import UserContext from '@/contexts/UserContext';
 
 const Navbar = () => {
     const { session, status } = useContext(UserContext);
     const pathname = usePathname();
-    const router = useRouter();
 
     if (pathname === "/login") {
         return null;
@@ -24,9 +23,11 @@ const Navbar = () => {
                 <Image src="/tclogo.png" className="size-auto absolute" priority alt="logo" width={100} height={100} />
             </div>
 
-            <div className="links">
-                <Links />
-            </div>
+            <Suspense fallback={<></>}>
+                <div className="links">
+                    <Links />
+                </div>
+            </Suspense>
 
             {status !== "loading" &&
 

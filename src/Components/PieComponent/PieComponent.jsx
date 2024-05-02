@@ -16,18 +16,6 @@ const PieChart = ({ username, teamleadername }) => {
     // console.log("tlname:", tlname);
     const [url, setUrl] = useState("");
 
-    // useEffect(() => {
-    //     const getteamleaderurl = async () => {
-    //         // console.log("hello");
-    //         const res = await fetch(`/api/user/${teamleaderId}`);
-    //         const data = await res.json();
-    //         // console.log("teamleader obj:", data);
-
-    //         setUrl(data.deployedlink);
-
-    //     }
-    //     getteamleaderurl();
-    // }, [username])
 
     const [chartData, setChartData] = useState({
         datasets: [{
@@ -70,56 +58,75 @@ const PieChart = ({ username, teamleadername }) => {
 
             try {
                 // console.log("hello");
-                // console.log("url:", url);
+                console.log("url:", url);
 
                 const response = await fetch(url);
+                if (!response.ok) {
 
-                const data = await response.json();
-                // console.log('data: ', data);
+                    const statusCount = {
+                        'In Progress': 0,
+                        'Hold': 0,
+                        'Cancel': 0,
+                        'Closed': 0
+                    };
+                    // console.log("statusCount:", statusCount);
 
-                const statusCount = {
-                    'In Progress': 0,
-                    'Hold': 0,
-                    'Cancel': 0,
-                    'Closed': 0
-                };
-                // console.log("statusCount:", statusCount);
+                    const statusData = Object.values(statusCount);
+                    // console.log("statusData:", statusData);
 
-                const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === username.replace(/\s/g, '').toLowerCase());
-                // console.log("franchiseData:", franchiseData);
+                    setChartData({
+                        datasets: [{
+                            data: statusData,
+                            backgroundColor: [
+                                'yellow',
+                                'blue',
+                                'red',
+                                'green',
+                            ]
+                        }],
+                        labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                    });
+                }
+                else {
+                    const data = await response.json();
+                    // console.log('data: ', data);
 
-                const statusEntry = franchiseData[0];
-                // console.log("statusEntry:", statusEntry);
+                    const statusCount = {
+                        'In Progress': 0,
+                        'Hold': 0,
+                        'Cancel': 0,
+                        'Closed': 0
+                    };
+                    // console.log("statusCount:", statusCount);
 
-                statusCount['In Progress'] = statusEntry.inprogress;
-                statusCount['Hold'] = statusEntry.hold;
-                statusCount['Cancel'] = statusEntry.cancel;
-                statusCount['Closed'] = statusEntry.closed;
-                // console.log("statusCount:", statusCount);
+                    const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === username.replace(/\s/g, '').toLowerCase());
+                    // console.log("franchiseData:", franchiseData);
 
+                    const statusEntry = franchiseData[0];
+                    // console.log("statusEntry:", statusEntry);
 
-                // data.forEach(entry => {
-                //     const status = entry.status;
-                //     if (statusCount.hasOwnProperty(status)) {
-                //         statusCount[status]++;
-                //     }
-                // });
+                    statusCount['In Progress'] = statusEntry.inprogress;
+                    statusCount['Hold'] = statusEntry.hold;
+                    statusCount['Cancel'] = statusEntry.cancel;
+                    statusCount['Closed'] = statusEntry.closed;
+                    // console.log("statusCount:", statusCount);
 
-                const statusData = Object.values(statusCount);
-                // console.log("statusData:", statusData);
+                    const statusData = Object.values(statusCount);
+                    // console.log("statusData:", statusData);
 
-                setChartData({
-                    datasets: [{
-                        data: statusData,
-                        backgroundColor: [
-                            'yellow',
-                            'blue',
-                            'red',
-                            'green',
-                        ]
-                    }],
-                    labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
-                });
+                    setChartData({
+                        datasets: [{
+                            data: statusData,
+                            backgroundColor: [
+                                'yellow',
+                                'blue',
+                                'red',
+                                'green',
+                            ]
+                        }],
+                        labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                    });
+                }
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -131,7 +138,8 @@ const PieChart = ({ username, teamleadername }) => {
 
     return (
         <div className="piechart w-full h-full" style={{ width: '80%', height: '80%' }}>
-            <Doughnut data={chartData} />
+            {<Doughnut data={chartData} /> || "Loading..."}
+
         </div>
     );
 }

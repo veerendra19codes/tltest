@@ -101,15 +101,18 @@ const FranchiseRevenue = ({ username, teamleadername }) => {
         fetchData();
     }, [url]);
     return (
-        <div className="franchiserevenue flex justify-center items-center flex-col gap-4">
+        <div className="franchiserevenue flex justify-center items-center flex-col gap-4 lg:flex-row lg:text-xs lg:px-2">
+
             <div className="revenuegained flex flex-col justify-around items-center bg-green-500 rounded-xl w-full py-4 px-8">
                 <div className="title font-bold text-white text-center">Revenue Gained</div>
-                <div className="title font-bold text-white text-center">{revenuegained}</div>
+                <div className="title font-bold text-white text-center">Rs.{revenuegained}</div>
             </div>
+
             <div className="revenuelost flex flex-col justify-around items-center bg-red-500 rounded-xl w-full py-4 px-8">
                 <div className="title font-bold text-white text-center">Revenue Lost</div>
-                <div className="title font-bold text-white text-center">{revenuelost}</div>
+                <div className="title font-bold text-white text-center">Rs.{revenuelost}</div>
             </div>
+
         </div>
     )
 }

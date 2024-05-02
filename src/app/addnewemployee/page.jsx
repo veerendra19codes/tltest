@@ -1,9 +1,10 @@
 'use client'
 import React, { useState, useEffect, useContext, Suspense } from 'react';
+const ADForm = React.lazy(() => import('@/Components/ADForm/ADForm'));
 const BDForm = React.lazy(() => import('@/Components/BDForm/BDForm'));
+const SHForm = React.lazy(() => import('@/Components/SHForm/SHForm'));
 const TLForm = React.lazy(() => import('@/Components/TLForm/TLForm'));
 const FRForm = React.lazy(() => import('@/Components/FRForm/FRForm'));
-const ADForm = React.lazy(() => import('@/Components/ADForm/ADForm'));
 import { useRouter } from 'next/navigation';
 import UserContext from '@/contexts/UserContext';
 
@@ -22,6 +23,7 @@ const AddNewEmployeePage = () => {
     const [selectedOption, setSelectedOption] = useState("");
 
     const handleChange = (e) => {
+
         setSelectedOption(e.target.value);
     };
 
@@ -54,32 +56,41 @@ const AddNewEmployeePage = () => {
                     <option value="">Select Role</option>
                     <option value="ad">Admin</option>
                     <option value="bd">BD</option>
+                    <option value="sh">Super Head</option>
                     <option value="tl">Team Leader</option>
                     <option value="fr">Franchise</option>
                 </select>
             </div>
 
             {selectedOption === 'ad' &&
-                <Suspense fallback={<p className="text-white text-6xl">Form is loading</p>}>
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
                     <ADForm method="post" userdetails={userDetails} />
                 </Suspense>
             }
+
             {selectedOption === 'bd' &&
-                <Suspense fallback={<p className="text-white text-6xl">Form is loading</p>}>
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
                     <BDForm method="post" userdetails={userDetails} />
                 </Suspense>
             }
+
+            {selectedOption === 'sh' &&
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
+                    <SHForm method="post" userdetails={userDetails} />
+                </Suspense>
+            }
+
             {selectedOption === 'tl' &&
-                <Suspense fallback={<p className="text-white text-6xl">Form is loading</p>}>
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
                     <TLForm method="post" userdetails={userDetails} />
                 </Suspense>
 
             }
+
             {selectedOption === 'fr' &&
-                <Suspense fallback={<p className="text-white text-6xl">Form is loading</p>}>
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
                     <FRForm method="post" userdetails={userDetails} />
                 </Suspense>
-
             }
         </div>
     );

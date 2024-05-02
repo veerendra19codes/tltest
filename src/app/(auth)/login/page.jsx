@@ -88,7 +88,7 @@ const LoginPage = () => {
                 </h1>
                 <p className="text-gray-600 text-lg sm:text-base"
                 >
-                    Enter you email below to login
+                    Enter your email below to login
                 </p>
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>

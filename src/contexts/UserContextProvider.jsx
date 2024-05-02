@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react'
 
 const UserContextProvider = ({ children }) => {
     const { data: session, status } = useSession();
+    console.log("user context");
 
     return (
         <UserContext.Provider value={{ session, status }} >

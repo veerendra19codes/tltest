@@ -10,6 +10,8 @@ import { Chart as ChartJs, ArcElement, Title, Tooltip, Legend, CategoryScale, Li
 // import { Chart } from 'chart.js/auto';
 
 ChartJs.register(ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, ...registerables);
+import Link from 'next/link';
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 
 
@@ -424,39 +426,56 @@ const DashboardADPage = () => {
     return (
         <div className="flex flex-col justify-center items-center w-full h-auto gap-4 py-8">
 
-            <div className="flex w-full px-8 gap-4 lg:justify-between lg:gap-2 lg:px-4">
+            <div className="flex w-full px-8 gap-4 justify-between  lg:flex-col-reverse  lg:justify-center lg:items-center lg:gap-2 lg:px-4 items-end">
 
-                <div className="tldropdown w-1/4 tex-center lg:w-1/2">
+                <div className="flex w-full px-8 gap-4 lg:justify-between lg:gap-2 lg:px-0">
 
-                    <label className="block text-white font-medium text-sm  mb-2">Select Teamleader:</label >
-                    <select
-                        className="block appearance-none w-full bg-white border border-gray-300 rounded py-2 px-4 leading-tight focus:outline-none focus:border-blue-500"
-                        onChange={SelectTL}
-                        value={selectedTL}
-                    >
-                        <option value="">Select Team Leader</option>
-                        {tls.map(tl => (
-                            <option key={tl._id} value={tl.username}>{tl.username}</option>
-                        ))}
-                    </select>
-                </div>
+                    <div className="tldropdown w-1/4 lg:w-1/2">
 
-                {selectedTL &&
-                    <div className="frdropdown w-1/4 tex-center lg:w-1/2">
-
-                        <label className="block text-white font-medium text-sm  mb-2">Select Franchise:</label >
+                        <label className="block text-white font-thin text-sm  mb-2 lg:text-[12px]">Select Teamleader:</label >
                         <select
-                            className="block appearance-none w-full bg-white border border-gray-300 rounded py-2 px-4 leading-tight focus:outline-none focus:border-blue-500"
-                            onChange={SelectFR}
-                            value={selectedFR}
+                            className="block appearance-none w-full bg-white border border-gray-300 rounded py-2 px-4 leading-tight focus:outline-none focus:border-blue-500 lg:text-[12px]"
+                            onChange={SelectTL}
+                            value={selectedTL}
                         >
-                            <option value="">Select Franchise</option>
-                            {frs.map(fr => (
-                                <option key={fr._id} value={fr.username}>{fr.username}</option>
+                            <option value="">Select Team Leader</option>
+                            {tls.map(tl => (
+                                <option key={tl._id} value={tl.username}>{tl.username}</option>
                             ))}
                         </select>
                     </div>
+
+                    {selectedTL &&
+                        <div className="frdropdown w-1/4 lg:w-1/2">
+
+                            <label className="block text-white font-medium text-sm  mb-2 lg:text-[12px] lg:font-thin">Select Franchise:</label >
+                            <select
+                                className="block appearance-none w-full bg-white border border-gray-300 rounded py-2 px-4 leading-tight focus:outline-none focus:border-blue-500 lg:text-[12px]"
+                                onChange={SelectFR}
+                                value={selectedFR}
+                            >
+                                <option value="">Select Franchise</option>
+                                {frs.map(fr => (
+                                    <option key={fr._id} value={fr.username}>{fr.username}</option>
+                                ))}
+                            </select>
+                        </div>
+                    }
+
+                </div>
+
+                {session?.user?.username &&
+                    <div className="py-0 px-8 rounded bg-blue-500 gap-4 flex items-center h-[40px]">
+
+                        <Link href={session?.user?.spreadsheet || ""} target="_blank" className="text-white font-semi-bold text-center whitespace-nowrap">
+                            My Spreadsheet
+                        </Link>
+                        <FaExternalLinkAlt size={12} color='white' />
+                    </div>
                 }
+
+
+
             </div>
 
             {/* <div className="w-full flex">
@@ -497,7 +516,7 @@ const DashboardADPage = () => {
                                     <Doughnut data={chartData.positionStatus} options={options} />
                                 </div> : <p>Loading...</p>}
                         </div>
-                        <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full">
+                        <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full ">
                             <h2>Industries Worked In</h2>
                             {/* {Object.keys(industryData).length > 0 ? <Bar data={chartData.industry} /> : <p>Loading...</p>} */}
                             {Object.keys(industryData).length > 0 ?

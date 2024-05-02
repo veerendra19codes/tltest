@@ -1,18 +1,23 @@
 'use client'
 
 import React, { useState, useEffect, useContext, Suspense } from 'react';
+const ADForm = React.lazy(() => import('@/Components/ADForm/ADForm'));
+const SHForm = React.lazy(() => import('@/Components/SHForm/SHForm'));
 const BDForm = React.lazy(() => import('@/Components/BDForm/BDForm'));
 const TLForm = React.lazy(() => import('@/Components/TLForm/TLForm'));
 const FRForm = React.lazy(() => import('@/Components/FRForm/FRForm'));
-const ADForm = React.lazy(() => import('@/Components/ADForm/ADForm'));
 import { useRouter } from 'next/navigation';
 import UserContext from '@/contexts/UserContext';
+// import TeamleaderContext from '@/contexts/TeamleaderContext/TeamleaderContext';
+
 import { getAllUsers } from '@/lib/actions';
 
 const EditPage = () => {
 
     const router = useRouter();
     const { session, status } = useContext(UserContext);
+    // const { alltls, setAlltls } = useContext(TeamleaderContext);
+
 
     useEffect(() => {
         if (status === 'loading') return; // Wait for session to load
@@ -24,30 +29,43 @@ const EditPage = () => {
 
     const [selectedRole, setSelectedRole] = useState("");
     const [selectedBD, setSelectedBD] = useState('');
+    const [selectedSH, setSelectedSH] = useState('');
     const [selectedTL, setSelectedTL] = useState('');
     const [selectedFR, setSelectedFR] = useState('');
-    const [bds, setbds] = useState([]);
+    const [bds, setBds] = useState([]);
+    const [shs, setShs] = useState([]);
     const [tls, setTls] = useState([]);
     const [frs, setFrs] = useState([]);
     const [userDetails, setUserDetails] = useState({});
 
     const selectRole = (e) => {
         setUserDetails({});
+        setSelectedBD("");
+        setSelectedSH("");
+        setSelectedTL("");
+        setSelectedFR("");
         setSelectedRole(e.target.value);
-        console.log("selectedRole inside selectRole fn:", selectedRole);
+        // console.log("selectedRole inside selectRole fn:", selectedRole);
     };
 
     const SelectBD = (e) => {
         setUserDetails({});
         setSelectedBD(e.target.value);
-        console.log("selectedBD in selectTL fn:", selectedBD);
+        // console.log("selectedBD in selectBD fn:", selectedBD);
     };
+
+    const SelectSH = (e) => {
+        setUserDetails({});
+        setSelectedSH(e.target.value);
+        // console.log("selectedSH in selectSH fn:", selectedSH);
+    };
+
 
     const SelectTL = (e) => {
         setUserDetails({});
         setSelectedFR("");
         setSelectedTL(e.target.value);
-        console.log("selectedTl in selectTL fn:", selectedTL);
+        // console.log("selectedTL in selectTL fn:", selectedTL);
     };
 
     const SelectFR = (e) => {
@@ -57,11 +75,57 @@ const EditPage = () => {
 
     useEffect(() => {
         console.log("selectedRole in first useEffect:", selectedRole);
-        console.log("bds:", bds);
+        // console.log("bds:", bds);
         // console.log("selectedTL in first useEffect:", selectedTL);
 
 
         //FETCHING ALL BDS/TLS/FRS/
+        if (selectedRole == "bd" && bds.length == 0) {
+            const fetchData = async () => {
+                try {
+                    const allUsers = await getAllUsers();
+
+                    // Filter users whose role is 'tl'
+                    const filteredbds = allUsers.filter(user => user.role === 'bd');
+                    setBds(filteredbds);
+                    console.log("fetched bds:", bds);
+                } catch (error) {
+                    console.error("Error fetching users:", error);
+                }
+            };
+
+            fetchData();
+        }
+
+        if (selectedRole == "sh" && shs.length == 0) {
+            const fetchData = async () => {
+                try {
+                    const allUsers = await getAllUsers();
+                    // Filter users whose role is 'tl'
+                    const filteredshs = allUsers.filter(user => user.role === 'sh');
+                    setShs(filteredshs);
+                } catch (error) {
+                    console.error("Error fetching shs:", error);
+                }
+            };
+            fetchData();
+        }
+
+
+        if (selectedRole == "tl" && tls.length == 0) {
+            const fetchData = async () => {
+                try {
+                    const allUsers = await getAllUsers();
+                    // Filter users whose role is 'tl'
+                    const filteredTls = allUsers.filter(user => user.role === 'tl');
+                    setTls(filteredTls);
+                } catch (error) {
+                    console.error("Error fetching users:", error);
+                }
+            };
+            fetchData();
+        }
+
         if (selectedRole == "fr" || frs.length == 0 || tls.length == 0) {
             const fetchData = async () => {
                 try {
@@ -73,83 +137,21 @@ const EditPage = () => {
                         const filteredTls = allUsers.filter(user => user.role === 'tl');
                         setTls(filteredTls);
                     }
-                    else if (frs.length == 0) {
-                        const filteredFrs = allUsers.filter(user => user.teamleadername === selectedTL);
+                    if (frs.length == 0) {
+                        const filteredFrs = allUsers.filter(user => user.teamleadername === selectedTL && user.role === "fr");
                         setFrs(filteredFrs);
                     }
                 } catch (error) {
                     console.error("Error fetching users:", error);
                 }
             };
-
-            fetchData();
-        }
-
-        else if (selectedRole == "tl" && tls.length == 0) {
-            const fetchData = async () => {
-                try {
-                    const allUsers = await getAllUsers();
-                    // Filter users whose role is 'tl'
-                    const filteredTls = allUsers.filter(user => user.role === 'tl');
-                    setTls(filteredTls);
-                } catch (error) {
-                    console.error("Error fetching users:", error);
-                }
-            };
-
-            fetchData();
-        }
-
-        else if (selectedRole == "bd" && bds.length == 0) {
-            const fetchData = async () => {
-                try {
-                    const allUsers = await getAllUsers();
-
-                    // Filter users whose role is 'tl'
-                    const filteredbds = allUsers.filter(user => user.role === 'bd');
-                    setbds(filteredbds);
-                    console.log("fetched bds:", bds);
-                } catch (error) {
-                    console.error("Error fetching users:", error);
-                }
-            };
-
             fetchData();
         }
 
 
         //FETCHING USER DETAILS TO EDIT
-        if (selectedRole == "fr" && selectedFR) {
-            const fetchuserdetails = async () => {
-                try {
-                    const allUsers = await getAllUsers();
-
-                    const userdetails = allUsers.filter(user => user.username === selectedFR);
-                    console.log("userdetails:", userdetails);
-                    setUserDetails(userdetails[0]);
-                } catch (error) {
-                    console.error("Error fetching userdetails:", error);
-                }
-            }
-            fetchuserdetails();
-        }
-        else if (selectedRole == "tl" && selectedTL) {
-            console.log("getting details from db of tl:", selectedTL);
-            const fetchuserdetails = async () => {
-                try {
-                    const allUsers = await getAllUsers();
-
-                    const userdetails = allUsers.filter(user => user.username === selectedTL);
-                    console.log("userdetails:", userdetails);
-                    setUserDetails(userdetails[0]);
-                } catch (error) {
-                    console.error("Error fetching userdetails:", error);
-                }
-            }
-            fetchuserdetails();
-        }
-        else if (selectedRole == "bd" && selectedBD) {
-            console.log("getting details from db of bd:", selectedTL);
+        if (selectedRole == "bd" && selectedBD) {
+            // console.log("getting details from db of bd:", selectedTL);
             const fetchuserdetails = async () => {
                 try {
                     const allUsers = await getAllUsers();
@@ -164,44 +166,55 @@ const EditPage = () => {
             fetchuserdetails();
         }
 
+        if (selectedRole == "sh" && selectedSH) {
+            // console.log("getting details from db of sh:", selectedSH);
+            const fetchuserdetails = async () => {
+                try {
+                    const allUsers = await getAllUsers();
 
-    }, [selectedRole, selectedTL, selectedBD, selectedFR]);
+                    const userdetails = allUsers.filter(user => user.username === selectedSH);
+                    console.log("userdetails:", userdetails);
+                    setUserDetails(userdetails[0]);
+                } catch (error) {
+                    console.error("Error fetching userdetails:", error);
+                }
+            }
+            fetchuserdetails();
+        }
 
-    // useEffect(() => {
-    //     console.log("selectedRole in second useEffect:", selectedRole);
-    //     console.log("selectedTL in second useEffect:", selectedTL);
-    //     console.log("selectedFR in second useEffect:", selectedFR);
+        if (selectedRole == "tl" && selectedTL) {
+            // console.log("getting details from db of tl:", selectedTL);
+            const fetchuserdetails = async () => {
+                try {
+                    const allUsers = await getAllUsers();
 
-    //     if (selectedRole == "fr" && selectedFR) {
-    //         const fetchuserdetails = async () => {
-    //             try {
-    //                 const allUsers = await getAllUsers();
+                    const userdetails = allUsers.filter(user => user.username === selectedTL);
+                    console.log("userdetails:", userdetails);
+                    setUserDetails(userdetails[0]);
+                } catch (error) {
+                    console.error("Error fetching userdetails:", error);
+                }
+            }
+            fetchuserdetails();
+        }
 
-    //                 const userdetails = allUsers.filter(user => user.username === selectedFR);
-    //                 console.log("userdetails:", userdetails);
-    //                 setUserDetails(userdetails[0]);
-    //             } catch (error) {
-    //                 console.error("Error fetching userdetails:", error);
-    //             }
-    //         }
-    //         fetchuserdetails();
-    //     }
-    //     else if (selectedRole == "tl" && selectedTL) {
-    //         console.log("getting details from db of tl:", selectedTL);
-    //         const fetchuserdetails = async () => {
-    //             try {
-    //                 const allUsers = await getAllUsers();
+        if (selectedRole == "fr" && selectedFR) {
+            const fetchuserdetails = async () => {
+                try {
+                    const allUsers = await getAllUsers();
 
-    //                 const userdetails = allUsers.filter(user => user.username === selectedTL);
-    //                 console.log("userdetails:", userdetails);
-    //                 setUserDetails(userdetails[0]);
-    //             } catch (error) {
-    //                 console.error("Error fetching userdetails:", error);
-    //             }
-    //         }
-    //         fetchuserdetails();
-    //     }
-    // }, [selectedFR, selectedTL, selectedRole])
+                    const userdetails = allUsers.filter(user => user.username === selectedFR);
+                    console.log("userdetails:", userdetails);
+                    setUserDetails(userdetails[0]);
+                } catch (error) {
+                    console.error("Error fetching userdetails:", error);
+                }
+            }
+            fetchuserdetails();
+        }
+
+
+    }, [selectedRole, selectedTL, selectedBD, selectedFR, selectedSH]);
 
     return (
         <div className="w-full h-auto flex flex-col justify-center items-center text-white py-4 gap-4 lg:px-4">
@@ -215,6 +228,7 @@ const EditPage = () => {
                         <option value="">Select Role</option>
                         <option value="ad">Admin</option>
                         <option value="bd">BD</option>
+                        <option value="sh">Super Head</option>
                         <option value="tl">Team Leader</option>
                         <option value="fr">Franchise</option>
                     </select>
@@ -257,9 +271,6 @@ const EditPage = () => {
                         }
                     </div>
 
-
-
-
                 )}
 
                 {selectedRole === 'tl' && (
@@ -298,23 +309,62 @@ const EditPage = () => {
                 )
                 }
 
+                {selectedRole === 'sh' && (
+                    <div className="shdropdown flex  items-center justify-center lg:justify-between">
+
+                        <label className=" text-white font-medium text-xl lg:text-xs lg:font-normal">Select SH:</label >
+                        <select
+                            className="text-black py-1 px-2 rounded lg:w-1/2"
+                            onChange={SelectSH}
+                            value={selectedSH}
+                        >
+                            <option value="">Select SH</option>
+                            {shs.map(sh => (
+                                <option key={sh._id} value={sh.username}>{sh.username}</option>
+                            ))}
+                        </select>
+                    </div>
+                )
+                }
+
             </div>
 
-            {selectedRole == "fr" && userDetails?.username &&
-                <Suspense fallback={<p className="text-white text-3xl text-center">Form is loading...</p>}>
-                    <FRForm userdetails={userDetails} method="put" />
+            {selectedRole == "fr" && selectedFR && userDetails?.username &&
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl text-center">Loading...</p>}>
+                    <FRForm
+                        userdetails={userDetails} method="put"
+                        selectedRole={selectRole} setSelectedRole={setSelectedRole}
+                        setFrs={setFrs}
+                    />
                 </Suspense>
             }
 
             {selectedRole == "tl" && selectedTL && userDetails?.username &&
-                <Suspense fallback={<p className="text-white text-3xl text-center">Form is loading...</p>}>
-                    <TLForm userdetails={userDetails} method="put" />
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl text-center">Loading...</p>}>
+                    <TLForm
+                        userdetails={userDetails} method="put"
+                        selectedRole={selectRole} setSelectedRole={setSelectedRole}
+                        setTls={setTls}
+                    />
                 </Suspense>
             }
 
             {selectedRole == "bd" && selectedBD && userDetails?.username &&
-                <Suspense fallback={<p className="text-white text-3xl text-center">Form is loading...</p>}>
-                    <BDForm userdetails={userDetails} method="put" setSelectedBD={setSelectedBD} setSelectedRole={selectedRole} setUserDetails={setUserDetails} />
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl text-center">Loading...</p>}>
+                    <BDForm
+                        userdetails={userDetails} method="put"
+                        selectedRole={selectRole} setSelectedRole={setSelectedRole}
+                        setBds={setBds}
+                    />
+                </Suspense>
+            }
+
+            {selectedRole == "sh" && selectedSH && userDetails?.username &&
+                <Suspense fallback={<p className="text-white text-6xl lg:text-3xl text-center">Loading...</p>}>
+                    <SHForm
+                        userdetails={userDetails} method="put"
+                        selectedRole={selectRole} setSelectedRole={setSelectedRole}
+                        setShs={setShs} />
                 </Suspense>
             }
         </div>

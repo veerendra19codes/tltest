@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
 import { useState, useCallback } from 'react';
 import { CgProfile } from "react-icons/cg";
 import { MdLockOutline } from "react-icons/md";
@@ -9,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDetails }) => {
+const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) => {
     // console.log("method in bdform:", method);
     // console.log("userdetails in bdform:", userdetails);
 
@@ -45,19 +44,18 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
         }));
     }
 
-    const router = useRouter();
-
-
     async function handleSubmit(e) {
         e.preventDefault();
 
         // console.log({ info });
         if (!info.username || !info.email || !info.password) {
             setError("Must provide all credentials");
-        } else {
+        }
+        else {
             try {
                 setPending(true);
 
+                //updating existing bd
                 if (method === "put") {
                     const res = await fetch("api/register", {
                         method: "PUT",
@@ -68,10 +66,29 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                     });
                     if (res.ok) {
                         setPending(false);
-                        const form = e.target;
-                        form.reset();
-                        console.log("User registered successfully");
-                        toast.success('Franchise updated successfully', {
+
+
+                        //set userdetails to default values
+                        setInfo({
+                            username: "",
+                            password: "",
+                            email: "",
+                            role: "",
+                            level: "",
+                            teamleadername: "",
+                            companiesCompleted: [],
+                            companiesRejected: [],
+                            companiesWorking: [],
+                            companiesCompletedName: [],
+                            companiesRejectedName: [],
+                            companiesWorkingName: [],
+                            spreadsheet: "",
+                            deployedlink: "",
+                            revenueapi: "",
+                            preference: ""
+                        });
+
+                        toast.success('BD updated successfully', {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -81,9 +98,11 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                             progress: undefined,
                             theme: "light",
                         });
-                        setSelectedBD("");
-                        setUserDetails({});
+
+
+                        console.log("bd updated successfully");
                         setSelectedRole("");
+                        console.log("selectedRole after updating:", selectedRole);
                     }
                     else {
                         setPending(false);
@@ -91,6 +110,7 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                         setError(errorData.message);
                     }
                 }
+                //registering new bd
                 else {
                     const res = await fetch("api/register", {
                         method: "POST",
@@ -101,9 +121,28 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                     });
                     if (res.status === 201) {
                         setPending(false);
-                        const form = e.target;
-                        form.reset();
-                        console.log("User registered successfully");
+
+
+                        //set userdetails to default values
+                        setInfo({
+                            username: "",
+                            password: "",
+                            email: "",
+                            role: "",
+                            level: "",
+                            teamleadername: "",
+                            companiesCompleted: [],
+                            companiesRejected: [],
+                            companiesWorking: [],
+                            companiesCompletedName: [],
+                            companiesRejectedName: [],
+                            companiesWorkingName: [],
+                            spreadsheet: "",
+                            deployedlink: "",
+                            revenueapi: "",
+                            preference: ""
+                        });
+
                         toast.success('BD added successfully', {
                             position: "top-right",
                             autoClose: 2000,
@@ -114,6 +153,7 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                             progress: undefined,
                             theme: "light",
                         });
+                        console.log("User registered successfully");
                     }
                     else {
                         setPending(false);
@@ -144,11 +184,27 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
             console.log("res:", res);
             if (res.status === 201) {
                 setPending(false);
-                router.refresh("/edit");
 
-                setSelectedBD("");
-                setUserDetails({});
-                setSelectedRole("");
+                //set userdetails to default values
+                setInfo({
+                    username: "",
+                    password: "",
+                    email: "",
+                    role: "",
+                    level: "",
+                    teamleadername: "",
+                    companiesCompleted: [],
+                    companiesRejected: [],
+                    companiesWorking: [],
+                    companiesCompletedName: [],
+                    companiesRejectedName: [],
+                    companiesWorkingName: [],
+                    spreadsheet: "",
+                    deployedlink: "",
+                    revenueapi: "",
+                    preference: ""
+                });
+
                 toast.success('BD deleted successfully', {
                     position: "top-right",
                     autoClose: 2000,
@@ -160,6 +216,9 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
                     theme: "light",
                 });
                 console.log("user deleted successfully");
+                setSelectedRole("");
+                console.log("selectedRole after deleting:", selectedRole);
+                setBds([])
             }
             else {
                 setPending(false);
@@ -170,7 +229,7 @@ const BDForm = ({ method, userdetails, setSelectedBD, setSelectedRole, setUserDe
         catch (err) {
             setPending(false);
             console.log("Error while deleting BD in page.jsx:", err);
-            setError("Error deleting user");
+            setError("Error deleting bd");
         }
     }
 

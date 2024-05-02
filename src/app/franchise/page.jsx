@@ -62,47 +62,47 @@ const FranchisePage = () => {
             info.preference = "any";
         }
         else {
-            console.log("executed");
-            // try {
-            //     setPending(true);
+            // console.log("executed");
+            try {
+                setPending(true);
 
-            //     const res = await fetch("api/register", {
-            //         method: "POST",
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify(info),
-            //     });
+                const res = await fetch("api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(info),
+                });
 
-            //     console.log(res);
+                // console.log(res);
 
-            //     if (res.ok) {
-            //         setPending(false);
-            //         const form = e.target;
-            //         form.reset();
-            //         router.refresh("/dashboardtl");
-            //         toast.success('Franchise added successfully', {
-            //             position: "top-right",
-            //             autoClose: 2000,
-            //             hideProgressBar: false,
-            //             closeOnClick: true,
-            //             pauseOnHover: true,
-            //             draggable: true,
-            //             progress: undefined,
-            //             theme: "light",
-            //         });
-            //         console.log("Franchise registered successfully");
-            //     }
-            //     else {
-            //         setPending(false);
-            //         const errorData = await res.json();
-            //         setError(errorData.message);
-            //     }
-            // } catch (err) {
-            //     setPending(false);
-            //     console.log("Error while registering franchise in page.jsx", err);
-            //     // setError("error in register franchise page in catch block");
-            // }
+                if (res.ok) {
+                    setPending(false);
+                    const form = e.target;
+                    form.reset();
+                    router.refresh("/dashboardtl");
+                    toast.success('Franchise added successfully', {
+                        position: "top-right",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    console.log("Franchise registered successfully");
+                }
+                else {
+                    setPending(false);
+                    const errorData = await res.json();
+                    setError(errorData.message);
+                }
+            } catch (err) {
+                setPending(false);
+                console.log("Error while registering franchise in page.jsx", err);
+                // setError("error in register franchise page in catch block");
+            }
         }
     }
 

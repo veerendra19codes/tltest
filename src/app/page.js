@@ -3,14 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GoArrowRight } from "react-icons/go";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import UserContext from "@/contexts/UserContext";
+// import { usePathname } from "next/navigation";
 
 export default function Home() {
   const {session, status} = useContext(UserContext);
-  console.log("session on home:", session);
+  // console.log("session on home:", session);
+  // const pathName = usePathname();
   
-
+  // console.log("pathname:" ,pathName);
   let route = "";
 
   if(status!=="loading") {

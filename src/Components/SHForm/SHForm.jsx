@@ -1,69 +1,66 @@
 'use client'
 
-import { useState } from 'react';
-import { useSession } from "next-auth/react";
+import { useState, useCallback } from 'react';
 import { CgProfile } from "react-icons/cg";
 import { MdLockOutline } from "react-icons/md";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { RiTeamLine } from "react-icons/ri";
-import { LuFileSpreadsheet } from "react-icons/lu";
-import { BsGraphUpArrow } from "react-icons/bs";
-import { GrUserExpert } from "react-icons/gr";
+import { RiInformationFill } from 'react-icons/ri';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { getAllUsers } from '@/lib/actions';
 
+const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) => {
+    console.log("method in shform:", method);
+    console.log("selectedRole", selectedRole);
+    // console.log("userdetails in shform:", userdetails);
 
-const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) => {
-    console.log("userdetails in frform:", userdetails);
-    // console.log("method in frform:", method);
-    const session = useSession();
 
     const [info, setInfo] = useState({
-        username: userdetails.username || "",
-        email: userdetails.email || "",
-        password: userdetails.password || "",
-        role: userdetails.role || "",
-        teamleadername: userdetails.teamleadername || "",
-        spreadsheet: userdetails.spreadsheet || "",
-        level: userdetails.level || "",
-        preference: userdetails.preference || "",
-        companiesCompleted: userdetails.companiesCompleted || "",
-        companiesRejected: userdetails.companiesRejected || "",
-        companiesWorking: userdetails.companiesWorking || "",
-        companiesCompletedName: userdetails.companiesCompletedName || "",
-        companiesRejectedName: userdetails.companiesRejectedName || "",
-        companiesWorkingName: userdetails.companiesWorkingName || "",
-        deployedlink: userdetails.deployedlink || "",
-        revenueapi: userdetails.revenueapi || "",
+        username: userdetails.username,
+        email: userdetails.email,
+        password: userdetails.password,
+        role: "sh",
+        teamleadername: userdetails.teamleadername,
+        spreadsheet: userdetails.spreadsheet,
+        level: userdetails.level,
+        preference: userdetails.preference,
+        companiesCompleted: userdetails.companiesCompleted,
+        companiesRejected: userdetails.companiesRejected,
+        companiesWorking: userdetails.companiesWorking,
+        companiesCompletedName: userdetails.companiesCompletedName,
+        companiesRejectedName: userdetails.companiesRejectedName,
+        companiesWorkingName: userdetails.companiesWorkingName,
+        deployedlink: userdetails.deployedlink,
+        revenueapi: userdetails.revenueapi,
     });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
 
     const handleInput = (e) => {
+        // console.log("changing");
         setInfo((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
-            role: "fr",
+            role: "sh",
+            level: "junior",
         }));
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("info:", info);
-
-        const { username, email, password, teamleadername, spreadsheet, level, preference } = info;
 
 
-        if (!username || !email || !password || !teamleadername || !spreadsheet || !level || !preference) {
+        console.log({ info });
+        if (!info.username || !info.email || !info.password) {
             setError("Must provide all credentials");
-        } else {
+        }
+        else {
             try {
                 setPending(true);
 
-                //updating existing franchise
+                //updating existing sh
                 if (method === "put") {
+                    console.log("info to be updated:", info);
                     const res = await fetch("api/register", {
                         method: "PUT",
                         headers: {
@@ -94,7 +91,9 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             preference: ""
                         });
 
-                        toast.success('Franchise updated successfully', {
+
+
+                        toast.success('Super Head updated successfully', {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -104,7 +103,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        console.log("Franchise updating successfully");
+                        console.log("User registered successfully");
                         setSelectedRole("");
                         console.log("selectedRole after updating:", selectedRole);
                     }
@@ -115,7 +114,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     }
                 }
 
-                //registering new franchise
+                //registering new sh
                 else {
                     const res = await fetch("api/register", {
                         method: "POST",
@@ -124,7 +123,9 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                         },
                         body: JSON.stringify(info),
                     });
-                    if (res.ok) {
+                    if (res.status === 201) {
+                        setPending(false);
+
 
                         //set userdetails to default values
                         setInfo({
@@ -146,7 +147,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             preference: ""
                         });
 
-                        toast.success('Franchise added successfully', {
+                        toast.success('SH added successfully', {
                             position: "top-right",
                             autoClose: 2000,
                             hideProgressBar: false,
@@ -156,8 +157,6 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        setPending(false);
-
                         console.log("User registered successfully");
                     }
                     else {
@@ -166,13 +165,17 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                         setError(errorData.message);
                     }
                 }
-            } catch (err) {
+
+            }
+            catch (err) {
                 setPending(false);
-                console.log("Error while registering new Franhise in page.jsx:", err);
-                setError("Error in Registering Franchise");
+                console.log("Error while registering new SH in page.jsx:", err);
+                setError("Error in Registering SH");
             }
         }
     }
+
+
 
     const handleDeleteUser = async (e) => {
         e.preventDefault();
@@ -195,7 +198,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     username: "",
                     password: "",
                     email: "",
-                    role: "",
+                    role: "sh",
                     level: "",
                     teamleadername: "",
                     companiesCompleted: [],
@@ -210,7 +213,8 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     preference: ""
                 });
 
-                toast.success('Franchise deleted successfully', {
+
+                toast.success('SH deleted successfully', {
                     position: "top-right",
                     autoClose: 2000,
                     hideProgressBar: false,
@@ -223,7 +227,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                 console.log("user deleted successfully");
                 setSelectedRole("");
                 console.log("selectedRole after deleting:", selectedRole);
-                setFrs([])
+                setShs([])
             }
             else {
                 setPending(false);
@@ -233,68 +237,60 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
         }
         catch (err) {
             setPending(false);
-            console.log("Error while deleting FR in page.jsx:", err);
-            setError("Error deleting FR");
+            console.log("Error while deleting SH in page.jsx:", err);
+            setError("Error deleting SH");
         }
     }
 
     return (
-        <div className="FRFORM h-auto w-full overflow-hidden flex justify-center items-center  sm:mt-2">
-            <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:py-4 sm:px-4 sm:m-0 sm:gap-0 ">
+        <div className="SHFORM h-auto w-full overflow-hidden flex justify-center items-center sm:mt-2">
 
-                <h1 className="text-4xl font-bold sm:text-3xl text-lightpurple">
-                    {method === "put" ? "Edit Franchise" : "Add Franchise"}
-                </h1>
-                <p className="text-gray-600 text-lg sm:text-xs">
-                    {method == "put" ? "Note: Username cannot be edited" : "Enter details below"}
-                </p>
+            <div className="w-[500px] m-auto p-12 border-gray-400 border-[1px] rounded-lg flex flex-col justify-center items-center bg-white gap-4 sm:w-full sm:p-4 sm:m-0 sm:gap-0 ">
+
+
+                <h1 className="text-4xl font-bold lg:text-3xl text-lightpurple">{method === "put" ? "Update SH" : "Add SH"}</h1>
+                <p className="text-gray-600 text-lg sm:text-xs">{method === "put" ? "Note: Username cannot be edited" : "Enter details below"}</p>
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
                         {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
-                        <input type="text" name="username" placeholder="Username" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.username} disabled={method === "put"} />
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none text-black"
+                            onChange={(e) => handleInput(e)}
+                            value={info.username}
+                            disabled={method === "put"}
+                        />
                     </div>
-
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
-                        <input type="email" name="email" placeholder="example@gmail.com" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.email} />
-                    </div>
-
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
-                        <input type="text" name="password" placeholder="Password" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.password} />
-                    </div>
-
-                    {/* <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Teamleadername:</h1> : <RiTeamLine className="size-8 lg:size-6" color='purple' />}
-                        <input type="text" name="teamleadername" placeholder="Teamleader name" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.teamleadername} />
-                    </div> */}
-
-
-
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Spreadsheet:</h1> : <LuFileSpreadsheet className="size-8 lg:size-6" color='purple' />}
-                        <input type="text" name="spreadsheet" placeholder="Spreadsheet Link" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.spreadsheet} />
-                    </div>
-
-                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        <BsGraphUpArrow className="size-8 lg:size-6" color='purple' />
-                        <select name="level" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black" onChange={handleInput}>
-                            <option value="">Select Franchise Level</option>
-                            <option value="junior">Junior</option>
-                            <option value="mid">Mid</option>
-                            <option value="senior">Senior</option>
-                        </select>
-                    </div>
-
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Preference:</h1> : <GrUserExpert className="size-8 lg:size-6" color='purple' />}
-                        <input type="text" name="preference" placeholder="Preference ex-any" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.preference} />
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="example@gmail.com"
+                            className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none text-black"
+                            onChange={(e) => handleInput(e)}
+                            value={info.email}
+                        />
                     </div>
 
-                    {error && <span className="text-red-500 font-semibold">{error}</span>}
+                    <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
+                        <input
+                            type="text"
+                            name="password"
+                            placeholder="Password"
+                            className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black"
+                            onChange={(e) => handleInput(e)}
+                            value={info.password}
+                        />
+                    </div>
+
+                    {error && <span className="text-red-500 font-medium">{error}</span>}
 
                     {method === "put" ?
                         <div className="flex justify-center items-center gap-4">
@@ -320,12 +316,11 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                         </button>
                     }
 
-                    <ToastContainer />
 
+                    <ToastContainer />
                 </form>
             </div>
         </div>
-    );
+    )
 }
-
-export default FRForm;
+export default SHForm;
