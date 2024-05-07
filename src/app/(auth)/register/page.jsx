@@ -1,11 +1,8 @@
 "use client";
 
 import { redirect, useRouter } from 'next/navigation'
-import { registerAction } from '@/lib/actions';
-// import { useFormState } from "react-dom";
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { User } from '@/lib/models';
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 const RegisterPage = () => {
     const session = useSession();
@@ -16,19 +13,7 @@ const RegisterPage = () => {
         redirect("/");
     }
 
-    // const [state, formAction] = useFormState(registerAction, undefined);
-
     const router = useRouter();
-
-    // useEffect(() => {
-    //     if (state?.success) {
-    //         router.push("/login")
-    //     }
-    // }, [router, state?.success]);
-
-    // const handleRegister = () => {
-    //     router.push("/");
-    // }
 
     const [info, setInfo] = useState({ username: "", email: "", password: "", role: "" });
     const [error, setError] = useState("");
@@ -60,7 +45,7 @@ const RegisterPage = () => {
                     const form = e.target;
                     form.reset();
                     router.push("/login");
-                    console.log("User registered successfully");
+                    // console.log("User registered successfully");
                 }
                 else {
                     setPending(false);
@@ -69,7 +54,7 @@ const RegisterPage = () => {
                 }
             } catch (err) {
                 setPending(false);
-                console.log("Error while registering user in page.jsx", err);
+                // console.log("Error while registering user in page.jsx", err);
                 setError("error in register page in catch block");
             }
         }

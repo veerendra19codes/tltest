@@ -14,7 +14,7 @@ const AddNewEmployeePage = () => {
 
     useEffect(() => {
         if (status === 'loading') return; // Wait for session to load
-        else if (session.user?.role !== 'ad') {
+        else if (session?.user?.role !== 'ad') {
             router.back();
         }
         // Fetch data or perform other async tasks here
@@ -23,7 +23,6 @@ const AddNewEmployeePage = () => {
     const [selectedOption, setSelectedOption] = useState("");
 
     const handleChange = (e) => {
-
         setSelectedOption(e.target.value);
     };
 
@@ -37,9 +36,11 @@ const AddNewEmployeePage = () => {
         companiesCompleted: [],
         companiesRejected: [],
         companiesWorking: [],
+        companiesAccepted: [],
         companiesCompletedName: [],
         companiesRejectedName: [],
         companiesWorkingName: [],
+        companiesAcceptedName: [],
         spreadsheet: "",
         deployedlink: "",
         revenueapi: "",

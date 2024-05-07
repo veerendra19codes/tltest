@@ -61,13 +61,16 @@ export const authOptions = {
                     companiesCompleted: user.companiesCompleted,
                     companiesRejected: user.companiesRejected,
                     companiesWorking: user.companiesWorking,
+                    companiesAccepted: user.companiesAccepted,
                     companiesCompletedName: user.companiesCompletedName,
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
+                    companiesAcceptedName: user.companiesAcceptedName,
                     spreadsheet: user.spreadsheet,
                     deployedlink: user.deployedlink,
                     revenueapi: user.revenueapi,
                     preference: user.preference,
+                    reminders: user.reminders,
                 };
             }
         }
@@ -104,13 +107,16 @@ export const authOptions = {
                     companiesCompleted: token.companiesCompleted,
                     companiesRejected: token.companiesRejected,
                     companiesWorking: token.companiesWorking,
+                    companiesAccepted: token.companiesAccepted,
                     companiesCompletedName: token.companiesCompletedName,
                     companiesRejectedName: token.companiesRejectedName,
                     companiesWorkingName: token.companiesWorkingName,
+                    companiesAcceptedName: token.companiesAcceptedName,
                     spreadsheet: token.spreadsheet,
                     deployedlink: token.deployedlink,
                     revenueapi: token.revenueapi,
                     preference: token.preference,
+                    reminders: token.reminders,
                 }
             }
         },
@@ -132,13 +138,16 @@ export const authOptions = {
                     companiesCompleted: user.companiesCompleted,
                     companiesRejected: user.companiesRejected,
                     companiesWorking: user.companiesWorking,
+                    companiesAccepted: user.companiesAccepted,
                     companiesCompletedName: user.companiesCompletedName,
                     companiesRejectedName: user.companiesRejectedName,
                     companiesWorkingName: user.companiesWorkingName,
+                    companiesAcceptedName: user.companiesAcceptedName,
                     spreadsheet: user.spreadsheet,
                     deployedlink: user.deployedlink,
                     revenueapi: user.revenueapi,
                     preference: user.preference,
+                    reminders: user.reminders,
                 }
             }
             return token

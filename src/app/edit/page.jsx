@@ -12,6 +12,17 @@ import UserContext from '@/contexts/UserContext';
 
 import { getAllUsers } from '@/lib/actions';
 
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
+
 const EditPage = () => {
 
     const router = useRouter();
@@ -21,7 +32,7 @@ const EditPage = () => {
 
     useEffect(() => {
         if (status === 'loading') return; // Wait for session to load
-        else if (session.user?.role !== 'ad') {
+        else if (session?.user?.role !== 'ad') {
             router.back();
         }
         // Fetch data or perform other async tasks here
@@ -63,18 +74,26 @@ const EditPage = () => {
 
     const SelectTL = (e) => {
         setUserDetails({});
+        setFrs([]);
+        // console.log("userdetails:", userdetails);
+
         setSelectedFR("");
         setSelectedTL(e.target.value);
         // console.log("selectedTL in selectTL fn:", selectedTL);
     };
 
-    const SelectFR = (e) => {
+    // const SelectFR = (e) => {
+    //     setUserDetails({});
+    //     setSelectedFR(e.target.value);
+    // };
+
+    const handleSelectChange = (selectedValue) => {
         setUserDetails({});
-        setSelectedFR(e.target.value);
-    };
+        setSelectedFR(selectedValue);
+    }
 
     useEffect(() => {
-        console.log("selectedRole in first useEffect:", selectedRole);
+        // console.log("selectedRole in first useEffect:", selectedRole);
         // console.log("bds:", bds);
         // console.log("selectedTL in first useEffect:", selectedTL);
 
@@ -88,9 +107,9 @@ const EditPage = () => {
                     // Filter users whose role is 'tl'
                     const filteredbds = allUsers.filter(user => user.role === 'bd');
                     setBds(filteredbds);
-                    console.log("fetched bds:", bds);
+                    // console.log("fetched bds:", bds);
                 } catch (error) {
-                    console.error("Error fetching users:", error);
+                    // console.error("Error fetching users:", error);
                 }
             };
 
@@ -105,7 +124,7 @@ const EditPage = () => {
                     const filteredshs = allUsers.filter(user => user.role === 'sh');
                     setShs(filteredshs);
                 } catch (error) {
-                    console.error("Error fetching shs:", error);
+                    // console.error("Error fetching shs:", error);
                 }
             };
             fetchData();
@@ -120,7 +139,7 @@ const EditPage = () => {
                     const filteredTls = allUsers.filter(user => user.role === 'tl');
                     setTls(filteredTls);
                 } catch (error) {
-                    console.error("Error fetching users:", error);
+                    // console.error("Error fetching users:", error);
                 }
             };
             fetchData();
@@ -142,7 +161,7 @@ const EditPage = () => {
                         setFrs(filteredFrs);
                     }
                 } catch (error) {
-                    console.error("Error fetching users:", error);
+                    // console.error("Error fetching users:", error);
                 }
             };
             fetchData();
@@ -157,10 +176,10 @@ const EditPage = () => {
                     const allUsers = await getAllUsers();
 
                     const userdetails = allUsers.filter(user => user.username === selectedBD);
-                    console.log("userdetails:", userdetails);
+                    // console.log("userdetails:", userdetails);
                     setUserDetails(userdetails[0]);
                 } catch (error) {
-                    console.error("Error fetching userdetails:", error);
+                    // console.error("Error fetching userdetails:", error);
                 }
             }
             fetchuserdetails();
@@ -173,10 +192,10 @@ const EditPage = () => {
                     const allUsers = await getAllUsers();
 
                     const userdetails = allUsers.filter(user => user.username === selectedSH);
-                    console.log("userdetails:", userdetails);
+                    // console.log("userdetails:", userdetails);
                     setUserDetails(userdetails[0]);
                 } catch (error) {
-                    console.error("Error fetching userdetails:", error);
+                    // console.error("Error fetching userdetails:", error);
                 }
             }
             fetchuserdetails();
@@ -189,10 +208,10 @@ const EditPage = () => {
                     const allUsers = await getAllUsers();
 
                     const userdetails = allUsers.filter(user => user.username === selectedTL);
-                    console.log("userdetails:", userdetails);
+                    // console.log("userdetails:", userdetails);
                     setUserDetails(userdetails[0]);
                 } catch (error) {
-                    console.error("Error fetching userdetails:", error);
+                    // console.error("Error fetching userdetails:", error);
                 }
             }
             fetchuserdetails();
@@ -204,10 +223,10 @@ const EditPage = () => {
                     const allUsers = await getAllUsers();
 
                     const userdetails = allUsers.filter(user => user.username === selectedFR);
-                    console.log("userdetails:", userdetails);
+                    // console.log("userdetails:", userdetails);
                     setUserDetails(userdetails[0]);
                 } catch (error) {
-                    console.error("Error fetching userdetails:", error);
+                    // console.error("Error fetching userdetails:", error);
                 }
             }
             fetchuserdetails();
@@ -215,6 +234,8 @@ const EditPage = () => {
 
 
     }, [selectedRole, selectedTL, selectedBD, selectedFR, selectedSH]);
+
+
 
     return (
         <div className="w-full h-auto flex flex-col justify-center items-center text-white py-4 gap-4 lg:px-4">
@@ -257,7 +278,7 @@ const EditPage = () => {
                             <div className="frdropdown flex  items-center justify-center lg:justify-between">
 
                                 <label className="text-white font-medium text-xl lg:text-xs lg:font-normal">Select Franchise:</label >
-                                <select
+                                {/* <select
                                     className="text-black py-1 px-2 rounded lg:w-1/2"
                                     onChange={SelectFR}
                                     value={selectedFR}
@@ -266,7 +287,20 @@ const EditPage = () => {
                                     {frs.map(fr => (
                                         <option key={fr._id} value={fr.username}>{fr.username}</option>
                                     ))}
-                                </select>
+                                </select> */}
+                                <Select
+                                    onValueChange={(selectedValue) => handleSelectChange(selectedValue)} className="rounded border-none outline-none focus:outline-none focus:border-none" placeholder="Select Franchise"
+                                >
+                                    <SelectTrigger className="w-auto lg:w-1/2 h-[36px] lg:h-[32px]  px-2 lg:p-0 rounded" placeholder="Select Franchise" value={selectedFR}>
+                                        <SelectValue placeholder="Select Franchise" />
+                                    </SelectTrigger>
+                                    <SelectContent className="h-[150px]">
+                                        <SelectItem value="select" className="py-1" disabled >Select Franchise</SelectItem>
+                                        {frs.map((f) => (
+                                            <SelectItem key={f._id} value={f.username} className="py-1">{f.username}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                         }
                     </div>
@@ -319,7 +353,7 @@ const EditPage = () => {
                             value={selectedSH}
                         >
                             <option value="">Select SH</option>
-                            {shs.map(sh => (
+                            {shs.map((sh) => (
                                 <option key={sh._id} value={sh.username}>{sh.username}</option>
                             ))}
                         </select>

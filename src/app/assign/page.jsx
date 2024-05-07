@@ -2,7 +2,8 @@ import { getAllCompanies, getAllUsers } from "@/lib/actions"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import AssignDashboardPage from "@/Components/AssignDashboard/AssignDashboard";
+import dynamic from "next/dynamic"
+const DynamicAssignDashboardPage = dynamic(() => import("@/Components/AssignDashboard/AssignDashboard"));
 
 const AssignPage = async () => {
     const session = await getServerSession(authOptions);
@@ -24,14 +25,16 @@ const AssignPage = async () => {
     const allUsers = await getAllUsers();
     // console.log("all users:", allUsers);
 
-    const franchiseUnderMe = allUsers.reverse().filter((user) => user.teamleader === session.user?.id);
+    const franchiseUnderMe = allUsers.reverse().filter((user) => user.teamleadername === session.user?.username);
     // console.log("franchiseUnderMe:", franchiseUnderMe);
 
 
     return (
-        <div className="flex justify-center items-center overflow-x-hidden lg:p-4">
-            {session && franchiseUnderMe && data && <AssignDashboardPage data={data} franchiseUnderMe={franchiseUnderMe} session={session} />}
-        </div >
+        // <div className="flex justify-center items-center overflow-x-hidden lg:p-4">
+        <>
+            {session && franchiseUnderMe && data && <DynamicAssignDashboardPage data={data} franchiseUnderMe={franchiseUnderMe} session={session} />}
+        </>
+        // </div >
 
     )
 }

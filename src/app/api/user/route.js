@@ -8,7 +8,7 @@ export const GET = async (request) => {
     try {
         connectToDB();
 
-        const users = await User.find();
+        const users = await User.find({},{ password: 0});
         return NextResponse.json(users);
     }
     catch(err) {

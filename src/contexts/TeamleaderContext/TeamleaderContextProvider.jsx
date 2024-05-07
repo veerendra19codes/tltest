@@ -1,32 +1,48 @@
-// "use client";
+"use client";
 
-// import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
-// import TeamleaderContext from './TeamleaderContext'
-// import { getAllUsers } from '@/lib/actions';
+import TeamleaderContext from './TeamleaderContext'
+import { getAllUsers } from '@/lib/actions';
 
-// const TeamleaderContextProvider = ({ children }) => {
-//     const [alltls, setAlltls] = useState([]);
+const TeamleaderContextProvider = ({ children }) => {
+    const [alltls, setAlltls] = useState([]);
 
-//     useEffect(() => {
-//         const getAllTeamleaders = async () => {
-//             try {
-//                 const AllUsers = await getAllUsers();
-//                 const alltls = AllUsers.filter((user) => user.role === "tl");
-//                 setAlltls(alltls);
-//             }
-//             catch (err) {
-//                 console.log(err);
-//             }
-//         }
-//         getAllTeamleaders();
-//     }, [alltls])
+    const teamleaders = useMemo(() => {
+        const getAllTeamleaders = async () => {
+            try {
+                const AllUsers = await getAllUsers();
+                const alltls = AllUsers.filter((user) => user.role === "tl");
+                // setAlltls(alltls);
+                return alltls;
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        getAllTeamleaders();
+    }, [])
+    console.log("teamleaders:", teamleaders);
 
-//     return (
-//         <TeamleaderContext.Provider value={{ alltls, setAlltls }} >
-//             {children}
-//         </TeamleaderContext.Provider>
-//     )
-// }
+    useEffect(() => {
+        const getAllTeamleaders = async () => {
+            try {
+                const AllUsers = await getAllUsers();
+                const alltls = AllUsers.filter((user) => user.role === "tl");
+                setAlltls(alltls);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        getAllTeamleaders();
+    }, [])
 
-// export default TeamleaderContextProvider
+    return (
+        <TeamleaderContext.Provider value={{ alltls, setAlltls }} >
+            {children}
+        </TeamleaderContext.Provider>
+    )
+}
+
+export default TeamleaderContextProvider

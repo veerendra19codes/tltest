@@ -12,7 +12,7 @@ export const GET = async (request, {params}) => {
     try {
         connectToDB();
 
-        const user = await User.findOne({username});
+        const user = await User.findOne({username}, {password: 0});
         return NextResponse.json(user);
     }
     catch(err) {
@@ -27,9 +27,31 @@ export const GET = async (request, {params}) => {
 export async function PUT(req, {params}) {
     try {
         const {userId} = params;
+        console.log("userId", userId );
+
+        const {message} = await req.json();
+
+        if (message === "update reminder count") {
+            connectToDB();
+            const user = await User.findById(userId);
+            if (!user) {
+                return NextResponse.json({ error: "User not found" }, { status: 404 });
+            }
+            // user.reminder = user.reminder+1;
+
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { $inc: { reminders: 1 } }, // Increment remindercount by 1
+                { new: true } // Return the updated document
+            );
+
+            console.log(updatedUser);
+            return NextResponse.json({ success: true, user: updatedUser });
+        } else {
+            
+
         const updatedFields = await req.json(); // Access updatedFields from req.body
 
-        console.log("userId", userId );
         console.log("updatedFields", updatedFields);
         const newCompaniesRejectedName = updatedFields.companyname;
         console.log(newCompaniesRejectedName);
@@ -39,7 +61,6 @@ export async function PUT(req, {params}) {
             return NextResponse.json({error: "user ID not provided"}, {status: 400})
         }
 
-        connectToDB();
 
         const result = await User.updateOne(
             { _id: userId }, 
@@ -64,6 +85,7 @@ export async function PUT(req, {params}) {
         return NextResponse.json({ success: true, company });
         // return NextResponse.json({ success: true });
 
+    }
     } catch (error) {
         console.error("Error updating company:", error);
         return NextResponse.json({ error: "Internal server error" }, {status: 500});

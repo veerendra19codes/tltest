@@ -1,12 +1,22 @@
 'use client'
 
-import { useState, useContext } from 'react';
-import { CgProfile } from "react-icons/cg";
-import { MdLockOutline } from "react-icons/md";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { LuFileSpreadsheet } from "react-icons/lu";
-import { FaLink } from "react-icons/fa6";
-import { ToastContainer, toast } from 'react-toastify';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+import { useState } from 'react';
+
+const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
+const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
+const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+const DynamicLuFileSpreadsheet = dynamic(() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
+const DynamicFaLink = dynamic(() => import("react-icons/fa").then(module => module.FaLink));
+const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+
+// import { CgProfile } from "react-icons/cg";
+// import { MdLockOutline } from "react-icons/md";
+// import { MdOutlineMailOutline } from "react-icons/md";
+// import { LuFileSpreadsheet } from "react-icons/lu";
+// import { FaLink } from "react-icons/fa6";
+// import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,11 +39,15 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
         companiesCompleted: userdetails.companiesCompleted || "",
         companiesRejected: userdetails.companiesRejected || "",
         companiesWorking: userdetails.companiesWorking || "",
+        companiesAccepted: userdetails.companiesAccepted,
         companiesCompletedName: userdetails.companiesCompletedName || "",
         companiesRejectedName: userdetails.companiesRejectedName || "",
         companiesWorkingName: userdetails.companiesWorkingName || "",
+        companiesAcceptedName: userdetails.companiesAcceptedName || "",
         deployedlink: userdetails.deployedlink || "",
         revenueapi: userdetails.revenueapi || "",
+        reminders: userdetails.reminders || 0,
+
     });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
@@ -52,7 +66,7 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
         e.preventDefault();
 
         const { username, email, password, spreadsheet, deployedlink, revenueapi } = info;
-        console.log("info:", info);
+        // console.log("info:", info);
 
         if (!username || !email || !password || !spreadsheet || !deployedlink || !revenueapi) {
             setError("Must provide all credentials");
@@ -83,7 +97,7 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                         setPending(false);
                         const form = e.target;
                         form.reset();
-                        console.log("Teamleader updated successfully");
+                        // console.log("Teamleader updated successfully");
                     }
                     else {
                         setPending(false);
@@ -116,16 +130,20 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                             companiesCompleted: [],
                             companiesRejected: [],
                             companiesWorking: [],
+                            companiesAccepted: [],
                             companiesCompletedName: [],
                             companiesRejectedName: [],
                             companiesWorkingName: [],
+                            companiesAcceptedName: [],
                             spreadsheet: "",
                             deployedlink: "",
                             revenueapi: "",
-                            preference: ""
+                            preference: "",
+                            reminders: 0,
+
                         });
 
-                        console.log("userdetails after submission:", userdetails);
+                        // console.log("userdetails after submission:", userdetails);
                         toast.success('TL added successfully', {
                             position: "top-right",
                             autoClose: 2000,
@@ -136,7 +154,7 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        console.log("User registered successfully");
+                        // console.log("User registered successfully");
                     }
                     else {
                         setPending(false);
@@ -146,7 +164,7 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                 }
             } catch (err) {
                 setPending(false);
-                console.error("Error registering new TL in page.jsx:", err);
+                // console.error("Error registering new TL in page.jsx:", err);
                 setError("Error in registering TL");
             }
         }
@@ -159,13 +177,13 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
         try {
             setPending(true);
             const username = info.username;
-            console.log("username to delete:", username);
+            // console.log("username to delete:", username);
 
             const res = await fetch(`/api/register/${username}`, {
                 method: "DELETE"
             })
             // const data = await res.json();
-            console.log("res:", res);
+            // console.log("res:", res);
             if (res.status === 201) {
                 setPending(false);
 
@@ -180,13 +198,17 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                     companiesCompleted: [],
                     companiesRejected: [],
                     companiesWorking: [],
+                    companiesAccepted: [],
                     companiesCompletedName: [],
                     companiesRejectedName: [],
                     companiesWorkingName: [],
+                    companiesAcceptedName: [],
                     spreadsheet: "",
                     deployedlink: "",
                     revenueapi: "",
-                    preference: ""
+                    preference: "",
+                    reminders: 0,
+
                 });
 
 
@@ -200,9 +222,9 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                     progress: undefined,
                     theme: "light",
                 });
-                console.log("user deleted successfully");
+                // console.log("user deleted successfully");
                 setSelectedRole("");
-                console.log("selectedRole after deleting:", selectedRole);
+                // console.log("selectedRole after deleting:", selectedRole);
                 setTls([]);
                 // setAlltls([])
             }
@@ -214,7 +236,7 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
         }
         catch (err) {
             setPending(false);
-            console.log("Error while deleting TL in page.jsx:", err);
+            // console.log("Error while deleting TL in page.jsx:", err);
             setError("Error deleting TL");
         }
     }
@@ -233,33 +255,33 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="text-black">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="text-black">Username:</h1> : <DynamicCgProfile className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="username" placeholder="Username" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.username} disabled={method === "put"} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="text-black">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="text-black">Email:</h1> : <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
                         <input type="email" name="email" placeholder="example@gmail.com" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.email} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="text-black">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="text-black">Password:</h1> : <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="password" placeholder="Password" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.password} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method === "put" ? <h1 className="text-black">Spreadsheet:</h1> : <LuFileSpreadsheet className="size-8 lg:size-6" color='purple' />}
+                        {method === "put" ? <h1 className="text-black">Spreadsheet:</h1> : <DynamicLuFileSpreadsheet className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="spreadsheet" placeholder="Spreadsheet Link" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.spreadsheet} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method === "put" ? <h1 className="text-black">Deployedlink:</h1> : <FaLink className="size-8 lg:size-6" color='purple' />}
+                        {method === "put" ? <h1 className="text-black">Deployedlink:</h1> : <DynamicFaLink className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="deployedlink" placeholder="Deployed Sheet Link" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.deployedlink} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
                         {method === "put" ? <h1 className="text-black">Revenue api:</h1> :
-                            <FaLink className="size-8 lg:size-6" color='purple' />}
+                            <DynamicFaLink className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="revenueapi" placeholder="Revenue api" className="p-2 pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.revenueapi} />
                     </div>
 
@@ -269,14 +291,12 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                         <div className="flex justify-center items-center gap-4">
                             <button
                                 type="submit" className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
-                                {/* {pending ? "Updating" : "Update"} */}
                                 Update
                             </button>
 
                             <button
                                 onClick={handleDeleteUser}
                                 className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
-                                {/* {pending ? "Deleting" : "Delete"} */}
                                 Delete
                             </button>
                         </div>
@@ -284,7 +304,6 @@ const TLForm = ({ method, userdetails, setSelectedRole, selectedRole, setTls }) 
                         <button
                             type="submit"
                             className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
-                            {/* {pending ? "Adding User" : "Add User"} */}
                             Add
                         </button>
                     }

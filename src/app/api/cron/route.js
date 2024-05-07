@@ -9,9 +9,13 @@ import { getAllUsers } from './actions';
 // Define the function to send emails to active franchises
 const sendEmailToActiveFranchises = async () => {
   try {
+    const allUsers = await getAllUsers();
+    const admin = allUsers.filter((user) => user.role === "ad");
+    const url = admin[0].deployedlink;
+
 
     // Fetch data from API or database
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxl6CDmbyH3-jHGYCeq79P76Ix2V4N2qVli9cFO6KXBygMXhgDo6XdvuWGf38K1Fyka/exec');
+    const response = await fetch(url);
     const franchises = await response.json();
 
     const inactiveFranchises = [];
@@ -30,32 +34,29 @@ const sendEmailToActiveFranchises = async () => {
     console.log('Inactive Franchises:', inactiveFranchises);
     console.log('Active Franchises:', activeFranchises);
 
-//     // Fetch all users from the database
-//     const allUsers = await getAllUsers();
+    const activeFranchiseEmails = allUsers
+      .filter(user => activeFranchises.includes(user.username))
+      .map(user => user.email);
 
-//    const activeFranchiseEmails = allUsers
-//             .filter(user => activeFranchises.includes(user.franchise))
-//             .map(user => user.email);
-
-//         console.log("Active Franchise Emails:", activeFranchiseEmails);
-
-//     // Send emails to active franchise users
-//     // Your email sending logic here
-//     console.log('Emails sent to active franchises:', activeFranchiseEmails);
-return ({emails})
+    console.log("emails of active franhise:",activeFranchiseEmails);
+    return activeFranchiseEmails;
   } catch (error) {
     console.error('Error sending emails:', error);
   }
 };
 
-module.exports = { sendEmailToActiveFranchises };
+// module.exports = { sendEmailToActiveFranchises };
 
 
 export async function GET() {
 
     //logic to filter active franchises and send array of emails of active franhcises, let be activeFRranchiseArr
+    // const actIiveFranchisess = sendEmailToActiveFranchises();
+    // const activeFranchiseArr = ["yashkalia4215@gmail.com","veerendragumate@gmail.com"];
+    const activeFranchiseArr = await sendEmailToActiveFranchises();
+    console.log("activeFranchiseArr:", activeFranchiseArr);
 
-    sendEmail(activeFranchiseArr);
+    sendEmail(["yashkalia4215","veerendragumate@gmail.com"],activeFranchiseArr);
     const result = "Helo, World! This is CRON route."
 
     return NextResponse.json({ data: result })

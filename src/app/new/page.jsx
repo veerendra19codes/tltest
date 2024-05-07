@@ -1,9 +1,13 @@
 "use client";
 
+import dynamic from 'next/dynamic';
 import React, { useState, useEffect, useContext } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
+const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+
 import { useRouter } from 'next/navigation';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,13 +21,13 @@ const NewPage = () => {
     useEffect(() => {
         if (status === "loading") {
             return;
-        } else if (session.user?.role !== "bd") {
+        } else if (session?.user?.role !== "bd") {
             router.back();
         }
     }, [status, session, router]);
 
     const [info, setInfo] = useState({ companyname: "", jobdetails: "" });
-    const [error, setError] = useState("");
+    // const [error, setError] = useState("");
     // const [pending, setPending] = useState(false);
 
     const handleInput = (e) => {
@@ -56,7 +60,7 @@ const NewPage = () => {
                 <form action={formAction} className="w-[450px] m-auto mt-24 p-12 pb-8 bg-white rounded-xl flex flex-col justify-center items-center gap-4 shadow-xl sm:w-full sm:m-0 sm:p-4 sm:gap-2">
                     <h1 className="text-3xl font-bold text-darkpurple sm:text-xl sm:mb-4">Add new openings</h1>
 
-                    <input type="hidden" name="createdBy" value={session.user?.id} />
+                    <input type="hidden" name="createdBy" value={session?.user?.id} />
 
                     <div className="w-full flex flex-col">
 

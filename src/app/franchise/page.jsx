@@ -1,9 +1,12 @@
 "use client";
 
+import dynamic from 'next/dynamic';
 import UserContext from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation'
 import { useContext, useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
+const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,7 +17,7 @@ const FranchisePage = () => {
     useEffect(() => {
         if (status === "loading") {
             return;
-        } else if (session.user?.role !== "tl") {
+        } else if (session?.user?.role !== "tl") {
             router.back();
         }
     }, [session, status, router])
@@ -91,7 +94,7 @@ const FranchisePage = () => {
                         progress: undefined,
                         theme: "light",
                     });
-                    console.log("Franchise registered successfully");
+                    // console.log("Franchise registered successfully");
                 }
                 else {
                     setPending(false);
@@ -100,7 +103,7 @@ const FranchisePage = () => {
                 }
             } catch (err) {
                 setPending(false);
-                console.log("Error while registering franchise in page.jsx", err);
+                // console.log("Error while registering franchise in page.jsx", err);
                 // setError("error in register franchise page in catch block");
             }
         }

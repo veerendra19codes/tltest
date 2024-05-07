@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
             ref: 'Company',
         }
     ],
+    companiesAccepted: [  //NEW
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'Company',
+        }
+    ],
     companiesCompletedName: [
         {
             type: String,
@@ -64,6 +70,12 @@ const userSchema = new mongoose.Schema({
         }
     ],
     companiesWorkingName: [
+        {
+            type: String,
+            default: "none",
+        }
+    ],
+    companiesAcceptedName: [ //NEW
         {
             type: String,
             default: "none",
@@ -85,6 +97,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "any",
     },
+    reminders: { //NEW
+        type: Number,
+        default: 0,
+    }
 }, {timestamps: true});
 
 const companySchema = new mongoose.Schema({

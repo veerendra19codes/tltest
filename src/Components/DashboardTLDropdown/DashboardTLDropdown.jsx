@@ -1,4 +1,5 @@
-// DashboardTLDropdown.jsx
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { getAllUsers } from '@/lib/actions';
 

@@ -6,7 +6,6 @@ import { Providers } from "./providers";
 import UserContextProvider from "@/contexts/UserContextProvider";
 // import TeamleaderContextProvider from "@/contexts/TeamleaderContext/TeamleaderContextProvider";
 // import { initializeCronJob } from '@/lib/cron';
-// import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +15,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // useEffect(() => {
-  //   initializeCronJob(); // Call the function to start the cron job
-  // }, []);
 
   return (
     <html lang="en">
@@ -28,11 +24,9 @@ export default function RootLayout({ children }) {
     <body className={inter.className + "h-full w-full flex flex-col bg-gradient-to-r from-[#5E376C] to-[#675080] overflow-x-hidden"}>
       <Providers>
         <UserContextProvider>
-          {/* <TeamleaderContextProvider> */}
 
-        <Navbar />
+        <Navbar/>
         {children}
-          {/* </TeamleaderContextProvider> */}
         </UserContextProvider>
       </Providers>
     </body>

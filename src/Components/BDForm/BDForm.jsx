@@ -1,17 +1,24 @@
 'use client'
 
-import { useState, useCallback } from 'react';
-import { CgProfile } from "react-icons/cg";
-import { MdLockOutline } from "react-icons/md";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { ToastContainer, toast } from 'react-toastify';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+import { useState } from 'react';
+
+const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
+const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
+const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+
+// import { CgProfile } from "react-icons/cg";
+// import { MdLockOutline } from "react-icons/md";
+// import { MdOutlineMailOutline } from "react-icons/md";
+// import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) => {
     // console.log("method in bdform:", method);
     // console.log("userdetails in bdform:", userdetails);
-
 
     const [info, setInfo] = useState({
         username: userdetails.username,
@@ -25,17 +32,21 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
         companiesCompleted: userdetails.companiesCompleted,
         companiesRejected: userdetails.companiesRejected,
         companiesWorking: userdetails.companiesWorking,
+        companiesAccepted: userdetails.companiesAccepted,
         companiesCompletedName: userdetails.companiesCompletedName,
         companiesRejectedName: userdetails.companiesRejectedName,
         companiesWorkingName: userdetails.companiesWorkingName,
+        companiesAcceptedName: userdetails.companiesAcceptedName,
         deployedlink: userdetails.deployedlink,
         revenueapi: userdetails.revenueapi,
+        reminders: userdetails.reminders || 0,
+
     });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
 
     const handleInput = (e) => {
-        console.log("changing");
+        // console.log("changing");
         setInfo((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
@@ -79,13 +90,16 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                             companiesCompleted: [],
                             companiesRejected: [],
                             companiesWorking: [],
+                            companiesAccepted: [],
                             companiesCompletedName: [],
                             companiesRejectedName: [],
                             companiesWorkingName: [],
+                            companiesAcceptedName: [],
                             spreadsheet: "",
                             deployedlink: "",
                             revenueapi: "",
-                            preference: ""
+                            preference: "",
+                            reminders: 0,
                         });
 
                         toast.success('BD updated successfully', {
@@ -99,10 +113,9 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                             theme: "light",
                         });
 
-
-                        console.log("bd updated successfully");
+                        // console.log("bd updated successfully");
                         setSelectedRole("");
-                        console.log("selectedRole after updating:", selectedRole);
+                        // console.log("selectedRole after updating:", selectedRole);
                     }
                     else {
                         setPending(false);
@@ -121,8 +134,6 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     });
                     if (res.status === 201) {
                         setPending(false);
-
-
                         //set userdetails to default values
                         setInfo({
                             username: "",
@@ -134,13 +145,16 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                             companiesCompleted: [],
                             companiesRejected: [],
                             companiesWorking: [],
+                            companiesAccepted: [],
                             companiesCompletedName: [],
                             companiesRejectedName: [],
                             companiesWorkingName: [],
+                            companiesAcceptedName: [],
                             spreadsheet: "",
                             deployedlink: "",
                             revenueapi: "",
-                            preference: ""
+                            preference: "",
+                            reminders: 0,
                         });
 
                         toast.success('BD added successfully', {
@@ -153,7 +167,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        console.log("User registered successfully");
+                        // console.log("User registered successfully");
                     }
                     else {
                         setPending(false);
@@ -163,7 +177,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                 }
             } catch (err) {
                 setPending(false);
-                console.log("Error while registering new BD in page.jsx:", err);
+                // console.log("Error while registering new BD in page.jsx:", err);
                 setError("Error in Registering BD");
             }
         }
@@ -175,13 +189,13 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
         try {
             setPending(true);
             const username = info.username;
-            console.log("username to delete:", username);
+            // console.log("username to delete:", username);
 
             const res = await fetch(`/api/register/${username}`, {
                 method: "DELETE"
             })
             // const data = await res.json();
-            console.log("res:", res);
+            // console.log("res:", res);
             if (res.status === 201) {
                 setPending(false);
 
@@ -196,13 +210,17 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     companiesCompleted: [],
                     companiesRejected: [],
                     companiesWorking: [],
+                    companiesAccepted: [],
                     companiesCompletedName: [],
                     companiesRejectedName: [],
                     companiesWorkingName: [],
+                    companiesAcceptedName: [],
                     spreadsheet: "",
                     deployedlink: "",
                     revenueapi: "",
-                    preference: ""
+                    preference: "",
+                    reminders: 0,
+
                 });
 
                 toast.success('BD deleted successfully', {
@@ -215,9 +233,9 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     progress: undefined,
                     theme: "light",
                 });
-                console.log("user deleted successfully");
+                // console.log("user deleted successfully");
                 setSelectedRole("");
-                console.log("selectedRole after deleting:", selectedRole);
+                // console.log("selectedRole after deleting:", selectedRole);
                 setBds([])
             }
             else {
@@ -228,7 +246,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
         }
         catch (err) {
             setPending(false);
-            console.log("Error while deleting BD in page.jsx:", err);
+            // console.log("Error while deleting BD in page.jsx:", err);
             setError("Error deleting bd");
         }
     }
@@ -245,7 +263,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <DynamicCgProfile className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="username"
@@ -258,7 +276,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="email"
                             name="email"
@@ -270,7 +288,7 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="password"
@@ -282,8 +300,6 @@ const BDForm = ({ method, userdetails, setSelectedRole, selectedRole, setBds }) 
                     </div>
 
                     {error && <span className="text-red-500 font-medium">{error}</span>}
-
-                    {/* <button className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>{pending ? "Adding User" : "Add User"}</button> */}
 
                     {method === "put" ?
                         <div className="flex justify-center items-center gap-4">

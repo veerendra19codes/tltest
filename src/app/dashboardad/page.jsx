@@ -5,7 +5,13 @@ import { getAllUsers } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
 import UserContext from '@/contexts/UserContext';
 
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+// import { Line, Bar, Doughnut } from 'react-chartjs-2';
+
+import dynamic from 'next/dynamic';
+const Line = dynamic(() => import("react-chartjs-2").then(module => module.Line));
+const Bar = dynamic(() => import("react-chartjs-2").then(module => module.Bar));
+const Doughnut = dynamic(() => import("react-chartjs-2").then(module => module.Doughnut));
+
 import { Chart as ChartJs, ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, registerables } from 'chart.js';
 // import { Chart } from 'chart.js/auto';
 
@@ -13,7 +19,15 @@ ChartJs.register(ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale,
 import Link from 'next/link';
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const DashboardADPage = () => {
     const router = useRouter();
@@ -23,7 +37,7 @@ const DashboardADPage = () => {
     useEffect(() => {
         if (status === "loading") {
             return;
-        } else if (session.user?.role !== "ad") {
+        } else if (session?.user?.role !== "ad") {
             router.back();
         }
     }, [status, session, router]);
@@ -106,16 +120,16 @@ const DashboardADPage = () => {
     }, [selectedTL]);
 
     const SelectTL = (e) => {
-        console.log("e.target.value:", e.target.value);
+        // console.log("e.target.value:", e.target.value);
         setSelectedTL(e.target.value);
-        console.log("selected TL:", selectedTL);
+        // console.log("selected TL:", selectedTL);
     };
 
     useEffect(() => {
         if (selectedFR !== "") {
             const fetchSheetData = async (e) => {
                 try {
-                    console.log("franchise selected:", selectedFR);
+                    // console.log("franchise selected:", selectedFR);
 
                     // const response = await fetch("/api/fetchAppscript", {
                     //     method: 'POST,
@@ -144,15 +158,10 @@ const DashboardADPage = () => {
                     // console.log("normalized selectedfr:", selectedFRNormalized);
                     // console.log("dataKeyNormalized:", dataKeysNormalized);
 
-
-                    // if (data.hasOwnProperty(selectedFR)) {
-                    //     const clientData = data[selectedFR];
-                    //     console.log("clientData:", clientData);
-
                     if (dataKeysNormalized.hasOwnProperty(selectedFRNormalized)) {
                         const clientData = dataKeysNormalized[selectedFRNormalized];
-                        console.log("clientData:", clientData);
-                        console.log("clientData.cityState:", clientData.cityState);
+                        // console.log("clientData:", clientData);
+                        // console.log("clientData.cityState:", clientData.cityState);
 
                         if (clientData && clientData.cityState) {
 
@@ -261,7 +270,7 @@ const DashboardADPage = () => {
                             }));
                         }
                         else {
-                            console.log("first round");
+                            // console.log("first round");
                         }
                     } else {
                         console.error("This user not found:", selectedFR);
@@ -278,11 +287,19 @@ const DashboardADPage = () => {
 
     const SelectFR = (e) => {
         e.preventDefault();
-        console.log("e.target.value:", e.target.value);
+        // console.log("e.target.value:", e.target.value);
         setSelectedFR(e.target.value);
-        console.log("selected FR:", selectedFR);
+        // console.log("selected FR:", selectedFR);
         // fetchSheetData();
     };
+
+    const handleSelectChange = (selectedValue) => {
+        // e.preventDefault();
+        // console.log("e.target.value:", selectedValue);
+        setSelectedFR(selectedValue);
+        // console.log("selected FR:", selectedFR);
+        // fetchSheetData();
+    }
 
 
     const renderLineChart = () => {
@@ -448,7 +465,7 @@ const DashboardADPage = () => {
                     {selectedTL &&
                         <div className="frdropdown w-1/4 lg:w-1/2">
 
-                            <label className="block text-white font-medium text-sm  mb-2 lg:text-[12px] lg:font-thin">Select Franchise:</label >
+                            {/* <label className="block text-white font-medium text-sm  mb-2 lg:text-[12px] lg:font-thin">Select Franchise:</label >
                             <select
                                 className="block appearance-none w-full bg-white border border-gray-300 rounded py-2 px-4 leading-tight focus:outline-none focus:border-blue-500 lg:text-[12px]"
                                 onChange={SelectFR}
@@ -458,7 +475,21 @@ const DashboardADPage = () => {
                                 {frs.map(fr => (
                                     <option key={fr._id} value={fr.username}>{fr.username}</option>
                                 ))}
-                            </select>
+                            </select> */}
+
+                            <label className="block text-white font-medium text-sm  mb-2 lg:text-[12px] lg:font-thin">Select Franchise:</label >
+                            <Select
+                                onValueChange={handleSelectChange}
+                            >
+                                <SelectTrigger className="w-[280px] lg:w-full h-[36px] lg:h-[32px] rounded border-none outline-none px-2 lg:p-0" placeholder="Select Franchise">
+                                    <SelectValue placeholder="Select Franchise" />
+                                </SelectTrigger>
+                                <SelectContent className="h-[150px]">
+                                    {frs.map((f) => (
+                                        <SelectItem key={f._id} value={f.username} className="py-1">{f.username}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     }
 
@@ -478,30 +509,6 @@ const DashboardADPage = () => {
 
             </div>
 
-            {/* <div className="w-full flex">
-
-                <div className='w-1/3  h-1/2'>
-                    <h2>Cities Worked In</h2>
-                    <Doughnut data={chartData.city} />
-                </div>
-
-                <div className='w-1/3 h-1/2'>
-                    <h2>Position Status Counts</h2>
-                    <Doughnut data={chartData.positionStatus} />
-                </div>
-                <div className='w-1/3 h-1/2'>
-                    <h2>States Worked In</h2>
-                    <Doughnut data={chartData.state} />
-                </div>
-                <div className='w-1/3 h-1/2'>
-                    <h2>Industries Worked In</h2>
-                    <Doughnut data={chartData.industry} />
-                </div>
-                <div className='w-1/6 h-1/2'>
-                    <Doughnut data={chartData.status} />
-                </div>
-            </div> */}
-
             {selectedFR ?
                 <div className="flex flex-col justify-center items-center w-full h-auto gap-4 px-8 lg:px-4">
 
@@ -509,8 +516,6 @@ const DashboardADPage = () => {
                         <div className="w-1/2 flex flex-col justify-center items-center h-auto p-8 bg-white rounded-xl lg:w-full"  >
 
                             <h2>Position Status Counts</h2>
-                            {/* <Doughnut data={chartData.positionStatus} /> */}
-
                             {Object.keys(positionStatusData).length > 0 ?
                                 <div className="piechart w-auto h-[90%]">
                                     <Doughnut data={chartData.positionStatus} options={options} />
@@ -518,18 +523,7 @@ const DashboardADPage = () => {
                         </div>
                         <div className="w-1/2 h-full bg-white text-black p-4 text-center rounded-xl lg:w-full ">
                             <h2>Industries Worked In</h2>
-                            {/* {Object.keys(industryData).length > 0 ? <Bar data={chartData.industry} /> : <p>Loading...</p>} */}
                             {Object.keys(industryData).length > 0 ?
-                                // <Bar
-                                //     data={{
-                                //         datasets: [{
-                                //             data: Object.values(industryData),
-                                //             backgroundColor: barColors, // Set the color for all bars to blue
-                                //         }],
-                                //         labels: Object.keys(industryData),
-                                //     }}
-                                //     options={options}
-                                // /> 
                                 renderVerticalBarChart()
                                 :
                                 <p>Loading...</p>}
@@ -553,9 +547,6 @@ const DashboardADPage = () => {
                 :
                 <p className="text-white text-2xl text-center">Please select a teamleader and franchise to view their dashboard</p>
             }
-
-
-
 
         </div>
     )

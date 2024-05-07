@@ -1,29 +1,18 @@
 "use client";
 
-import { revalidatePath } from "next/cache";
+import dynamic from "next/dynamic";
+import UserContext from "@/contexts/UserContext";
+// import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
-// const updateCompany = async (companyId, updatedFields) => {
-//     try {
-//         const res = await fetch(`/api/company/${companyId}`, {
-//             method: "PUT",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(updatedFields),
-//         })
+const DynamicIoMdClose = dynamic(() => import("react-icons/io").then(module => module.IoMdClose));
+const DynamicMdDone = dynamic(() => import("react-icons/md").then(module => module.MdDone));
+const useMediaQuery = dynamic(() => import("react-responsive").then(module => module.useMediaQuery));
 
-//         if (!res) {
-//             console.log(res.json());
-//         }
-
-//         const data = res.json();
-//         console.log(data);
-//     }
-//     catch (err) {
-//         console.log("error while rejected company:", err);
-//     }
-// }
+// import { IoMdClose } from "react-icons/io";
+// import { MdDone } from "react-icons/md";
+// import { useMediaQuery } from "react-responsive";
 
 const RejectFr = async (updatedFields) => {
     try {
@@ -36,45 +25,50 @@ const RejectFr = async (updatedFields) => {
         })
 
         if (!res) {
-            console.log(res.json());
+            // console.log(res.json());
         }
 
         const data = res.json();
-        console.log(data);
+        // console.log(data);
     }
     catch (err) {
         console.log("error while rejected company:", err);
     }
 }
 
-const FranchiseDashboardPage = ({ data, session }) => {
+const AcceptFr = async (updatedFields) => {
+    try {
+        const res = await fetch(`/api/acceptfr`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedFields),
+        })
+
+        if (!res) {
+            console.log(res.json());
+        }
+
+        const data = res.json();
+        // console.log(data);
+    }
+    catch (err) {
+        // console.log("error while accepting company:", err);
+    }
+}
+
+const FranchiseDashboardPage = ({ data }) => {
+    const { session, status } = useContext(UserContext);
+    // console.log("session:", session);
     const router = useRouter();
+    const isMobile = useMediaQuery({ maxWidth: 768 });
 
-    // const handleNotInterested = (id, companyname) => {
-    //     // console.log("company rejected: ", id);
-    //     // console.log("rejected Company name: ", companyname);
-
-    //     const companyId = id;
-    //     const updatedFields = {
-    //         // updates in Company model
-    //         franchisename: "unassigned",
-    //         franchise: "unassigned",
-    //         rejectedFranchiseName: session.user?.username,
-    //         rejectedFranchise: session.user?.id,
-
-    //         //updated in User model
-    //         companiesRejected: id,
-    //         companiesRejectedName: companyname,
-
-    //         message: "reject fr",
-    //     }
-    //     // console.log("companyId: ", companyId);
-    //     // console.log("updatedFields", updatedFields);
-
-    //     updateCompany(companyId, updatedFields);
-
-    //     router.refresh("/dashboardfr");
-    // }
+    if (status === "loading") {
+        return (
+            <div className="text-white"> Loading ...</div>
+        )
+    }
 
     const handleNotInterested = (id, companyname) => {
         // console.log("company rejected: ", id);
@@ -85,10 +79,10 @@ const FranchiseDashboardPage = ({ data, session }) => {
             // updates in Company model
             franchisename: "unassigned", //set
             franchise: null, //set
-            rejectedFranchiseName: session.user?.username, //push
-            rejectedFranchise: session.user?.id, //push
+            rejectedFranchiseName: session?.user?.username, //push
+            rejectedFranchise: session?.user?.id, //push
 
-            userId: session.user?.id, // this is to change user model with this user id only
+            userId: session?.user?.id, // this is to change user model with this user id only
             //updated in User model
             companiesRejected: id, //push
             companiesRejectedName: companyname, //push
@@ -100,40 +94,90 @@ const FranchiseDashboardPage = ({ data, session }) => {
         RejectFr(updatedFields);
 
         router.refresh("/dashboardfr");
+        router.refresh("/dashboardbd");
+        router.refresh("/dashboardsh");
+        router.refresh("/mails");
+        router.refresh("/assign");
+
+
+
+        // revalidatePath("/dashboardbd")
+        // revalidatePath("/dashboardsh")
+        // revalidatePath("/mails")
+        // revalidatePath("/assign")
+        // revalidatePath("/dashboardfr")
+    }
+
+    const handleInterested = (id, companyname) => {
+        // console.log("company rejected: ", id);
+        // console.log("rejected Company name: ", companyname);
+
+        const updatedFields = {
+            companyId: id, //this is to change Company model with this company id only
+            // updates in Company model
+            status: "assigned",
+
+            userId: session?.user?.id, // this is to change user model with this user id only
+            //updated in User model
+            companiesAccepted: id, //push
+            companiesAcceptedName: companyname, //push
+
+        }
+        // console.log("companyId: ", companyId);
+        // console.log("updatedFields", updatedFields);
+
+        AcceptFr(updatedFields);
+
+        router.refresh("/dashboardfr");
     }
 
     return (
-        <div className="w-full h-full flex justify-center items-center px-12">
-            <div className="Table w-full h-full  flex flex-col items-center justify-center gap-8 bg-white rounded-xl px-4">
-                <div className="tablehead w-full flex flex-row mb-6" >
-                    <div className="w-1/3 py-2 pl-4 text-center font-bold">Company</div>
-                    <div className="w-1/3 py-2 pl-4 text-center font-bold">Details</div>
-                    <div className="w-1/3 py-2 pl-4 text-center font-bold">Status</div>
+        <div className="w-full h-full flex justify-center items-center flex-col px-12 lg:px-4">
+            <div className="Table w-full h-full  flex flex-col items-center justify-center border-gray-400 border-[1px] bg-white rounded whitespace-nowrap lg:overflow-x-auto ">
+                <div className="w-full flex" >
+                    <div className="w-1/3 md:w-[200px] whitespace-nowrap text-center font-bold inline-block  border-gray-400 border-y-[1px] py-2 lg:py-1">Company</div>
+                    <div className="w-1/3 md:w-[200px] whitespace-nowrap text-center font-bold inline-block  border-gray-400 border-y-[1px] py-2 lg:py-1">Details</div>
+                    <div className="w-1/3 md:w-[200px] whitespace-nowrap text-center font-bold inline-block  border-gray-400 border-y-[1px] py-2 lg:py-1">Status</div>
                 </div>
 
-                {data.map((d) => (
-                    <div key={d._id} className="border-[1px] border-gray-500 rounded-xl w-full flex flex-row mb-8 py-4">
-                        <div className="w-1/3 mx-2  pl-4 flex justify-center items-center">{d.companyname}</div>
-                        <div className="w-1/3  mx-2 pl-4 flex justify-center items-center text-blue-500" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></div>
-                        {d.status === "in progress" ? (
-                            <div className="buttons flex flex-row w-1/3 gap-4 mx-2">
-                                <button
-                                    className="w-1/2 bg-green-600 rounded-xl py-2 text-white"
-                                >
-                                    Interested
-                                </button>
-                                <button
-                                    onClick={() => handleNotInterested(d._id, d.companyname)}
-                                    className="w-1/2 bg-red-600 rounded-xl py-2 text-white"
-                                >
-                                    Not Interested
-                                </button>
+                <div className="w-full">
+
+                    {data &&
+
+                        data.map((d) => (
+                            <div key={d._id} className="w-full flex">
+                                <div className="w-1/3 md:w-[200px] whitespace-nowrap  text-center inline-block  border-gray-400 border-y-[1px] py-2 lg:py-1">{d.companyname}</div>
+                                <div className="w-1/3 sm:w-[200px] whitespace-nowrap text-center text-blue-500 inline-block  border-gray-400 border-y-[1px] py-2 lg:py-1" ><a href={d.jobdetails} target="_blank" className="hover:underline">Click here</a></div>
+                                {d.status === "in progress" &&
+                                    <div className="buttons flex items-center w-1/3 md:w-[200px] whitespace-nowrap text-center border-gray-400 border-y-[1px] py-2 lg:py-1">
+
+                                        {isMobile ? (
+                                            <>
+                                                <button className="w-1/2 flex justify-center items-center">
+                                                    <DynamicMdDone size={20} color="white" className="rounded-full bg-green-500" />
+                                                </button>
+                                                <button onClick={() => handleNotInterested(d._id, d.companyname)} className="w-1/2 flex justify-center items-center">
+                                                    <DynamicIoMdClose size={20} color="white" className="rounded-full bg-red-500" />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button onClick={() => handleInterested(d._id, d.companyname)} className="w-1/2 flex items-center justify-center bg-green-500 rounded-xl text-white mx-2">
+                                                    <DynamicMdDone size={20} color="white" className="rounded-full bg-green-500" />
+                                                    Interested
+                                                </button>
+                                                <button onClick={() => handleNotInterested(d._id, d.companyname)} className="w-1/2 flex items-center justify-center bg-red-500 rounded-xl text-white mx-2">
+                                                    <DynamicIoMdClose size={20} color="white" className="rounded-full bg-red-500" />
+                                                    Not Interested
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                }
                             </div>
-                        ) : (
-                            <div className="w-1/3  pl-4 text-center items-center flex justify-center h-auto mx-2">{d.status}</div>
-                        )}
-                    </div>
-                ))}
+                        ))
+                    }
+                </div>
             </div>
         </div>
     )

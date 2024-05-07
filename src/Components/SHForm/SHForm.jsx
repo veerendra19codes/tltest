@@ -1,17 +1,24 @@
 'use client'
 
-import { useState, useCallback } from 'react';
-import { CgProfile } from "react-icons/cg";
-import { MdLockOutline } from "react-icons/md";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { RiInformationFill } from 'react-icons/ri';
-import { ToastContainer, toast } from 'react-toastify';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+import { useState } from 'react';
+
+const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
+const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
+const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+
+// import { CgProfile } from "react-icons/cg";
+// import { MdLockOutline } from "react-icons/md";
+// import { MdOutlineMailOutline } from "react-icons/md";
+// import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) => {
-    console.log("method in shform:", method);
-    console.log("selectedRole", selectedRole);
+    // console.log("method in shform:", method);
+    // console.log("selectedRole", selectedRole);
     // console.log("userdetails in shform:", userdetails);
 
 
@@ -27,11 +34,15 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
         companiesCompleted: userdetails.companiesCompleted,
         companiesRejected: userdetails.companiesRejected,
         companiesWorking: userdetails.companiesWorking,
+        companiesAccepted: userdetails.companiesAccepted,
         companiesCompletedName: userdetails.companiesCompletedName,
         companiesRejectedName: userdetails.companiesRejectedName,
         companiesWorkingName: userdetails.companiesWorkingName,
+        companiesAcceptedName: userdetails.companiesAcceptedName,
         deployedlink: userdetails.deployedlink,
         revenueapi: userdetails.revenueapi,
+        reminders: userdetails.reminders || 0,
+
     });
     const [error, setError] = useState("");
     const [pending, setPending] = useState(false);
@@ -50,7 +61,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
         e.preventDefault();
 
 
-        console.log({ info });
+        // console.log({ info });
         if (!info.username || !info.email || !info.password) {
             setError("Must provide all credentials");
         }
@@ -60,7 +71,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
 
                 //updating existing sh
                 if (method === "put") {
-                    console.log("info to be updated:", info);
+                    // console.log("info to be updated:", info);
                     const res = await fetch("api/register", {
                         method: "PUT",
                         headers: {
@@ -82,13 +93,17 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                             companiesCompleted: [],
                             companiesRejected: [],
                             companiesWorking: [],
+                            companiesAccepted: [],
                             companiesCompletedName: [],
                             companiesRejectedName: [],
                             companiesWorkingName: [],
+                            companiesAcceptedName: [],
                             spreadsheet: "",
                             deployedlink: "",
                             revenueapi: "",
-                            preference: ""
+                            preference: "",
+                            reminders: 0,
+
                         });
 
 
@@ -103,9 +118,9 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        console.log("User registered successfully");
+                        // console.log("User registered successfully");
                         setSelectedRole("");
-                        console.log("selectedRole after updating:", selectedRole);
+                        // console.log("selectedRole after updating:", selectedRole);
                     }
                     else {
                         setPending(false);
@@ -138,13 +153,17 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                             companiesCompleted: [],
                             companiesRejected: [],
                             companiesWorking: [],
+                            companiesAccepted: [],
                             companiesCompletedName: [],
                             companiesRejectedName: [],
                             companiesWorkingName: [],
+                            companiesAcceptedName: [],
                             spreadsheet: "",
                             deployedlink: "",
                             revenueapi: "",
-                            preference: ""
+                            preference: "",
+                            reminders: 0,
+
                         });
 
                         toast.success('SH added successfully', {
@@ -157,7 +176,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                             progress: undefined,
                             theme: "light",
                         });
-                        console.log("User registered successfully");
+                        // console.log("User registered successfully");
                     }
                     else {
                         setPending(false);
@@ -169,7 +188,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
             }
             catch (err) {
                 setPending(false);
-                console.log("Error while registering new SH in page.jsx:", err);
+                // console.log("Error while registering new SH in page.jsx:", err);
                 setError("Error in Registering SH");
             }
         }
@@ -183,13 +202,13 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
         try {
             setPending(true);
             const username = info.username;
-            console.log("username to delete:", username);
+            // console.log("username to delete:", username);
 
             const res = await fetch(`/api/register/${username}`, {
                 method: "DELETE"
             })
             // const data = await res.json();
-            console.log("res:", res);
+            // console.log("res:", res);
             if (res.status === 201) {
                 setPending(false);
 
@@ -204,13 +223,17 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     companiesCompleted: [],
                     companiesRejected: [],
                     companiesWorking: [],
+                    companiesAccepted: [],
                     companiesCompletedName: [],
                     companiesRejectedName: [],
                     companiesWorkingName: [],
+                    companiesAcceptedName: [],
                     spreadsheet: "",
                     deployedlink: "",
                     revenueapi: "",
-                    preference: ""
+                    preference: "",
+                    reminders: 0,
+
                 });
 
 
@@ -224,9 +247,9 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     progress: undefined,
                     theme: "light",
                 });
-                console.log("user deleted successfully");
+                // console.log("user deleted successfully");
                 setSelectedRole("");
-                console.log("selectedRole after deleting:", selectedRole);
+                // console.log("selectedRole after deleting:", selectedRole);
                 setShs([])
             }
             else {
@@ -237,7 +260,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
         }
         catch (err) {
             setPending(false);
-            console.log("Error while deleting SH in page.jsx:", err);
+            // console.log("Error while deleting SH in page.jsx:", err);
             setError("Error deleting SH");
         }
     }
@@ -254,7 +277,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <DynamicCgProfile className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="username"
@@ -267,7 +290,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="email"
                             name="email"
@@ -279,7 +302,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="password"

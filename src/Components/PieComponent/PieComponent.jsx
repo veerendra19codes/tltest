@@ -1,8 +1,10 @@
 'use client'
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from 'react';
 import { Chart as ChartJs, Tooltip, Title, ArcElement, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+const Doughnut = dynamic(() => import("react-chartjs-2").then(module => module.Doughnut));
+// import { Doughnut } from 'react-chartjs-2';
 import { getAllUsers } from '@/lib/actions';
 
 ChartJs.register(
@@ -47,7 +49,7 @@ const PieChart = ({ username, teamleadername }) => {
                 // console.log("deployedlink url:", url);
             }
             catch (err) {
-                console.log("error getting teamleader deployed url:", err);
+                // console.log("error getting teamleader deployed url:", err);
             }
         }
         getteamleaderurl();
@@ -58,7 +60,7 @@ const PieChart = ({ username, teamleadername }) => {
 
             try {
                 // console.log("hello");
-                console.log("url:", url);
+                // console.log("url:", url);
 
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -105,10 +107,10 @@ const PieChart = ({ username, teamleadername }) => {
                     const statusEntry = franchiseData[0];
                     // console.log("statusEntry:", statusEntry);
 
-                    statusCount['In Progress'] = statusEntry.inprogress;
-                    statusCount['Hold'] = statusEntry.hold;
-                    statusCount['Cancel'] = statusEntry.cancel;
-                    statusCount['Closed'] = statusEntry.closed;
+                    statusCount['In Progress'] = statusEntry.inprogress || 0;
+                    statusCount['Hold'] = statusEntry.hold || 0;
+                    statusCount['Cancel'] = statusEntry.cancel || 0;
+                    statusCount['Closed'] = statusEntry.closed || 0;
                     // console.log("statusCount:", statusCount);
 
                     const statusData = Object.values(statusCount);
@@ -129,7 +131,27 @@ const PieChart = ({ username, teamleadername }) => {
                 }
 
             } catch (error) {
-                console.error("Error fetching data:", error);
+                //error handling incase url is corrupted
+                const statusCount = {
+                    'In Progress': 0,
+                    'Hold': 0,
+                    'Cancel': 0,
+                    'Closed': 0
+                };
+                const statusData = Object.values(statusCount);
+                setChartData({
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: [
+                            'yellow',
+                            'blue',
+                            'red',
+                            'green',
+                        ]
+                    }],
+                    labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                });
+                // console.error("Error fetching data:", error);
             }
         };
 
@@ -137,9 +159,8 @@ const PieChart = ({ username, teamleadername }) => {
     }, [url]);
 
     return (
-        <div className="piechart w-full h-full" style={{ width: '80%', height: '80%' }}>
+        <div className="piechart w-full h-full flex justify-center items-center" style={{ width: '100%', height: '100%' }}>
             {<Doughnut data={chartData} /> || "Loading..."}
-
         </div>
     );
 }
