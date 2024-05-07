@@ -6,15 +6,17 @@ const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => m
 const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
 const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
 const DynamicLuFileSpreadsheet = dynamic(() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
-const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-import 'react-toastify/dist/ReactToastify.css';
-const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// import 'react-toastify/dist/ReactToastify.css';
+// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 // import { CgProfile } from "react-icons/cg";
 // import { MdLockOutline } from "react-icons/md";
 // import { MdOutlineMailOutline } from "react-icons/md";
 // import { LuFileSpreadsheet } from "react-icons/lu";
-// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const ADForm = () => {
 

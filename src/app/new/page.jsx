@@ -4,9 +4,9 @@ import dynamic from 'next/dynamic';
 import React, { useState, useEffect, useContext } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
-// import { ToastContainer, toast } from 'react-toastify';
-const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+import { ToastContainer, toast } from 'react-toastify';
+// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 import { useRouter } from 'next/navigation';
 

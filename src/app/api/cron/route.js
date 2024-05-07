@@ -1,10 +1,10 @@
 
 import { NextResponse } from "next/server"
-import sendEmail from "@/lib/mailer.js"
+import {sendEmail} from "@/lib/mailer.js"
 
 
 import fetch from 'node-fetch';
-import { getAllUsers } from './actions';
+import { getAllUsers } from '@/lib/actions';
 
 // Define the function to send emails to active franchises
 const sendEmailToActiveFranchises = async () => {

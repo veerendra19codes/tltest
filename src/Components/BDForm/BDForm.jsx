@@ -6,13 +6,13 @@ import { useState } from 'react';
 const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
 const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
 const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
-const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 // import { CgProfile } from "react-icons/cg";
 // import { MdLockOutline } from "react-icons/md";
 // import { MdOutlineMailOutline } from "react-icons/md";
-// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 

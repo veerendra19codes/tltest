@@ -9,7 +9,7 @@ async function AssignTl(updatedFields) {
     // console.log("updatedFields: ", updatedFields);
 
     try {
-        const response = await fetch(`${process.env.NEXTAUTH_URL}/api/assigntl`, {
+        const response = await fetch(`/api/assigntl`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -19,10 +19,11 @@ async function AssignTl(updatedFields) {
 
         if (!response.ok) {
             const errorMessage = await response.text();
-            throw new Error(errorMessage);
+            // throw new Error(errorMessage);
         }
 
         const data = await response.json();
+        return;
         // console.log(data); // Success message
     } catch (error) {
         // console.error('Error updating company:', error.message);
@@ -43,7 +44,7 @@ const MailsDashboard = ({ data, teamleaders }) => {
 
         // console.log("teamleadername selected:", e.target.value);
         const teamleader = teamleaders.filter((teamleader) => teamleader.username === e.target.value);
-        // console.log("teamleader :", teamleader);
+        console.log("teamleader :", teamleader);
         const teamleaderId = teamleader[0]._id;
         // console.log("teamleaderId:", teamleaderId);
 

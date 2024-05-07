@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 
-const DynamicCgProfile = dynamic(() => import("react-icons/cg")); // Dynamic import for CgProfile icon
+const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile)); // Dynamic import for CgProfile icon
 const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
 
 const LoginPage = () => {

@@ -8,11 +8,11 @@ import { useContext } from "react";
 
 const DynamicIoMdClose = dynamic(() => import("react-icons/io").then(module => module.IoMdClose));
 const DynamicMdDone = dynamic(() => import("react-icons/md").then(module => module.MdDone));
-const useMediaQuery = dynamic(() => import("react-responsive").then(module => module.useMediaQuery));
+// const useMediaQuery = dynamic(() => import("react-responsive").then(module => module.useMediaQuery));
 
 // import { IoMdClose } from "react-icons/io";
 // import { MdDone } from "react-icons/md";
-// import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 
 const RejectFr = async (updatedFields) => {
     try {

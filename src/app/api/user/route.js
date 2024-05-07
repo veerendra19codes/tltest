@@ -9,6 +9,7 @@ export const GET = async (request) => {
         connectToDB();
 
         const users = await User.find({},{ password: 0});
+        // console.log("all users:", users);
         return NextResponse.json(users);
     }
     catch(err) {

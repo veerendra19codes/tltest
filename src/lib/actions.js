@@ -47,7 +47,9 @@ export const getAllCompanies = async () => {
     try {
         connectToDB();
 
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/company`, { cache: 'no-store' });
+        const url = `${process.env.NEXTAUTH_URL}/api/company`;
+        const res = await fetch(url, { cache: 'no-store' });
+        // console.log("res:",res.json())
 
         if (!res.ok) {
             return { error: "Error in getting companies" };
@@ -65,8 +67,9 @@ export const getAllUsers = async () => {
         console.log("getAllUsers is called");
         connectToDB();
         
-
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, { cache: 'no-store' });
+        const url= `${process.env.NEXTAUTH_URL}/api/user`;
+        const res = await fetch(url, { cache: 'no-store' });
+        // console.log("res:",res.json())
 
         if (!res.ok) {
             return { error: "Error in getting all users" };

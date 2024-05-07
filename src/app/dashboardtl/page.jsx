@@ -38,9 +38,9 @@ import {
 // } from "@/components/ui/alert-dialog"
 
 
-// import { ToastContainer, toast } from 'react-toastify';
-const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+import { ToastContainer, toast } from 'react-toastify';
+// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 import 'react-toastify/dist/ReactToastify.css';
 // import { revalidatePath } from "next/cache";

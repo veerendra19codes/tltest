@@ -4,9 +4,9 @@ import dynamic from 'next/dynamic';
 import UserContext from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation'
 import { useContext, useState, useEffect } from 'react';
-// import { ToastContainer, toast } from 'react-toastify';
-const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+import { ToastContainer, toast } from 'react-toastify';
+// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
 
 import 'react-toastify/dist/ReactToastify.css';
 

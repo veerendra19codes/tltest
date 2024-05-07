@@ -111,34 +111,34 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
             }))
             setError("");
         }
-        console.log("info:", info);
-        console.log("newpassword:", newpassword);
+        // console.log("info:", info);
+        // console.log("newpassword:", newpassword);
 
         const { username, email, password, teamleadername, spreadsheet, level, preference } = info;
 
         if (method !== "put") {
             if (!username || !email || !password || !teamleadername || !spreadsheet || !level || !preference) {
-                setError("Must provide all credentials 1");
+                setError("Must provide all credentials");
             }
         }
         else {
             if (changePassword) {
-                console.log("new password aaja bhai:", newpassword);
+                // console.log("new password:", newpassword);
                 setInfo((prev) => ({
                     ...prev,
                     password: newpassword
                 }))
                 setError("");
-                console.log("i m here")
-                console.log("password:", password);
-                console.log("info again:", info);
+                // console.log("i m here")
+                // console.log("password:", password);
+                // console.log("info again:", info);
                 if (!username || !email || !password || !teamleadername || !spreadsheet || !level || !preference) {
-                    setError("Must provide all credentials 2");
+                    setError("Must provide all credentials");
                 }
             }
             else {
                 if (!username || !email || !teamleadername || !spreadsheet || !level || !preference) {
-                    setError("Must provide all credentials 3");
+                    setError("Must provide all credentials");
                 }
             }
         }
@@ -153,7 +153,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
         //if method is post 
         if (method !== "put") {
             if (!username || !email || !password || !teamleadername || !spreadsheet || !level || !preference) {
-                setError("Must provide all credentials 4");
+                setError("Must provide all credentials");
             }
             //registering new franchise
 
@@ -220,9 +220,9 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
         }
         //method is put
         else {
-            console.log("am i here")
+            // console.log("am i here")
             if (!username || !email || !teamleadername || !spreadsheet || !level || !preference) {
-                setError("Must provide all credentials 5");
+                setError("Must provide all credentials");
             }
             else {
                 try {
@@ -243,7 +243,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                         },
                         body: JSON.stringify(info),
                     });
-                    console.log("res:", res);
+                    // console.log("res:", res);
                     if (res.ok) {
                         setPending(false);
 
@@ -270,7 +270,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             reminders: 0,
 
                         });
-                        console.log("succes:");
+                        // console.log("succes:");
 
                         toast.success('Franchise updated successfully', {
                             position: "top-right",
@@ -283,7 +283,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                             theme: "light",
                         });
                         // setSelectedRole("");
-                        console.log("succes2:");
+                        // console.log("succes2:");
                         // console.log("Franchise updating successfully");
                         // console.log("selectedRole after updating:", selectedRole);
                     }
