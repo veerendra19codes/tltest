@@ -1,14 +1,15 @@
-import dynamic from "next/dynamic"
+// import from "next/"
 import { getAllCompanies } from '@/lib/actions';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
-const DynamicFranchiseDashboardPage = dynamic(() => import('@/Components/FranchiseDashboard/FranchiseDashboard'))
-const DynamicPieChart = dynamic(() => import('@/Components/PieComponent/PieComponent'))
-const DynamicFranchiseRevenue = dynamic(() => import('@/Components/FranchiseRevenue/FranchiseRevenue'))
+// const FranchiseDashboardPage = (() => import('@/Components/FranchiseDashboard/FranchiseDashboard'))
+// const PieChart = (() => import('@/Components/PieComponent/PieComponent'))
+// const FranchiseRevenue = (() => import('@/Components/FranchiseRevenue/FranchiseRevenue'))
 
-// import PieChart from '@/Components/PieComponent/PieComponent';
-// import FranchiseRevenue from '@/Components/FranchiseRevenue/FranchiseRevenue';
+import FranchiseDashboardPage from "@/Components/FranchiseDashboard/FranchiseDashboard";
+import PieChart from '@/Components/PieComponent/PieComponent';
+import FranchiseRevenue from '@/Components/FranchiseRevenue/FranchiseRevenue';
 
 const DashboardFRPage = async () => {
 
@@ -73,16 +74,16 @@ const DashboardFRPage = async () => {
                         <div className="w-3/5 py-2">{session?.user?.reminders}</div>
                     </div>
 
-                    <DynamicFranchiseRevenue username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
+                    <FranchiseRevenue username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
                 </div>
 
                 <div className="w-1/2 flex justify-center items-center h-[450px] lg:h-auto bg-white py-4 rounded lg:w-full">
-                    <DynamicPieChart username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
+                    <PieChart username={session?.user?.username} teamleadername={session?.user?.teamleadername} />
                 </div>
             </div>
 
 
-            <DynamicFranchiseDashboardPage data={data} />
+            <FranchiseDashboardPage data={data} />
 
 
         </div>

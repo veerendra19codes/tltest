@@ -1,13 +1,15 @@
 "use client";
 
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 
-const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile)); // Dynamic import for CgProfile icon
-const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
+// const CgProfile = (() => import("react-icons/cg").then(module => module.CgProfile)); //  import for CgProfile icon
+// const MdLockOutline = (() => import("react-icons/md").then(module => module.MdLockOutline));
+import { CgProfile } from 'react-icons/cg';
+import { MdLockOutline } from 'react-icons/md';
 
 const LoginPage = () => {
     const router = useRouter();
@@ -74,13 +76,13 @@ const LoginPage = () => {
 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg sm:gap-0">
-                        <DynamicCgProfile size={40} color='purple' className="sm:size-8" />
+                        <CgProfile size={40} color='purple' className="sm:size-8" />
                         <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none" onChange={(e) => handleInput(e)} />
                     </div>
 
                     {/* <label className="text-[12px] font-medium">Password</label> */}
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg sm:gap-0">
-                        <DynamicMdLockOutline size={40} color='purple' className="sm:size-8" />
+                        <MdLockOutline size={40} color='purple' className="sm:size-8" />
                         <input type="text" name="password" placeholder="password" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none" onChange={(e) => handleInput(e)} />
                     </div>
 

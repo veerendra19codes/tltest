@@ -1,19 +1,19 @@
 'use client'
 import { useState } from 'react';
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 
-const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
-const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
-const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
-const DynamicLuFileSpreadsheet = dynamic(() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
-// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
+// const CgProfile = (() => import("react-icons/cg").then(module => module.CgProfile));
+// const MdLockOutline = (() => import("react-icons/md").then(module => module.MdLockOutline));
+// const MdOutlineMailOutline = (() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+// const LuFileSpreadsheet = (() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
+// const ToastContainer = (() => import("react-toastify").then(module => module.ToastContainer));
 // import 'react-toastify/dist/ReactToastify.css';
-// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+// const toast = (() => import("react-toastify").then(module => module.toast));
 
-// import { CgProfile } from "react-icons/cg";
-// import { MdLockOutline } from "react-icons/md";
-// import { MdOutlineMailOutline } from "react-icons/md";
-// import { LuFileSpreadsheet } from "react-icons/lu";
+import { CgProfile } from "react-icons/cg";
+import { MdLockOutline } from "react-icons/md";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { LuFileSpreadsheet } from "react-icons/lu";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -85,22 +85,22 @@ const ADForm = () => {
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        <DynamicCgProfile color='purple' className="size-8 lg:size-6" />
+                        <CgProfile color='purple' className="size-8 lg:size-6" />
                         <input type="text" name="username" placeholder="Username" className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />
+                        <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />
                         <input type="email" name="email" placeholder="example@gmail.com" className="p-2  pl-4  rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />
+                        <MdLockOutline className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="password" placeholder="Password" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        <DynamicLuFileSpreadsheet className="size-8 lg:size-6" color='purple' />
+                        <LuFileSpreadsheet className="size-8 lg:size-6" color='purple' />
                         <input type="text" name="deployedlink" placeholder="deployedlink" className="p-2  pl-4 rounded-xl w-full sm:py-1 border-none outline-none text-black" onChange={(e) => handleInput(e)} />
                     </div>
 

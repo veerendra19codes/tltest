@@ -1,10 +1,10 @@
 'use client'
 
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import { useEffect, useState } from 'react';
 import { Chart as ChartJs, Tooltip, Title, ArcElement, Legend } from 'chart.js';
-const Doughnut = dynamic(() => import("react-chartjs-2").then(module => module.Doughnut));
-// import { Doughnut } from 'react-chartjs-2';
+// const Doughnut = dynamic(() => import("react-chartjs-2").then(module => module.Doughnut));
+import { Doughnut } from 'react-chartjs-2';
 import { getAllUsers } from '@/lib/actions';
 
 ChartJs.register(

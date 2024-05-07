@@ -1,17 +1,17 @@
 'use client'
 
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 import { useState } from 'react';
 
-const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
-const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
-const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
-// const ToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-// const toast = dynamic(() => import("react-toastify").then(module => module.toast));
+const CgProfile = (() => import("react-icons/cg").then(module => module.CgProfile));
+const MdLockOutline = (() => import("react-icons/md").then(module => module.MdLockOutline));
+const MdOutlineMailOutline = (() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+// const ToastContainer = (() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = (() => import("react-toastify").then(module => module.toast));
 
-// import { CgProfile } from "react-icons/cg";
-// import { MdLockOutline } from "react-icons/md";
-// import { MdOutlineMailOutline } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import { MdLockOutline } from "react-icons/md";
+import { MdOutlineMailOutline } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -277,7 +277,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <DynamicCgProfile className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="username"
@@ -290,7 +290,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="email"
                             name="email"
@@ -302,7 +302,7 @@ const SHForm = ({ method, userdetails, setSelectedRole, selectedRole, setShs }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Password:</h1> : <MdLockOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="password"

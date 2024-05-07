@@ -1,17 +1,17 @@
 "use client";
 
-import dynamic from "next/dynamic";
+// import from "next/";
 import UserContext from "@/contexts/UserContext";
 // import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
-const DynamicIoMdClose = dynamic(() => import("react-icons/io").then(module => module.IoMdClose));
-const DynamicMdDone = dynamic(() => import("react-icons/md").then(module => module.MdDone));
-// const useMediaQuery = dynamic(() => import("react-responsive").then(module => module.useMediaQuery));
+// const IoMdClose = (() => import("react-icons/io").then(module => module.IoMdClose));
+// const MdDone = (() => import("react-icons/md").then(module => module.MdDone));
+// const useMediaQuery = (() => import("react-responsive").then(module => module.useMediaQuery));
 
-// import { IoMdClose } from "react-icons/io";
-// import { MdDone } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
+import { MdDone } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 const RejectFr = async (updatedFields) => {
@@ -154,20 +154,20 @@ const FranchiseDashboardPage = ({ data }) => {
                                         {isMobile ? (
                                             <>
                                                 <button className="w-1/2 flex justify-center items-center">
-                                                    <DynamicMdDone size={20} color="white" className="rounded-full bg-green-500" />
+                                                    <MdDone size={20} color="white" className="rounded-full bg-green-500" />
                                                 </button>
                                                 <button onClick={() => handleNotInterested(d._id, d.companyname)} className="w-1/2 flex justify-center items-center">
-                                                    <DynamicIoMdClose size={20} color="white" className="rounded-full bg-red-500" />
+                                                    <IoMdClose size={20} color="white" className="rounded-full bg-red-500" />
                                                 </button>
                                             </>
                                         ) : (
                                             <>
                                                 <button onClick={() => handleInterested(d._id, d.companyname)} className="w-1/2 flex items-center justify-center bg-green-500 rounded-xl text-white mx-2">
-                                                    <DynamicMdDone size={20} color="white" className="rounded-full bg-green-500" />
+                                                    <MdDone size={20} color="white" className="rounded-full bg-green-500" />
                                                     Interested
                                                 </button>
                                                 <button onClick={() => handleNotInterested(d._id, d.companyname)} className="w-1/2 flex items-center justify-center bg-red-500 rounded-xl text-white mx-2">
-                                                    <DynamicIoMdClose size={20} color="white" className="rounded-full bg-red-500" />
+                                                    <IoMdClose size={20} color="white" className="rounded-full bg-red-500" />
                                                     Not Interested
                                                 </button>
                                             </>

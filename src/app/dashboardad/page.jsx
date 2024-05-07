@@ -7,10 +7,12 @@ import UserContext from '@/contexts/UserContext';
 
 // import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
-import dynamic from 'next/dynamic';
-const Line = dynamic(() => import("react-chartjs-2").then(module => module.Line));
-const Bar = dynamic(() => import("react-chartjs-2").then(module => module.Bar));
-const Doughnut = dynamic(() => import("react-chartjs-2").then(module => module.Doughnut));
+// import  from 'next/';
+// const Line = (() => import("react-chartjs-2").then(module => module.Line));
+// const Bar = (() => import("react-chartjs-2").then(module => module.Bar));
+// const Doughnut = (() => import("react-chartjs-2").then(module => module.Doughnut));
+
+import { Line, Bar, Doughnut } from "react-chartjs-2"
 
 import { Chart as ChartJs, ArcElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, registerables } from 'chart.js';
 // import { Chart } from 'chart.js/auto';

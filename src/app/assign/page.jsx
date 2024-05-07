@@ -2,8 +2,10 @@ import { getAllCompanies, getAllUsers } from "@/lib/actions"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic"
-const DynamicAssignDashboardPage = dynamic(() => import("@/Components/AssignDashboard/AssignDashboard"));
+// import  from "next/"
+// const AssignDashboardPage = (() => import("@/Components/AssignDashboard/AssignDashboard"));
+
+import AssignDashboardPage from "@/Components/AssignDashboard/AssignDashboard";
 
 const AssignPage = async () => {
     const session = await getServerSession(authOptions);
@@ -32,7 +34,7 @@ const AssignPage = async () => {
     return (
         // <div className="flex justify-center items-center overflow-x-hidden lg:p-4">
         <>
-            {session && franchiseUnderMe && data && <DynamicAssignDashboardPage data={data} franchiseUnderMe={franchiseUnderMe} session={session} />}
+            {session && franchiseUnderMe && data && <AssignDashboardPage data={data} franchiseUnderMe={franchiseUnderMe} session={session} />}
         </>
         // </div >
 

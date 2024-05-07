@@ -1,12 +1,12 @@
 "use client"
 
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 import Image from 'next/image'
 import React, { useContext, Suspense } from 'react'
 const Links = React.lazy(() => import('./Links/Links'))
 
-const DynamicMdLogout = dynamic(() => import("react-icons/md").then(module => module.MdLogout));
-// import { MdLogout } from "react-icons/md";
+// const MdLogout = (() => import("react-icons/md").then(module => module.MdLogout));
+import { MdLogout } from "react-icons/md";
 
 import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
@@ -39,7 +39,7 @@ const Navbar = () => {
                     <div className="username text-xl  rounded-xl py-2 px-4 font-bold text-darkpurple  lg:hidden">Hi {session?.user?.username}({session?.user?.role.toUpperCase()})</div>
 
                     <button onClick={() => signOut()} className="bg-purple mx-2 px-4 my-1 py-2 
-                    text-white rounded-lg flex items-center gap-4 font-medium lg:hidden">Log Out <DynamicMdLogout size={25} /></button>
+                    text-white rounded-lg flex items-center gap-4 font-medium lg:hidden">Log Out <MdLogout size={25} /></button>
                 </div>
             }
         </div>

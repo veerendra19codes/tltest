@@ -1,6 +1,6 @@
 "use client";
 
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 import UserContext from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation'
 import { useContext, useState, useEffect } from 'react';
