@@ -35,7 +35,7 @@ export async function GET(req){
         return NextResponse.json(companies);
     }
     catch(err) {
-        console.log("Error in getting companies in route.js:", err);
+        // console.log("Error in getting companies in route.js:", err);
     }
 }
 

@@ -1,7 +1,5 @@
 
 import { NextResponse } from "next/server"
-import {sendEmail} from "@/lib/mailer.js"
-
 
 import fetch from 'node-fetch';
 import { getAllUsers } from '@/lib/actions';

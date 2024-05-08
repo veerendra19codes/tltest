@@ -5,6 +5,8 @@ import { connectToDB } from "./connectToDB";
 import models from "./models";
 const User = models.User;
 const Company = models.Company;
+import axios from "axios";
+import { NextResponse } from "next/server";
 
 export const addCompany = async (prevState, formData) => {
         try {
@@ -35,7 +37,7 @@ export const addCompany = async (prevState, formData) => {
 
         await newCompany.save();
         console.log("New Company added");
-        revalidatePath("/dashboardbd");
+        revalidatePath('/api/company');
         return { success: true };
     } catch (err) {
         console.error(err);
@@ -45,16 +47,19 @@ export const addCompany = async (prevState, formData) => {
 
 export const getAllCompanies = async () => {
     try {
-        connectToDB();
+        // connectToDB();
 
         const url = `${process.env.NEXTAUTH_URL}/api/company`;
-        const res = await fetch(url, { cache: 'no-store' });
-        // console.log("res:",res.json())
 
-        if (!res.ok) {
-            return { error: "Error in getting companies" };
-        }
-        return res.json();
+        const res = await axios.get(url);
+        // const res = await fetch(url, { cache: 'no-store' });
+        console.log("res:",res.data)
+
+        // if (!res.status === 200) {
+        //     return { error: "Error in getting companies" };
+        // }
+        // return NextResponse.json({data:res.data},{status:res.status});
+        return res;
     }
     catch (err) {
         console.log("error in getting companies: ", err);

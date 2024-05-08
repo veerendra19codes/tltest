@@ -1,8 +1,10 @@
 // import from "next/"
+"use client";
+
 import { getAllCompanies } from '@/lib/actions';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
-import { redirect } from 'next/navigation';
+// import { getServerSession } from 'next-auth';
+// import { authOptions } from '../api/auth/[...nextauth]/route';
+import { useRouter } from 'next/navigation';
 // const FranchiseDashboardPage = (() => import('@/Components/FranchiseDashboard/FranchiseDashboard'))
 // const PieChart = (() => import('@/Components/PieComponent/PieComponent'))
 // const FranchiseRevenue = (() => import('@/Components/FranchiseRevenue/FranchiseRevenue'))
@@ -10,11 +12,17 @@ import { redirect } from 'next/navigation';
 import FranchiseDashboardPage from "@/Components/FranchiseDashboard/FranchiseDashboard";
 import PieChart from '@/Components/PieComponent/PieComponent';
 import FranchiseRevenue from '@/Components/FranchiseRevenue/FranchiseRevenue';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
-const DashboardFRPage = async () => {
+const DashboardFRPage = () => {
 
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
+    const { data: session, status } = useSession();
     // console.log("session in franchise page: ", session);
+    const [data, setData] = useState([]);
+
+    const router = useRouter();
 
     if (!session) {
         return (
@@ -22,19 +30,49 @@ const DashboardFRPage = async () => {
         )
     }
 
-    if (session === null) {
-        redirect("/login")
-    }
-    else if (session?.user?.role !== 'fr') {
-        redirect("/")
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
 
-    const allCompanies = await getAllCompanies();
-    // console.log(allCompanies);
+                const allCompanies = await getAllCompanies();
+                // console.log(allCompanies);
 
-    const data = allCompanies.filter((company) => company.franchisename === session?.user?.username && company.status === "in progress");
-    // console.log(data);
+                const companies = allCompanies.filter((company) => company.franchisename === session?.user?.username && company.status === "in progress");
+                setData(companies);
+            }
+            catch (err) {
+                console.log("error in getting my companies:", err);
+            }
 
+        }
+
+        if (session?.user?.role !== 'fr') {
+            router.back();
+        }
+        else {
+            fetchData();
+        }
+    }, [])
+
+    // const fetchData = async () => {
+    //     try {
+
+    //         const allCompanies = await getAllCompanies();
+    //         // console.log(allCompanies);
+
+    //         const companies = allCompanies.filter((company) => company.franchisename === session?.user?.username && company.status === "in progress");
+    //         setData(companies);
+    //     }
+    //     catch (err) {
+    //         console.log("error in getting my companies:", err);
+    //     }
+
+    // }
+    // // console.log(data);
+
+    // useEffect(() => {
+    //     fetchData();
+    // }, [])
     return (
         <div className="flex flex-col justify-center items-center w-full py-12 lg:py-4 gap-4">
 

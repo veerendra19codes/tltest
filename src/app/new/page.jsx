@@ -1,6 +1,6 @@
 "use client";
 
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 import React, { useState, useEffect, useContext } from 'react'
 import { useFormState } from "react-dom";
 import { addCompany } from '@/lib/actions';
@@ -49,6 +49,7 @@ const NewPage = () => {
                 theme: "light",
 
             });
+            router.refresh("/dashboardbd")
             router.push("/dashboardbd");
         }
     }, [router, state?.success]);
