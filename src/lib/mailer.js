@@ -4,7 +4,7 @@ import nodemailer from "nodemailer"
 // import { promises as fs } from 'browserfs';
 import { NextResponse } from "next/server";
 
-export const sendEmail = async (emails,activeFranchiseArr) => {
+export const sendEmail = async (emails) => {
     //when cron jobs triggers this function emails arr will have active franhcises email
 
 
@@ -12,25 +12,25 @@ export const sendEmail = async (emails,activeFranchiseArr) => {
 
     
     try {
-        console.log("activeFranchiseArr:",activeFranchiseArr);
-        console.log("emails in sendEmail fn:", emails); 
+        // console.log("activeFranchiseArr:",activeFranchiseArr);
+        // console.log("emails in sendEmail fn:", emails); 
 
-        const emailContent = `
-      <html>
-        <head>
-          <style>
-            /* Add your CSS styles here */
-          </style>
-        </head>
-        <body>
-          <h1>Hello Active Franchises!</h1>
-          <p>This is a test email message to check the email sending functionality.</p>
-          <ul>
-            ${activeFranchiseArr.map(email => `<li>${email}</li>`).join('')}
-          </ul>
-        </body>
-      </html>
-    `;
+    //     const emailContent = `
+    //   <html>
+    //     <head>
+    //       <style>
+    //         /* Add your CSS styles here */
+    //       </style>
+    //     </head>
+    //     <body>
+    //       <h1>Hello Active Franchises!</h1>
+    //       <p>This is a test email message to check the email sending functionality.</p>
+    //       <ul>
+    //         ${activeFranchiseArr.map(email => `<li>${email}</li>`).join('')}
+    //       </ul>
+    //     </body>
+    //   </html>
+    // `;
         var transport = nodemailer.createTransport({
             host: "bulk.smtp.mailtrap.io",
             port: 587,
@@ -46,11 +46,11 @@ export const sendEmail = async (emails,activeFranchiseArr) => {
             bcc: emails,
             subject: "Test Email: This is a Test Message ✔",
             text: "This is a test email message to check the email sending functionality from alert",
-            // html: "<p>This is a <b>test email message</b> to check the email sending functionality from alert</p>",
-            html: emailContent
+            html: "<p>This is a <b>test email message</b> to check the email sending functionality from alert</p>",
+            // html: emailContent
         });
 
-        console.log("Message sent: %s", info.messageId);
+        // console.log("Message sent: %s", info.messageId);
         return NextResponse.json({success:"successfully sent email"}, {status: 201})
     } catch (error) {
         // console.error("Error sending email:", error);

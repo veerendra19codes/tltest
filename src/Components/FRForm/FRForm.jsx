@@ -1,26 +1,26 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 
-const DynamicCgProfile = dynamic(() => import("react-icons/cg").then(module => module.CgProfile));
-const DynamicMdLockOutline = dynamic(() => import("react-icons/md").then(module => module.MdLockOutline));
-const DynamicMdOutlineMailOutline = dynamic(() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
-const DynamicRiTeamLine = dynamic(() => import("react-icons/ri").then(module => module.RiTeamLine));
-const DynamicLuFileSpreadsheet = dynamic(() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
-const DynamicBsGraphUpArrow = dynamic(() => import("react-icons/bs").then(module => module.BsGraphUpArrow));
-const DynamicGrUserExpert = dynamic(() => import("react-icons/gr").then(module => module.GrUserExpert));
-// const DynamicToastContainer = dynamic(() => import("react-toastify").then(module => module.ToastContainer));
-// const Dynamictoast = dynamic(() => import("react-toastify").then(module => module.toast));
+// const CgProfile = (() => import("react-icons/cg").then(module => module.CgProfile));
+// const MdLockOutline = (() => import("react-icons/md").then(module => module.MdLockOutline));
+// const MdOutlineMailOutline = (() => import("react-icons/md").then(module => module.MdOutlineMailOutline));
+// const RiTeamLine = (() => import("react-icons/ri").then(module => module.RiTeamLine));
+// const LuFileSpreadsheet = (() => import("react-icons/lu").then(module => module.LuFileSpreadsheet));
+// const BsGraphUpArrow = (() => import("react-icons/bs").then(module => module.BsGraphUpArrow));
+// const GrUserExpert = (() => import("react-icons/gr").then(module => module.GrUserExpert));
+// const ToastContainer = (() => import("react-toastify").then(module => module.ToastContainer));
+// const toast = (() => import("react-toastify").then(module => module.toast));
 
 
-// import { CgProfile } from "react-icons/cg";
-// import { MdLockOutline } from "react-icons/md";
-// import { MdOutlineMailOutline } from "react-icons/md";
-// import { RiTeamLine } from "react-icons/ri";
-// import { LuFileSpreadsheet } from "react-icons/lu";
-// import { BsGraphUpArrow } from "react-icons/bs";
-// import { GrUserExpert } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
+import { MdLockOutline } from "react-icons/md";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { RiTeamLine } from "react-icons/ri";
+import { LuFileSpreadsheet } from "react-icons/lu";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { GrUserExpert } from "react-icons/gr";
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -83,6 +83,8 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
     }
 
     useEffect(() => {
+        setError("");
+
         if (changePassword) {
             setInfo((prev) => ({
                 ...prev,
@@ -90,7 +92,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
             }));
             setError("");
         }
-    }, [newpassword]);
+    }, [newpassword, changePassword]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -103,7 +105,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
     }, [])
 
     const checkErrors = () => {
-        console.log("changePassword:", changePassword);
+        // console.log("changePassword:", changePassword);
         if (changePassword) {
             setInfo((prev) => ({
                 ...prev,
@@ -387,7 +389,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                 <form className="w-full flex flex-col justify-center items-center gap-4 sm:my-4 sm:gap-2" onSubmit={handleSubmit}>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <DynamicCgProfile className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Username:</h1> : <CgProfile className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="text"
                             name="username"
@@ -405,7 +407,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <DynamicMdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Email:</h1> : <MdOutlineMailOutline className="size-8 lg:size-6" color='purple' />}
                         <input
                             type="email"
                             name="email"
@@ -423,7 +425,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
 
                     {(method === "post" || method !== "put") &&
                         <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                            <DynamicMdLockOutline className="size-8 lg:size-6" color='purple' />
+                            <MdLockOutline className="size-8 lg:size-6" color='purple' />
                             <input
                                 type="text"
                                 name="password"
@@ -471,7 +473,7 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     }
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Teamleadername:</h1> : <DynamicRiTeamLine className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Teamleadername:</h1> : <RiTeamLine className="size-8 lg:size-6" color='purple' />}
                         <select name="teamleadername" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black" onChange={handleInput}>
                             <option value="">Select Teamleader</option>
                             {teamleaders.map((teamleader) => (
@@ -481,12 +483,12 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Spreadsheet:</h1> : <DynamicLuFileSpreadsheet className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Spreadsheet:</h1> : <LuFileSpreadsheet className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="spreadsheet" placeholder="Spreadsheet Link" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black" onChange={handleInput} value={info.spreadsheet} />
                     </div>
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0 ">
-                        <DynamicBsGraphUpArrow className="size-8 lg:size-6" color='purple' />
+                        <BsGraphUpArrow className="size-8 lg:size-6" color='purple' />
                         <select name="level" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black" onChange={handleInput}>
                             <option value="">Select Franchise Level</option>
                             <option value="junior">Junior</option>
@@ -497,11 +499,11 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
 
 
                     <div className="w-full flex items-center gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl shadow-lg lg:py-1 lg:gap-0">
-                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Preference:</h1> : <DynamicGrUserExpert className="size-8 lg:size-6" color='purple' />}
+                        {method == "put" ? <h1 className="lg:text-[10px] text-gray-700">Preference:</h1> : <GrUserExpert className="size-8 lg:size-6" color='purple' />}
                         <input type="text" name="preference" placeholder="Preference ex-any" className="p-2 pl-4 rounded w-full sm:py-1 border-none outline-none text-black " onChange={handleInput} value={info.preference} />
                     </div>
 
-                    {/* {error && <span className="text-red-500 font-semibold">{error}</span>} */}
+                    {error && <span className="text-red-500 font-semibold">{error}</span>}
 
                     {method === "put" ?
                         <div className="flex justify-center items-center gap-4">
@@ -528,24 +530,72 @@ const FRForm = ({ userdetails, method, setSelectedRole, selectedRole, setBds }) 
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel >Cancel</AlertDialogCancel>
-                                        <AlertDialogAction type="submit" onClick={handleSubmit}>Continue</AlertDialogAction>
+                                        <AlertDialogAction type="submit" onClick={handleSubmit} disabled={(error !== "") || !info.username}>Continue</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
 
 
-                            <button
+                            {/* <button
                                 onClick={handleDeleteUser}
                                 className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
                                 Delete
-                            </button>
+                            </button> */}
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <div
+                                        className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                                        Delete
+                                    </div>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription className="flex flex-col">
+                                            {error && <span className="text-red-500 font-semibold">{error}</span>}
+
+                                            This action cannot be undone. This will permanently delete the user details.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel >Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={handleDeleteUser} disabled={(error !== "") || !info.username}>Continue</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+
                         </div>
                         :
-                        <button
-                            type="submit"
-                            className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
-                            Add
-                        </button>
+                        //method === "post" 
+
+                        // <button
+                        //     type="submit"
+                        //     className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                        //     Add
+                        // </button>
+                        <AlertDialog>
+                            <AlertDialogTrigger>
+                                <div
+                                    onClick={checkErrors}
+                                    className="w-auto rounded-xl py-4 px-8 text-2xl lg:text-xl text-white bg-purple hover:bg-lightpurple lg:py-2 lg:px-4 mt-2" disabled={pending ? true : false}>
+                                    Add
+                                </div>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription className="flex flex-col">
+                                        {error && <span className="text-red-500 font-semibold">{error}</span>}
+
+                                        This action cannot be undone. This will permanently add a new user.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel >Cancel</AlertDialogCancel>
+                                    <AlertDialogAction type="submit" onClick={handleSubmit} disabled={(error !== "") || !info.username}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     }
 
                     <ToastContainer onClose={handleToastClose} />

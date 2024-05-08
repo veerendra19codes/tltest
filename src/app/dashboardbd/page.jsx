@@ -35,7 +35,7 @@ const DashboardBD = () => {
         else {
             setData([])
         }
-    }, [])
+    }, [session?.user?.id, status])
 
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 15;

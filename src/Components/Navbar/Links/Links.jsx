@@ -1,19 +1,19 @@
 "use client";
 
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+// import  from 'next/'; // Import  from next/
 import React, { useContext } from 'react'
 import { useState } from 'react';
 const NavLink = React.lazy(() => import('./NavLink/NavLink'));
 import UserContext from '@/contexts/UserContext';
 import { signOut } from 'next-auth/react'
 
-const DynamicTfiMenu = dynamic(() => import("react-icons/tfi").then(module => module.TfiMenu));
-const DynamicMdLogout = dynamic(() => import("react-icons/md").then(module => module.MdLogout));
-const DynamicIoMdCloseCircleOutline = dynamic(() => import("react-icons/io").then(module => module.IoMdCloseCircleOutline));
+// const TfiMenu = (() => import("react-icons/tfi").then(module => module.TfiMenu));
+// const MdLogout = (() => import("react-icons/md").then(module => module.MdLogout));
+// const IoMdCloseCircleOutline = (() => import("react-icons/io").then(module => module.IoMdCloseCircleOutline));
 
-// import { TfiMenu } from "react-icons/tfi";
-// import { MdLogout } from "react-icons/md";
-// import { IoMdCloseCircleOutline } from "react-icons/io";
+import { TfiMenu } from "react-icons/tfi";
+import { MdLogout } from "react-icons/md";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 
 const Links = () => {
@@ -162,7 +162,7 @@ const Links = () => {
             </div>
             <button onClick={() => setOpen(!open)} className=" hidden lg:block right-4 absolute top-4"
             >
-                <DynamicTfiMenu size={32} color="purple" />
+                <TfiMenu size={32} color="purple" />
             </button>
 
             {/* MOBILE NAVBAR HERE- */}
@@ -207,10 +207,10 @@ const Links = () => {
 
 
                         <button onClick={() => signOut()} className="
-                    text-white flex gap-4 text-xl font-semibold fixed bottom-0 w-full  py-4 bg-red-500 px-4  items-center">Logout <DynamicMdLogout size={25} /></button>
+                    text-white flex gap-4 text-xl font-semibold fixed bottom-0 w-full  py-4 bg-red-500 px-4  items-center">Logout <MdLogout size={25} /></button>
 
 
-                        <button className="fixed top-4 right-4" onClick={() => setOpen(!open)}><DynamicIoMdCloseCircleOutline color="white" size={32} /></button>
+                        <button className="fixed top-4 right-4" onClick={() => setOpen(!open)}><IoMdCloseCircleOutline color="white" size={32} /></button>
                     </div>
                 )}
             </div>

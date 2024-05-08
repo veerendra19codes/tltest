@@ -1,9 +1,8 @@
-import { getSession } from 'next-auth/react';
+// import { getSession } from 'next-auth';
 import { NextResponse } from 'next/server'
 
 export function middleware(request) {
 
-    
     const cookies = request.cookies.get("next-auth.session-token");
     // console.log("cookies:", cookies.value);
     

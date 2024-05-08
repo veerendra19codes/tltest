@@ -8,7 +8,7 @@ export async function PUT(req) {
     try {
         const updatedFields = await req.json(); 
 
-        console.log("updatedFields", updatedFields);
+        // console.log("updatedFields", updatedFields);
 
         //check if companyId is provided from frontend
         const companyId = updatedFields.companyId;
@@ -54,12 +54,12 @@ export async function PUT(req) {
             }
         );
 
-        console.log("updatedCompany:", updatedCompany);
-        console.log("updatedUser:", updatedUser);
+        // console.log("updatedCompany:", updatedCompany);
+        // console.log("updatedUser:", updatedUser);
         return NextResponse.json({ success: true, company });
             
     } catch (error) {
-        console.error("Error updating company:", error);
+        // console.error("Error updating company:", error);
         return NextResponse.json({ error: "Internal server error" }, {status: 500});
     }
 }

@@ -233,7 +233,7 @@ const EditPage = () => {
         }
 
 
-    }, [selectedRole, selectedTL, selectedBD, selectedFR, selectedSH]);
+    }, [selectedRole, selectedTL, selectedBD, selectedFR, selectedSH, bds, frs, shs, tls]);
 
 
 

@@ -20,10 +20,10 @@ const AddNewEmployeePage = () => {
         // Fetch data or perform other async tasks here
     }, [session, status, router]);
 
-    const [selectedOption, setSelectedOption] = useState("");
+    const [selectedRole, setSelectedRole] = useState("");
 
     const handleChange = (e) => {
-        setSelectedOption(e.target.value);
+        setSelectedRole(e.target.value);
     };
 
     const [userDetails, setUserDetails] = useState({
@@ -53,7 +53,7 @@ const AddNewEmployeePage = () => {
             <div className="flex justify-center items-center gap-4">
 
                 <h1 className="font-medium text-xl sm:text-sm">Select employee role:</h1>
-                <select value={selectedOption} onChange={handleChange} className="text-black py-1 pl-2">
+                <select value={selectedRole} onChange={handleChange} className="text-black py-1 pl-2">
                     <option value="">Select Role</option>
                     <option value="ad">Admin</option>
                     <option value="bd">BD</option>
@@ -63,34 +63,34 @@ const AddNewEmployeePage = () => {
                 </select>
             </div>
 
-            {selectedOption === 'ad' &&
+            {selectedRole === 'ad' &&
                 <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
-                    <ADForm method="post" userdetails={userDetails} />
+                    <ADForm method="post" userdetails={userDetails} setSelectedRole={setSelectedRole} />
                 </Suspense>
             }
 
-            {selectedOption === 'bd' &&
+            {selectedRole === 'bd' &&
                 <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
-                    <BDForm method="post" userdetails={userDetails} />
+                    <BDForm method="post" userdetails={userDetails} setSelectedRole={setSelectedRole} />
                 </Suspense>
             }
 
-            {selectedOption === 'sh' &&
+            {selectedRole === 'sh' &&
                 <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
-                    <SHForm method="post" userdetails={userDetails} />
+                    <SHForm method="post" userdetails={userDetails} setSelectedRole={setSelectedRole} />
                 </Suspense>
             }
 
-            {selectedOption === 'tl' &&
+            {selectedRole === 'tl' &&
                 <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
-                    <TLForm method="post" userdetails={userDetails} />
+                    <TLForm method="post" userdetails={userDetails} setSelectedRole={setSelectedRole} />
                 </Suspense>
 
             }
 
-            {selectedOption === 'fr' &&
+            {selectedRole === 'fr' &&
                 <Suspense fallback={<p className="text-white text-6xl lg:text-3xl">Loading...</p>}>
-                    <FRForm method="post" userdetails={userDetails} />
+                    <FRForm method="post" userdetails={userDetails} setSelectedRole={setSelectedRole} />
                 </Suspense>
             }
         </div>

@@ -33,7 +33,7 @@ const FranchiseRevenue = ({ username, teamleadername }) => {
             }
         }
         getteamleaderurl();
-    }, [tlname]);
+    }, [tlname, teamleadername]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,7 +65,7 @@ const FranchiseRevenue = ({ username, teamleadername }) => {
         };
 
         fetchData();
-    }, [url]);
+    }, [url, username]);
     return (
         <div className="w-full franchiserevenue flex justify-center items-center gap-4 lg:flex-row lg:text-xs lg:px-2">
 

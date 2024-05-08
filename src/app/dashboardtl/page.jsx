@@ -49,23 +49,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const TLDashboardPage = () => {
     const router = useRouter();
     const { session, status } = useContext(UserContext);
-    // console.log("session in dashboardtl:", session)
-    if (status === "loading") {
-        return (
-            <div className="text-white">Loading...</div>
-        )
-    }
-
-    useEffect(() => {
-        if (status === "loading") {
-            return;
-        } else if (session?.user?.role !== "tl") {
-            router.back();
-        }
-    }, [session, router, status])
-
-
-
 
     const [allUsers, setAllUsers] = useState([]);
     const [franchiseUnderMe, setFranchiseUnderMe] = useState([]);
@@ -74,6 +57,7 @@ const TLDashboardPage = () => {
     const [revenuegained, setRevenuegained] = useState(0);
     const [revenuelost, setRevenuelost] = useState(0);
 
+    // console.log("session in dashboardtl:", session)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -82,23 +66,35 @@ const TLDashboardPage = () => {
             setAllUsers(AllUsers);
         };
         fetchUsers();
-    }, []);
+    }, [allUsers]);
+
+    // useEffect(() => {
+    //     // console.log("users:", users);
+    //     const FranchiseUnderMe = allUsers.filter((user) => user.teamleadername === session?.user?.username && user.role === "fr");
+    //     setFranchiseUnderMe(FranchiseUnderMe);
+    //     // console.log("franchise:", franchise);
+
+    //     // console.log("franchiseSelected:", franchiseSelected);
+    //     // if (franchiseSelected !== "") {
+    //         const franchiseSelectedObj = franchiseUnderMe.filter((franchise) => franchise.username === franchiseSelected);
+    //     // console.log("franchiseSelectedObj:", franchiseSelectedObj);
+    //     setFranchise(franchiseSelectedObj[0]);
+    //     // console.log("franchise:", franchise);
+    //     // }
+
+    // }, [allUsers, session?.user, franchiseSelected]);
 
     useEffect(() => {
-        // console.log("users:", users);
         const FranchiseUnderMe = allUsers.filter((user) => user.teamleadername === session?.user?.username && user.role === "fr");
         setFranchiseUnderMe(FranchiseUnderMe);
-        // console.log("franchise:", franchise);
+    }, [allUsers, session?.user]);
 
-        // console.log("franchiseSelected:", franchiseSelected);
+    useEffect(() => {
         if (franchiseSelected !== "") {
-            const franchiseSelectedObj = franchiseUnderMe.filter((franchise) => franchise.username === franchiseSelected);
-            // console.log("franchiseSelectedObj:", franchiseSelectedObj);
-            setFranchise(franchiseSelectedObj[0]);
-            // console.log("franchise:", franchise);
+            const franchiseSelectedObj = franchiseUnderMe.find((franchise) => franchise.username === franchiseSelected);
+            setFranchise(franchiseSelectedObj);
         }
-
-    }, [allUsers, session?.user, franchiseSelected]);
+    }, [franchiseSelected, franchiseUnderMe]);
 
     // Filter franchise data based on level
     const juniorFranchise = franchiseUnderMe.filter(franchise => franchise.level === 'junior');
@@ -128,75 +124,75 @@ const TLDashboardPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (session?.user) {
-                try {
-                    const response = await fetch(session.user?.deployedlink);
+            // if (session?.user) {
+            try {
+                const response = await fetch(session?.user?.deployedlink);
 
 
-                    const data = await response.json();
-                    // console.log('data: ', data);
+                const data = await response.json();
+                // console.log('data: ', data);
 
-                    const statusCount = {
-                        'In Progress': 0,
-                        'Hold': 0,
-                        'Cancel': 0,
-                        'Closed': 0
-                    };
-                    // console.log("statusCount:", statusCount);
+                const statusCount = {
+                    'In Progress': 0,
+                    'Hold': 0,
+                    'Cancel': 0,
+                    'Closed': 0
+                };
+                // console.log("statusCount:", statusCount);
 
-                    const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === franchiseSelected.replace(/\s/g, '').toLowerCase());
-                    // console.log("franchiseData:", franchiseData);
+                const franchiseData = data.filter((d) => d.nameoffranchisee.replace(/\s/g, '').toLowerCase() === franchiseSelected.replace(/\s/g, '').toLowerCase());
+                // console.log("franchiseData:", franchiseData);
 
-                    const statusEntry = franchiseData[0];
-                    // console.log("statusEntry:", statusEntry);
+                const statusEntry = franchiseData[0];
+                // console.log("statusEntry:", statusEntry);
 
-                    statusCount['In Progress'] = statusEntry.inprogress;
-                    statusCount['Hold'] = statusEntry.hold;
-                    statusCount['Cancel'] = statusEntry.cancel;
-                    statusCount['Closed'] = statusEntry.closed;
-                    // console.log("statusCount:", statusCount);
+                statusCount['In Progress'] = statusEntry.inprogress;
+                statusCount['Hold'] = statusEntry.hold;
+                statusCount['Cancel'] = statusEntry.cancel;
+                statusCount['Closed'] = statusEntry.closed;
+                // console.log("statusCount:", statusCount);
 
-                    const statusData = Object.values(statusCount);
-                    // console.log("statusData:", statusData);
+                const statusData = Object.values(statusCount);
+                // console.log("statusData:", statusData);
 
-                    setChartData({
-                        datasets: [{
-                            data: statusData,
-                            backgroundColor: [
-                                'yellow',
-                                'blue',
-                                'red',
-                                'green',
-                            ]
-                        }],
-                        labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
-                    });
-                } catch (error) {
-                    //error handling in case of no url, no values for graph
-                    const statusCount = {
-                        'In Progress': 0,
-                        'Hold': 0,
-                        'Cancel': 0,
-                        'Closed': 0
-                    };
+                setChartData({
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: [
+                            'yellow',
+                            'blue',
+                            'red',
+                            'green',
+                        ]
+                    }],
+                    labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                });
+            } catch (error) {
+                //error handling in case of no url, no values for graph
+                const statusCount = {
+                    'In Progress': 0,
+                    'Hold': 0,
+                    'Cancel': 0,
+                    'Closed': 0
+                };
 
-                    const statusData = Object.values(statusCount);
+                const statusData = Object.values(statusCount);
 
-                    setChartData({
-                        datasets: [{
-                            data: statusData,
-                            backgroundColor: [
-                                'yellow',
-                                'blue',
-                                'red',
-                                'green',
-                            ]
-                        }],
-                        labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
-                    });
-                    // console.error("Error fetching data:", error);
-                }
+                setChartData({
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: [
+                            'yellow',
+                            'blue',
+                            'red',
+                            'green',
+                        ]
+                    }],
+                    labels: ['In Progress', 'Hold', 'Cancel', 'Closed']
+                });
+                // console.error("Error fetching data:", error);
             }
+            // }
         };
 
         fetchData();
@@ -224,12 +220,12 @@ const TLDashboardPage = () => {
                 setRevenuegained(rg);
                 setRevenuelost(rl);
             } catch (error) {
-                console.error("Error fetching revenue:", error);
+                // console.error("Error fetching revenue:", error);
             }
         };
 
         fetchRevenue();
-    }, [franchiseSelected]);
+    }, [franchiseSelected, session?.user?.revenueapi]);
 
     const handleAlert = async () => {
         const franchisearr = franchiseUnderMe.filter((franchise) => franchise.username === franchiseSelected);
@@ -249,13 +245,17 @@ const TLDashboardPage = () => {
                 },
                 body: JSON.stringify({ emails })
             });
-            console.log("res in frontend:", res);
+            // console.log("res in frontend:", res);
             if (res.ok) {
-                console.log("mail sent successfully");
+                // console.log("mail sent successfully");
                 // router.refresh("dashboardtl")
-                revalidatePath("/dashboardtl")
-                revalidatePath("/dashboardfr")
-                revalidatePath("/dashbaordsh")
+                router.refresh("./dashboardtl")
+                router.refresh("./dashboardfr")
+                router.refresh("./dashboardsh")
+
+                // revalidatePath("/dashboardtl")
+                // revalidatePath("/dashboardfr")
+                // revalidatePath("/dashbaordsh")
 
                 toast.success('Mail sent successfully', {
                     position: "top-right",
@@ -322,6 +322,15 @@ const TLDashboardPage = () => {
         // console.log("Selected value:", selectedValue);
         setFranchiseSelected(selectedValue);
     };
+
+    if (status === "loading") {
+        return (
+            <div className="text-white">Loading...</div>
+        )
+    }
+    else if (session?.user?.role !== "tl") {
+        router.back();
+    }
 
     return (
         <div className="w-full h-auto flex justify-center items-start p-12 gap-4 lg:px-4 lg:flex-col">

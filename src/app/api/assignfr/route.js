@@ -7,7 +7,7 @@ export async function PUT(req) {
     try {
         const updatedFields = await req.json(); // Access updatedFields from req.body
 
-        console.log("updatedFields", updatedFields);
+        // console.log("updatedFields", updatedFields);
 
         //check if companyId is provided from frontend
         const companyId = updatedFields.companyId;
@@ -36,11 +36,11 @@ export async function PUT(req) {
         }
     );
 
-    console.log(result);
+    // console.log(result);
     return NextResponse.json({ success: true, company });
         
     } catch (error) {
-        console.error("Error updating company:", error);
+        // console.error("Error updating company:", error);
         return NextResponse.json({ error: "Internal server error" }, {status: 500});
     }
 }

@@ -42,7 +42,7 @@ const DashboardFRPage = async () => {
 
 
 
-                <div className="w-1/2 h-[450px] bg-white userdetailstext flex flex-col justify-between  items-center rounded p-4">
+                <div className="w-1/2 lg:w-full h-[450px] lg:h-auto bg-white userdetailstext flex flex-col justify-between  items-center rounded p-4">
 
                     <div className="row flex justiy-start items-center w-full gap-4 lg:text-xs">
                         <label className="w-2/5 py-2 font-bold">Username</label>

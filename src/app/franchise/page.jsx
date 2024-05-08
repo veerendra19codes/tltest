@@ -161,6 +161,7 @@ const FranchisePage = () => {
                     {error && <span className="error-message w-full text-center text-red-600">{error}</span>}
 
                     <button className=" bg-purple rounded-xl py-2 px-8 text-white text-xl font-medium mt-6 sm:mt-2" type="submit" disabled={pending ? true : false} >{pending ? "Adding" : "Add"}</button>
+                    <ToastContainer />
 
                 </form>
             </div>

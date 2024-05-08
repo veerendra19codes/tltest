@@ -53,7 +53,7 @@ const PieChart = ({ username, teamleadername }) => {
             }
         }
         getteamleaderurl();
-    }, [tlname]);
+    }, [tlname, teamleadername]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -156,7 +156,7 @@ const PieChart = ({ username, teamleadername }) => {
         };
 
         fetchData();
-    }, [url]);
+    }, [url, username]);
 
     return (
         <div className="piechart w-full h-full flex justify-center items-center" style={{ width: '100%', height: '100%' }}>

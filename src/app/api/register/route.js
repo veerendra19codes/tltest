@@ -11,8 +11,10 @@ export async function POST(req) {
         const {username, email, password, role, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking, companiesCompletedName, companiesRejectedName, companiesWorkingName, spreadsheet, deployedlink, revenueapi,preference,reminders } = await req.json();
         console.log("new employee:", {username, password, email, role, level, teamleadername, companiesCompleted, companiesRejected, companiesWorking ,companiesCompletedName, companiesRejectedName, companiesWorkingName, spreadsheet,deployedlink, revenueapi, preference,reminders});
 
-        const exists = await User.findOne({username});
-        if(exists) {
+        const existsWithUsername = await User.findOne({username});
+        const existsWithEmail = await User.findOne({email})
+        
+        if(existsWithEmail || existsWithUsername) {
             return NextResponse.json({message: "Username or Email already exists"},{status:500});
         }
         const hashedPassword = await bcrypt.hash(password, 10);

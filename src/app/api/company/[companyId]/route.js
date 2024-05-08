@@ -9,8 +9,8 @@ export async function PUT(req, {params}) {
         const {companyId} = params;
         const updatedFields = await req.json(); // Access updatedFields from req.body
 
-        console.log("companyId:", companyId );
-        console.log("updatedFields", updatedFields);
+        // console.log("companyId:", companyId );
+        // console.log("updatedFields", updatedFields);
 
         const newRejectedFranchiseName = updatedFields.rejectedFranchiseName;
         // console.log(newRejectedFranchiseName);
@@ -48,7 +48,7 @@ export async function PUT(req, {params}) {
                 }
             );
 
-            console.log(result);
+            // console.log(result);
             return NextResponse.json({ success: true, company });
         }
         else if( updatedFields.message === "reject fr") {
@@ -78,7 +78,7 @@ export async function PUT(req, {params}) {
                 }
             );
 
-            console.log(updatedCompany);
+            // console.log(updatedCompany);
             return NextResponse.json({ success: true, company });
         }
         else if( updatedFields.message === "assign fr") {
@@ -100,7 +100,7 @@ export async function PUT(req, {params}) {
                 }
             );
 
-            console.log(result);
+            // console.log(result);
             return NextResponse.json({ success: true, company });
         }
         else {
@@ -121,7 +121,7 @@ export async function PUT(req, {params}) {
             }
         );
 
-        console.log(result);
+        // console.log(result);
 
         // if (result.nModified === 0) {
         //     console.log(result);
@@ -139,7 +139,7 @@ export async function PUT(req, {params}) {
         // return NextResponse.json({ success: true, company });
         
     } catch (error) {
-        console.error("Error updating company:", error);
+        // console.error("Error updating company:", error);
         return NextResponse.json({ error: "Internal server error" }, {status: 500});
     }
 }

@@ -27,10 +27,10 @@ export const authOptions = {
 
                 try {
         connectToDB();
-        console.log("credentials email:", credentials.email);
+        // console.log("credentials email:", credentials.email);
         const user = await User.findOne({email:credentials.email});
 
-        console.log("user found", user);
+        // console.log("user found", user);
 
         if(!user) {
             // throw new Error("Wrong Email or User with this Email does not exist");
@@ -44,7 +44,7 @@ export const authOptions = {
                 isPasswordCorrect = encrypted || normalpass;
             }
             // console.log("ans:", credentials.password === user.password);
-            console.log("isPasswordCorrect:", isPasswordCorrect);
+            // console.log("isPasswordCorrect:", isPasswordCorrect);
 
             if(!isPasswordCorrect) {
                 // throw new Error("Incorrect Passsword");
@@ -76,8 +76,8 @@ export const authOptions = {
         }
     }
     catch(err) {
-        console.log("Error while loggin in route.js", err);
-        throw new Error("Error while logging in catch");
+        // console.log("Error while loggin in route.js", err);
+        // throw new Error("Error while logging in catch");
     }
 
 

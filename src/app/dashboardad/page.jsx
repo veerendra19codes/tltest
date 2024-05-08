@@ -284,7 +284,7 @@ const DashboardADPage = () => {
             }
             fetchSheetData();
         }
-    }, [selectedFR])
+    }, [selectedFR, session?.user?.deployedlink, status])
 
 
     const SelectFR = (e) => {

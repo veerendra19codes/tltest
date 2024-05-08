@@ -188,5 +188,6 @@ try {
   Company = mongoose.model("Company", companySchema);
 }
 
-export default {User, Company};
+const models = {User,Company}
+export default models;
 // export const Company = mongoose.models.Company || mongoose.model("Company", companySchema)
